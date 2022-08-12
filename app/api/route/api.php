@@ -15,10 +15,10 @@ Route::group(":version", function () {
     // 新增用户收货地址的接口
     Route::post("add-ship-address", ":version.UserAddress/createUserAddress");
     // 编辑用户收货地址的接口
-    Route::put("edit-ship-address", ":version.UserAddress/editUserAddress");
+    Route::put("edit-ship-address/:addressID", ":version.UserAddress/editUserAddress");
     // 删除用户收货地址的接口
-    Route::delete("del-ship-address", ":version.UserAddress/deleteUserAddress");
-    
+    Route::delete("del-ship-address/:addressID", ":version.UserAddress/deleteUserAddress");
+
 })->middleware(JwtAuthMiddleware::class)->json();
 
 

@@ -20,7 +20,7 @@ class UsersRepositories extends AbstractRepositories
      */
     public function user2launch(array $userProfile)
     {
-        $userModel = $this->servletFactory->userServ()->getUserProfileByUserEmail($userProfile["email"]);
+        $userModel = $this->servletFactory->userServ()->getUserProfileByFields(["email" => trim($userProfile["email"])]);
 
         if (!$this->isEqualByPassword($userModel->getAttr("password"), trim($userProfile["password"]))) {
             throw new ParameterException(["errMessage" => "username or password is incorrect"]);

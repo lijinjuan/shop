@@ -23,24 +23,45 @@ class UserAddressController
         $this->userAddressRepositories = $userAddressRepositories;
     }
 
+    /**
+     * getUserAddressListByToken
+     * @return \think\response\Json
+     */
     public function getUserAddressListByToken()
     {
         return $this->userAddressRepositories->getUserAddressList();
     }
 
+    /**
+     * createUserAddress
+     * @param \think\Request $request
+     * @return \think\response\Json
+     */
     public function createUserAddress(Request $request)
     {
-
+        $userAddress = $request->only(["receiver", "mobile", "address", "postCode", "isDefault"]);
+        return $this->userAddressRepositories->createUserAddress($userAddress);
     }
 
-    public function editUserAddress(Request $request)
+    /**
+     * editUserAddress
+     * @param int $addressID
+     * @param \think\Request $request
+     * @return \think\response\Json
+     */
+    public function editUserAddress(int $addressID, Request $request)
     {
-
+        $userAddress = $request->only(["receiver", "mobile", "address", "postCode", "isDefault"]);
+        return $this->userAddressRepositories->editUserAddress($addressID, $userAddress);
     }
 
+    /**
+     * deleteUserAddress
+     * @param int $addressID
+     */
     public function deleteUserAddress(int $addressID)
     {
-
+        return $this->userAddressRepositories->deleteUserAddress($addressID);
     }
 
 

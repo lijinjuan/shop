@@ -45,4 +45,13 @@ class UsersModel extends Model
         return true;
     }
 
+    /**
+     * shipAddress
+     * @return \think\model\relation\HasMany
+     */
+    public function shipAddress()
+    {
+        return $this->hasMany(UserAddressModel::class, "userID", "id");
+    }
+
 }
