@@ -11,6 +11,6 @@ if (!function_exists("renderResponse")) {
             'responseData' => $responseData,
         ];
 
-        return json($applyResponse, 200);
+        return json($applyResponse);
     }
 }

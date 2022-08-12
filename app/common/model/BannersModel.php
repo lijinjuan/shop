@@ -35,7 +35,7 @@ class BannersModel extends Model
      */
     public function items()
     {
-        return $this->hasMany(BannerItemsModel::class, 'bannerID', 'id')->order("sort", "desc")->field(["id", "bannerID", "imgID", "sort", "itemAction", "itemType"]);
+        return $this->hasMany(BannerItemsModel::class, 'bannerID', 'id');
     }
 
 

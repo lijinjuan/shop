@@ -30,6 +30,11 @@ class BannerItemsModel extends Model
     protected $autoWriteTimestamp = true;
 
     /**
+     * @var string[]
+     */
+    protected $hidden = ["updatedAt", "deletedAt"];
+
+    /**
      * img
      * @return \think\model\relation\BelongsTo
      */
