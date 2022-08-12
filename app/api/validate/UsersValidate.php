@@ -11,9 +11,8 @@ class UsersValidate extends BaseValidate
      * @var string[]
      */
     protected $rule = [
-        "userEmail|用户邮箱" => "require|email",
-        "password|用户密码" => "require|alphaDash|min:6|max:20"
+        "email|用户邮箱" => "require|email",
+        "password|用户密码" => "require|alphaDash|isLeastAlphaDash|min:6|max:20"
     ];
-
 
 }

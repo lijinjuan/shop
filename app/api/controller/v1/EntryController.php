@@ -5,6 +5,7 @@ namespace app\api\controller\v1;
 
 use app\api\repositories\UsersRepositories;
 use app\api\validate\UsersValidate;
+use think\Request;
 use think\Response;
 
 /**
@@ -29,10 +30,18 @@ class EntryController
      * userLaunch
      * @return \think\Response
      */
-    public function userLaunch(): Response
+    public function userLaunch(Request $request): Response
     {
         (new UsersValidate())->goCheck();
-        $userProfile = request()->only(["userEmail", "password"]);
+        $userProfile = $request->only(["email", "password"]);
         return $this->usersRepositories->user2launch($userProfile);
+    }
+
+    /**
+     * testToken
+     */
+    public function testToken()
+    {
+
     }
 }

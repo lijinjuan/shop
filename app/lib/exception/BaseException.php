@@ -27,21 +27,21 @@ class BaseException extends Exception
     /**
      * @param array $params
      */
-    public function __construct(array $params)
+    public function __construct(array $params = [])
     {
-        if(!is_array($params)){
+        if (!is_array($params)) {
             return;
         }
 
-        if(array_key_exists('code',$params)){
+        if (array_key_exists('code', $params)) {
             $this->code = $params['code'];
         }
 
-        if(array_key_exists('errCode',$params)){
+        if (array_key_exists('errCode', $params)) {
             $this->errCode = $params['errCode'];
         }
 
-        if(array_key_exists('errMessage',$params)){
+        if (array_key_exists('errMessage', $params)) {
             $this->errMessage = $params['errMessage'];
         }
     }

@@ -2,6 +2,7 @@
 
 namespace app\api\middleware;
 
+use app\lib\exception\TokenInvalidException;
 use thans\jwt\exception\TokenBlacklistGracePeriodException;
 use thans\jwt\exception\TokenExpiredException;
 use thans\jwt\middleware\BaseMiddleware;
@@ -16,7 +17,7 @@ class JwtAuthMiddleware extends BaseMiddleware
      * @param $request
      * @param \Closure $next
      */
-    public function handle($request, \Closure $next)
+    public function handle($request, \Closure $next, $params)
     {
         // OPTIONS请求直接返回
         if ($request->isOptions()) {
@@ -26,28 +27,29 @@ class JwtAuthMiddleware extends BaseMiddleware
         // 验证token
         try {
             $this->auth->auth();
-        } catch (TokenExpiredException) { // 捕获token过期
+        } catch (TokenExpiredException) {
             // 尝试刷新token
             try {
                 $this->auth->setRefresh();
                 $token = $this->auth->refresh();
 
-                 $payload = $this->auth->auth(false);
-                 $request->uid = $payload['uid']->getValue();
+                $payload = $this->auth->auth(false);
+                $request->uid = $payload['uid']->getValue();
 
                 $response = $next($request);
                 return $this->setAuthentication($response, $token);
-            } catch (TokenBlacklistGracePeriodException $e) { // 捕获黑名单宽限期
-                 $payload = $this->auth->auth(false);
-                 $request->uid = $payload['uid']->getValue();
-
-                return $next($request);
+            } catch (TokenBlacklistGracePeriodException) {
+                goto GRACE_PERIOD_EXCEPTION;
             }
-        } catch (TokenBlacklistGracePeriodException $e) { // 捕获黑名单宽限期
-             $payload = $this->auth->auth(false);
-             $request->uid = $payload['uid']->getValue();
+        } catch (TokenBlacklistGracePeriodException) {
+            goto GRACE_PERIOD_EXCEPTION;
+        } catch (\Throwable) {
+            throw new TokenInvalidException();
         }
 
+        GRACE_PERIOD_EXCEPTION:
+        $payload = $this->auth->auth(false);
+        $request->uid = $payload['uid']->getValue();
         return $next($request);
     }
 }

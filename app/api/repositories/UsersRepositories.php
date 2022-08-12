@@ -2,6 +2,9 @@
 
 namespace app\api\repositories;
 
+
+use thans\jwt\facade\JWTAuth;
+
 /**
  * \app\api\repositories\UsersRepositories
  */
@@ -13,6 +16,7 @@ class UsersRepositories
      */
     public function user2launch(array $userProfile)
     {
-        return renderResponse($userProfile);
+        $token = JWTAuth::builder(["uid" => 1]);
+        return renderResponse(compact('token'));
     }
 }
