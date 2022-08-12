@@ -11,10 +11,19 @@ class ServletFactory implements ServletFactoryInterface
 {
 
     /**
-     * BannerServ
+     * userServ
+     * @return \app\api\servlet\UsersServlet
+     */
+    public function userServ(): UsersServlet
+    {
+        return invoke(UsersServlet::class);
+    }
+
+    /**
+     * bannerServ
      * @return mixed
      */
-    public function BannerServ(): BannersServlet
+    public function bannerServ(): BannersServlet
     {
         return invoke(BannersServlet::class);
     }

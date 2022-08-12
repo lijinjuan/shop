@@ -5,6 +5,8 @@ use think\facade\Route;
 
 // 登录
 Route::post(":version/launch", ":version.Entry/userLaunch")->json();
+// 注册
+Route::post(":version/register", ":version.Entry/registerNewUser")->json();
 
 
 Route::group(":version", function () {

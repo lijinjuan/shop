@@ -14,5 +14,35 @@ class UsersModel extends Model
      */
     protected $table = "s_users";
 
+    /**
+     * @var string
+     */
+    protected $createTime = "createdAt";
+
+    /**
+     * @var string
+     */
+    protected $updateTime = "updatedAt";
+
+    /**
+     * @var string
+     */
+    protected $autoWriteTimestamp = "timestamp";
+
+    /**
+     * onBeforeInsert
+     * @param \think\Model $model
+     * @return mixed
+     */
+    public static function onBeforeInsert(Model $model): mixed
+    {
+        $userName = current(explode("@", $model->getAttr("email")));
+        $model->setAttr("userName", $userName);
+        $model->setAttr("password", password_hash($model->getAttr("password"), PASSWORD_DEFAULT));
+        $model->setAttr("userAvatar", "1231231231");
+        $model->setAttr("balance", 0.00);
+        $model->setAttr("isStore", 0);
+        return true;
+    }
 
 }

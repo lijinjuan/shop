@@ -38,10 +38,14 @@ class EntryController
     }
 
     /**
-     * testToken
+     * registerNewUser
+     * @param \think\Request $request
+     * @return mixed
      */
-    public function testToken()
+    public function registerNewUser(Request $request)
     {
-
+        (new UsersValidate())->goCheck();
+        $userProfile = $request->only(["email", "password"]);
+        return $this->usersRepositories->registerNewUser($userProfile);
     }
 }
