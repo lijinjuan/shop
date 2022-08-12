@@ -8,6 +8,19 @@ Route::post(":version/launch", ":version.Entry/userLaunch")->json();
 // 注册
 Route::post(":version/register", ":version.Entry/registerNewUser")->json();
 
+// 用户收货地址的管理
+Route::group(":version", function () {
+    // 获取用户收货地址的接口
+    Route::get("ship-address", ":version.UserAddress/getUserAddressListByToken");
+    // 新增用户收货地址的接口
+    Route::post("add-ship-address", ":version.UserAddress/createUserAddress");
+    // 编辑用户收货地址的接口
+    Route::put("edit-ship-address", ":version.UserAddress/editUserAddress");
+    // 删除用户收货地址的接口
+    Route::delete("del-ship-address", ":version.UserAddress/deleteUserAddress");
+    
+})->middleware(JwtAuthMiddleware::class)->json();
+
 
 Route::group(":version", function () {
     // test token
