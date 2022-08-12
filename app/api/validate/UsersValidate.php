@@ -7,6 +7,7 @@ namespace app\api\validate;
  */
 class UsersValidate extends BaseValidate
 {
+
     /**
      * @var string[]
      */
