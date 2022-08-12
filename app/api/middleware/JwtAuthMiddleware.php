@@ -17,7 +17,7 @@ class JwtAuthMiddleware extends BaseMiddleware
      * @param $request
      * @param \Closure $next
      */
-    public function handle($request, \Closure $next, $params)
+    public function handle($request, \Closure $next)
     {
         // OPTIONS请求直接返回
         if ($request->isOptions()) {

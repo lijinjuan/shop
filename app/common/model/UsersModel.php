@@ -12,7 +12,7 @@ class UsersModel extends Model
     /**
      * @var string
      */
-    protected $table = "";
+    protected $table = "s_users";
 
 
 }

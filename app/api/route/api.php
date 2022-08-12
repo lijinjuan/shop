@@ -9,8 +9,11 @@ Route::post(":version/launch", ":version.Entry/userLaunch")->json();
 
 Route::group(":version", function () {
     // test token
-    Route::post("test/token", ":version.Entry/testToken")->middleware(JwtAuthMiddleware::class, "12323","1312");
+    Route::post("test/token", ":version.Entry/testToken")->middleware(JwtAuthMiddleware::class);
 
-
+    // banner api
 })->json();
+
+Route::get(":version/banner/:bannerID", ":version.Banner/getBannerByID");
+
 
