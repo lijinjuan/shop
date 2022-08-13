@@ -3,6 +3,8 @@
 namespace app\api\servlet\contract;
 
 use app\api\servlet\BannersServlet;
+use app\api\servlet\BrandsServlet;
+use app\api\servlet\ShopServlet;
 use app\api\servlet\UsersServlet;
 
 /**
@@ -22,4 +24,17 @@ interface ServletFactoryInterface
      * @return \app\api\servlet\BannersServlet
      */
     public function bannerServ(): BannersServlet;
+
+    /**
+     * shopServ
+     * @return \app\api\servlet\ShopServlet
+     */
+    public function shopServ(): ShopServlet;
+
+    /**
+     * brandsServ
+     * @return \app\api\servlet\BrandsServlet
+     */
+    public function brandsServ(): BrandsServlet;
+
 }

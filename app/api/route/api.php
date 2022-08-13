@@ -21,6 +21,27 @@ Route::group(":version", function () {
 
 })->middleware(JwtAuthMiddleware::class)->json();
 
+// 客户端首页接口
+Route::group(":version", function () {
+    // 获取首页轮播图的接口
+    Route::get("banner/:bannerID", ":version.Banner/getBannerByID");
+    // 获取首页轮播图的接口
+    Route::get("brands-list", ":version.Brand/getBrandsList");
+
+})->json();
+
+
+// 客户端店铺接口
+Route::group(":version", function () {
+    // 获取店铺基本信息的接口
+    Route::get("shop-base-info", ":version.Shop/getStoreByBasicInfo");
+    // 获取店铺统计信息的接口
+    Route::get("shop-statistics", ":version.Shop/getStoreByBasicStatistics");
+    // 提交开店铺的信息
+    Route::post("shop-apply", ":version.Shop/apply2OpenStore");
+
+})->middleware(JwtAuthMiddleware::class)->json();
+
 
 Route::group(":version", function () {
     // test token
@@ -29,6 +50,6 @@ Route::group(":version", function () {
     // banner api
 })->json();
 
-Route::get(":version/banner/:bannerID", ":version.Banner/getBannerByID");
+
 
 

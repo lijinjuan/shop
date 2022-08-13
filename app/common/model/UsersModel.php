@@ -54,4 +54,13 @@ class UsersModel extends Model
         return $this->hasMany(UserAddressModel::class, "userID", "id");
     }
 
+    /**
+     * store
+     * @return \think\model\relation\HasOne
+     */
+    public function store()
+    {
+        return $this->hasOne(StoresModel::class, "userID", "id");
+    }
+
 }

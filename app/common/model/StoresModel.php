@@ -3,17 +3,16 @@
 namespace app\common\model;
 
 use think\Model;
-use think\model\concern\SoftDelete;
 
 /**
- * \app\common\model\ImagesModel
+ * \app\common\model\StoresModel
  */
-class ImagesModel extends Model
+class StoresModel extends Model
 {
     /**
      * @var string
      */
-    protected $table = "s_images";
+    protected $table = "s_stores";
 
     /**
      * @var string
@@ -26,12 +25,7 @@ class ImagesModel extends Model
     protected $updateTime = "updatedAt";
 
     /**
-     * @var bool
+     * @var string
      */
     protected $autoWriteTimestamp = "timestamp";
-
-    /**
-     * @var string[]
-     */
-    protected $hidden = ['id', 'imgID', 'bannerID', 'createdAt', 'updatedAt', 'deletedAt'];
 }

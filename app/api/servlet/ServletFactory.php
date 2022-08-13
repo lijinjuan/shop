@@ -21,12 +21,28 @@ class ServletFactory implements ServletFactoryInterface
 
     /**
      * bannerServ
-     * @return mixed
+     * @return \app\api\servlet\BannersServlet
      */
     public function bannerServ(): BannersServlet
     {
         return invoke(BannersServlet::class);
     }
 
+    /**
+     * shopServ
+     * @return \app\api\servlet\ShopServlet
+     */
+    public function shopServ(): ShopServlet
+    {
+        return invoke(ShopServlet::class);
+    }
 
+    /**
+     * brandsServ
+     * @return \app\api\servlet\BrandsServlet
+     */
+    public function brandsServ(): BrandsServlet
+    {
+        return invoke(BrandsServlet::class);
+    }
 }
