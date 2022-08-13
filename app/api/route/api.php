@@ -25,7 +25,7 @@ Route::group(":version", function () {
 Route::group(":version", function () {
     // 获取首页轮播图的接口
     Route::get("banner/:bannerID", ":version.Banner/getBannerByID");
-    // 获取首页轮播图的接口
+    // 获取首页品牌列表的接口
     Route::get("brands-list", ":version.Brand/getBrandsList");
 
 })->json();
