@@ -19,7 +19,29 @@ class UsersShoppingCartModel extends  Model
     /**
      * @var string
      */
+    protected $updateTime = "updatedAt";
+
+    /**
+     * @var string
+     */
     protected $autoWriteTimestamp = "timestamp";
+
+
+    /**
+     * @return \think\model\relation\BelongsTo
+     */
+    public function goods()
+    {
+        return $this->belongsTo(GoodsModel::class, 'goodsID', 'id');
+    }
+
+    /**
+     * @return \think\model\relation\BelongsTo
+     */
+    public function sku()
+    {
+        return $this->belongsTo(GoodsSkuModel::class, 'skuID', 'id');
+    }
 
 
 }
