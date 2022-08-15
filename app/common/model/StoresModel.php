@@ -37,5 +37,5 @@ class StoresModel extends Model
     {
         return $this->belongsToMany(GoodsModel::class, GoodsStoreModel::class, "goodsID", "storesID");
     }
-    
+
 }

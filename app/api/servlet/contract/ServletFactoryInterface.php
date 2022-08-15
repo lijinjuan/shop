@@ -37,4 +37,6 @@ interface ServletFactoryInterface
      */
     public function brandsServ(): BrandsServlet;
 
+    public function goodsServ();
+
 }

@@ -53,4 +53,9 @@ class ShopController
         return $this->shopRepositories->apply2OpenStore($shopInfo);
     }
 
+    public function getGoodsListByMyStore()
+    {
+        return $this->shopRepositories->getGoodsListByMyStore();
+    }
+
 }

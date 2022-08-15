@@ -28,6 +28,7 @@ Route::group(":version", function () {
     // 获取首页品牌列表的接口
     Route::get("brands-list", ":version.Brand/getBrandsList");
 
+    Route::get("goods", ":version.Goods/getPlatformGoods");
 })->json();
 
 
@@ -39,6 +40,8 @@ Route::group(":version", function () {
     Route::get("shop-statistics", ":version.Shop/getStoreByBasicStatistics");
     // 提交开店铺的信息
     Route::post("shop-apply", ":version.Shop/apply2OpenStore");
+    // 获取我的店铺的商品列表的接口
+    Route::get("shop-goods-list", ":version.Shop/getGoodsListByMyStore");
 
 })->middleware(JwtAuthMiddleware::class)->json();
 

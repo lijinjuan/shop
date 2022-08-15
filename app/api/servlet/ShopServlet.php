@@ -50,4 +50,18 @@ class ShopServlet
         return app()->get("userProfile")->store()->save($shopInfo);
     }
 
+    public function getGoodsListByMyStore()
+    {
+        /**
+         * @var \app\common\model\UsersModel $userModel
+         */
+        $userModel = app()->get("userProfile");
+
+        /**
+         * @var StoresModel $storeModel
+         */
+        $storeModel = $userModel->store;
+        return $storeModel->goods()->visible(["id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "commission", "goodsSalesAmount", "createdAt"])->where("s_goods.status", 1)->hidden(["pivot"])->paginate();
+    }
+
 }

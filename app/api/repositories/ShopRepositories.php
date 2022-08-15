@@ -39,4 +39,14 @@ class ShopRepositories extends AbstractRepositories
         return renderResponse();
     }
 
+    /**
+     * getGoodsListByMyStore
+     */
+    public function getGoodsListByMyStore()
+    {
+
+        $storeGoodsList = $this->servletFactory->shopServ()->getGoodsListByMyStore();
+        return renderPaginateResponse($storeGoodsList);
+    }
+
 }
