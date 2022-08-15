@@ -4,6 +4,9 @@ namespace app\api\servlet;
 
 use app\common\model\UsersShoppingCartModel;
 
+/**
+ * \app\api\servlet\UsersShoppingCartServlet
+ */
 class UsersShoppingCartServlet
 {
     /**

@@ -2,7 +2,6 @@
 
 namespace app\api\repositories;
 
-
 use app\common\model\UsersModel;
 use app\lib\exception\ParameterException;
 use thans\jwt\facade\JWTAuth;

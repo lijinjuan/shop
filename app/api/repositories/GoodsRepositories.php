@@ -21,5 +21,10 @@ class GoodsRepositories extends AbstractRepositories
         return renderResponse($goodsInfo);
     }
 
+    public function getPlatformGoodsList()
+    {
+        $platformGoodsList = $this->servletFactory->
+    }
+
 
 }

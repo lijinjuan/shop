@@ -39,21 +39,16 @@ interface ServletFactoryInterface
      */
     public function brandsServ(): BrandsServlet;
 
-<<<<<<< HEAD
-    public function goodsServ();
-=======
     /**
      * usersShoppingCartServ
      * @return UsersShoppingCartServlet
      */
-    public function usersShoppingCartServ():UsersShoppingCartServlet;
-
-
+    public function usersShoppingCartServ(): UsersShoppingCartServlet;
+    
     /**
      * GoodsServ
      * @return GoodsServlet
      */
-    public function GoodsServ():GoodsServlet;
->>>>>>> 4c71783b6c952c815e11236817e7df14c300a707
+    public function GoodsServ(): GoodsServlet;
 
 }
