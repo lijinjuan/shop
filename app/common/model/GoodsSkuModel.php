@@ -4,15 +4,17 @@ namespace app\common\model;
 
 use think\Model;
 
-/**
- * \app\common\model\GoodsModel
- */
-class GoodsModel extends Model
+class GoodsSkuModel extends Model
 {
+    public function useSoftDelete(string $field, $condition = null)
+    {
+
+    }
+
     /**
      * @var string
      */
-    protected $table = "s_goods";
+    protected $table = "s_goods_sku";
 
     /**
      * @var string
@@ -24,16 +26,10 @@ class GoodsModel extends Model
      */
     protected $updateTime = "updatedAt";
 
+
     /**
      * @var bool
      */
     protected $autoWriteTimestamp = "timestamp";
 
-    /**
-     * @return \think\model\relation\HasMany
-     */
-    public function goodsSku()
-    {
-        return $this->hasMany(GoodsSkuModel::class, 'goodsID', 'id');
-    }
 }

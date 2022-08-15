@@ -45,4 +45,21 @@ class ServletFactory implements ServletFactoryInterface
     {
         return invoke(BrandsServlet::class);
     }
+
+    /**
+     * usersShoppingCartServ
+     * @return UsersShoppingCartServlet
+     */
+    public function usersShoppingCartServ(): UsersShoppingCartServlet
+    {
+        return invoke(UsersShoppingCartServlet::class);
+    }
+
+
+    public function GoodsServ(): GoodsServlet
+    {
+        return invoke(GoodsServlet::class);
+    }
+
+
 }
