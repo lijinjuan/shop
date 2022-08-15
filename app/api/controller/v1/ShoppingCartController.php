@@ -21,23 +21,63 @@ class ShoppingCartController
     }
 
     /**
+     * 添加购物车
      * @param Request $request
-     * @return bool
+     * @return \think\response\Json
      * @throws \app\lib\exception\ParameterException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     public function addCart(Request $request)
     {
-        $cartInfo  = $request->only(['goodsID','skuID','number']);
+        $cartInfo = $request->only(['goodsID', 'skuID', 'number']);
         return $this->shoppingCartRepositories->addShoppingCart($cartInfo);
     }
 
-    public function editCart()
+    /**
+     * @param int $id
+     * @param Request $request
+     * @return \think\response\Json
+     * @throws \app\lib\exception\ParameterException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function editCart(int $id, Request $request)
     {
-
+        $updateData = $request->only(['goodsID', 'skuID', 'goodsNum']);
+        return $this->shoppingCartRepositories->editCartByID($id, $updateData);
     }
 
-    public function removeCart()
+    /**
+     * @param Request $request
+     * @return mixed
+     */
+    public function removeCart(Request $request)
     {
+        $cartIDs = $request->put('cartIDs');
+        return $this->shoppingCartRepositories->removeCartByIDs($cartIDs);
+    }
 
+    /**
+     * 购物车数量
+     * @return \think\response\Json
+     */
+    public function countCart()
+    {
+        return $this->shoppingCartRepositories->countCart();
+    }
+
+    /**
+     * 购物车列表
+     * @return \think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function getCartList()
+    {
+        return $this->shoppingCartRepositories->getCartList();
     }
 }

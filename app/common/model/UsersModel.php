@@ -63,4 +63,12 @@ class UsersModel extends Model
         return $this->hasOne(StoresModel::class, "userID", "id");
     }
 
+    /**
+     * @return \think\model\relation\HasMany
+     */
+    public function shoppingCart()
+    {
+        return $this->hasMany(UsersShoppingCartModel::class,'userID','id');
+    }
+
 }

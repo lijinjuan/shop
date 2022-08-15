@@ -114,4 +114,22 @@ class UsersServlet
         return app()->get("userProfile")->shipAddress()->where("id", $addressID)->delete();
     }
 
+    /**
+     * getUserShoppingCartList
+     * @return mixed
+     */
+    public function getUserShoppingCartList()
+    {
+        return app()->get("userProfile")->shoppingCart()->order("createdAt", "desc")->select();
+    }
+
+    /**
+     * getUserShoppingCount
+     * @return mixed
+     */
+    public function getUserShoppingCount()
+    {
+        return app()->get("userProfile")?->shoppingCart()->count();
+    }
+
 }

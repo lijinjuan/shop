@@ -47,11 +47,13 @@ Route::group(":version", function () {
     // 添加购物车接口
     Route::post("add-shopping-cart", ":version.ShoppingCart/addCart");
     // 编辑购物车接口
-    Route::put("edit-shopping-cart", ":version.ShoppingCart/editCart");
+    Route::put("edit-shopping-cart/:id", ":version.ShoppingCart/editCart");
     // 删除购物车接口
     Route::delete("remove-shopping-cart", ":version.ShoppingCart/removeCart");
     //购物车列表接口
-    Route::delete("shopping-cart", ":version.ShoppingCart/removeCart");
+    Route::get("list-shopping-cart", ":version.ShoppingCart/getCartList");
+    //获取我的购物车的数量
+    Route::get("count-shopping-cart", ":version.ShoppingCart/countCart");
 
 })->middleware(JwtAuthMiddleware::class)->json();
 
