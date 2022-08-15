@@ -45,6 +45,18 @@ Route::group(":version", function () {
 
 })->middleware(JwtAuthMiddleware::class)->json();
 
+//客户端购物车接口
+Route::group(":version", function () {
+    // 添加购物车接口
+    Route::post("add-shopping-cart", ":version.ShoppingCart/addCart");
+    // 编辑购物车接口
+    Route::put("edit-shopping-cart", ":version.ShoppingCart/editCart");
+    // 删除购物车接口
+    Route::delete("remove-shopping-cart", ":version.ShoppingCart/removeCart");
+    //购物车列表接口
+    Route::delete("shopping-cart", ":version.ShoppingCart/removeCart");
+
+})->middleware(JwtAuthMiddleware::class)->json();
 
 Route::group(":version", function () {
     // test token
