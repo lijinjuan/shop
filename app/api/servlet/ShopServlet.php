@@ -65,6 +65,9 @@ class ShopServlet
      */
     public function apply2CreateStore(array $shopInfo)
     {
+        // 邀请码
+        // 判断上下级
+        //
         return app()->get("userProfile")->store()->save($shopInfo);
     }
 
