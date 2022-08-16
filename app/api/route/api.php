@@ -27,6 +27,24 @@ Route::group(":version", function () {
     Route::get("banner/:bannerID", ":version.Banner/getBannerByID");
     // 获取首页品牌列表的接口
     Route::get("brands-list", ":version.Brand/getBrandsList");
+    // 获取首页商铺列表的接口
+    Route::get("home-shop", ":version.Shop/getStoreList2Limit10");
+    // 获取全部分页商铺列表的接口
+    Route::get("shop/:shopID/goods-list", ":version.Shop/getGoodsListByShopID");
+    // 获取全部分页商铺列表的接口
+    Route::get("shop-list", ":version.Shop/getStoreList");
+    // 根据标签查询商品列表的接口
+    Route::get(":itemType/goods-list", ":version.Goods/getPlatformGoodsListByItem");
+    // 获取精品推荐列表的接口
+    Route::get("recommend-goods-list", ":version.Goods/getPlatformGoodsListByRecommended");
+    // 获取所有的分类的接口
+    Route::get("category-list", ":version.Category/getCategoriesByAssert");
+    // 根据分类获取商品的列表的接口
+    Route::get("category/:categoryID/goods-list", ":version.Goods/getGoodsListByCategoryID");
+    // 根据关键字搜索商品列表
+    Route::post("search/goods-list", ":version.Goods/getGoodsListByKeywords");
+    // 根据关键字搜索店铺列表
+    Route::post("search/shop-list", ":version.Shop/getShopListByKeywords");
 
 })->json();
 
@@ -39,6 +57,10 @@ Route::group(":version", function () {
     Route::get("shop-statistics", ":version.Shop/getStoreByBasicStatistics");
     // 提交开店铺的信息
     Route::post("shop-apply", ":version.Shop/apply2OpenStore");
+    // 获取我的店铺的商品列表的接口
+    Route::get("shop-goods-list", ":version.Shop/getGoodsListByMyStore");
+    // 获取所有的商品列表的接口
+    Route::get("goods", ":version.Goods/getPlatformGoods");
 
 })->middleware(JwtAuthMiddleware::class)->json();
 

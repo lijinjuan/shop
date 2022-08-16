@@ -5,14 +5,14 @@ namespace app\common\model;
 use think\Model;
 
 /**
- * \app\common\model\StoresModel
+ * \app\common\model\CategoryModel
  */
-class StoresModel extends Model
+class CategoryModel extends Model
 {
     /**
      * @var string
      */
-    protected $table = "s_stores";
+    protected $table = "s_categories";
 
     /**
      * @var string
@@ -25,17 +25,16 @@ class StoresModel extends Model
     protected $updateTime = "updatedAt";
 
     /**
-     * @var string
+     * @var bool
      */
     protected $autoWriteTimestamp = "timestamp";
 
     /**
-     * goods
-     * @return \think\model\relation\BelongsToMany
+     * img
+     * @return \think\model\relation\BelongsTo
      */
-    public function goods()
+    public function img()
     {
-        return $this->belongsToMany(GoodsModel::class, GoodsStoreModel::class, "goodsID", "storesID");
+        return $this->belongsTo(ImagesModel::class, "categoryImgID", 'id');
     }
-
 }

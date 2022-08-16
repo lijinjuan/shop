@@ -55,11 +55,11 @@ class ServletFactory implements ServletFactoryInterface
         return invoke(UsersShoppingCartServlet::class);
     }
 
-
     /**
-     * @return GoodsServlet
+     * GoodsServ
+     * @return \app\api\servlet\GoodsServlet
      */
-    public function GoodsServ(): GoodsServlet
+    public function goodsServ(): GoodsServlet
     {
         return invoke(GoodsServlet::class);
     }
@@ -67,7 +67,7 @@ class ServletFactory implements ServletFactoryInterface
     /**
      * @return OrderServlet
      */
-    public function OrderServ(): OrderServlet
+    public function orderServ(): OrderServlet
     {
         return invoke(OrderServlet::class);
     }
@@ -75,10 +75,18 @@ class ServletFactory implements ServletFactoryInterface
     /**
      * @return GoodsSkuServlet
      */
-    public function GoodsSkuServ(): GoodsSkuServlet
+    public function goodsSkuServ(): GoodsSkuServlet
     {
        return invoke(GoodsSkuServlet::class);
     }
 
+    /*
+     * categoryServ
+     * @return \app\api\servlet\CategoryServlet
+     */
+    public function categoryServ(): CategoryServlet
+    {
+        return invoke(CategoryServlet::class);
+    }
 
 }

@@ -5,6 +5,9 @@ namespace app\api\servlet;
 use app\common\model\UsersShoppingCartModel;
 use app\lib\exception\ParameterException;
 
+/**
+ * \app\api\servlet\UsersShoppingCartServlet
+ */
 class UsersShoppingCartServlet
 {
     /**
