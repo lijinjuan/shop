@@ -93,5 +93,37 @@ class GoodsRepositories extends AbstractRepositories
         return renderPaginateResponse($goodsList);
     }
 
+    /**
+     * getGoodsListByHomeCategoryID
+     * @param int $categoryID
+     * @return \think\response\Json
+     */
+    public function getGoodsListByHomeCategoryID(int $categoryID)
+    {
+        $categories = $this->servletFactory->categoryServ()->getParentCategoryList($categoryID);
+        $goodsList = $this->servletFactory->goodsServ()->getGoodsListByCategoryIDs($categories);
+        return renderPaginateResponse($goodsList);
+    }
+
+    /**
+     * getGoodsDetailsByGoodsID
+     * @param int $goodsID
+     */
+    public function getGoodsDetailsByGoodsID(int $goodsID)
+    {
+        $goodsDetail = $this->servletFactory->goodsServ()->getGoodsDetailsByGoodsID($goodsID);
+        return renderResponse($goodsDetail);
+    }
+
+    /**
+     * getGoodsListByExcellent
+     * @return \think\response\Json
+     */
+    public function getGoodsListByExcellent()
+    {
+        $recommendList = $this->servletFactory->goodsServ()->getGoodsListByGoodsRecommendLimit12(["goodsSalesAmount" => "desc"]);
+        return renderResponse($recommendList);
+    }
+
 
 }

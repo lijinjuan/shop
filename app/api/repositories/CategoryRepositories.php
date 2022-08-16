@@ -16,4 +16,14 @@ class CategoryRepositories extends AbstractRepositories
         $categories = $this->servletFactory->categoryServ()->getCategoriesByTree();
         return renderResponse($categories);
     }
+
+    /**
+     * getParentCategories
+     * @return \think\response\Json
+     */
+    public function getParentCategories()
+    {
+        $categories = $this->servletFactory->categoryServ()->getParentCategories(0);
+        return renderResponse($categories);
+    }
 }

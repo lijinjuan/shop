@@ -31,4 +31,13 @@ class CategoryController
         return $this->categoryRepositories->getCategoriesByAssert();
     }
 
+    /**
+     * getParentCategories
+     * @return \think\response\Json
+     */
+    public function getParentCategories()
+    {
+        return $this->categoryRepositories->getParentCategories();
+    }
+
 }

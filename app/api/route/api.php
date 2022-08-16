@@ -39,12 +39,20 @@ Route::group(":version", function () {
     Route::get("recommend-goods-list", ":version.Goods/getPlatformGoodsListByRecommended");
     // 获取所有的分类的接口
     Route::get("category-list", ":version.Category/getCategoriesByAssert");
-    // 根据分类获取商品的列表的接口
+    // 获取所有的一级分类的接口
+    Route::get("category-parent-list", ":version.Category/getParentCategories");
+    // 根据一级分类获取商品的列表的接口
+    Route::get(":categoryID/home-goods-list", ":version.Goods/getGoodsListByHomeCategoryID");
+    // 根据二级分类获取商品的列表的接口
     Route::get("category/:categoryID/goods-list", ":version.Goods/getGoodsListByCategoryID");
-    // 根据关键字搜索商品列表
+    // 根据关键字搜索商品列表的接口
     Route::post("search/goods-list", ":version.Goods/getGoodsListByKeywords");
-    // 根据关键字搜索店铺列表
+    // 根据关键字搜索店铺列表的接口
     Route::post("search/shop-list", ":version.Shop/getShopListByKeywords");
+    // 获取商品详情的接口
+    Route::post("goods-details/:goodsID", ":version.Goods/getGoodsDetailsByGoodsID");
+    // 获取优品推荐的商品列表的接口
+    Route::get("excellent-goods-list", ":version.Goods/getGoodsListByExcellent");
 
 })->json();
 

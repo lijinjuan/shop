@@ -53,8 +53,19 @@ class GoodsController
     }
 
     /**
+     * getGoodsListByHomeCategoryID
+     * @param int $categoryID
+     * @return \think\response\Json
+     */
+    public function getGoodsListByHomeCategoryID(int $categoryID)
+    {
+        return $this->goodsRepositories->getGoodsListByHomeCategoryID($categoryID);
+    }
+
+    /**
      * getGoodsListByCategoryID
      * @param int $categoryID
+     * @return \think\response\Json
      */
     public function getGoodsListByCategoryID(int $categoryID)
     {
@@ -70,5 +81,24 @@ class GoodsController
     {
         $keywords = $request->param("keywords", "");
         return $this->goodsRepositories->getGoodsListByKeywords($keywords);
+    }
+
+    /**
+     * getGoodsDetailsByGoodsID
+     * @param int $goodsID
+     * @return mixed
+     */
+    public function getGoodsDetailsByGoodsID(int $goodsID)
+    {
+        return $this->goodsRepositories->getGoodsDetailsByGoodsID($goodsID);
+    }
+
+    /**
+     * getGoodsListByExcellent
+     * @return \think\response\Json
+     */
+    public function getGoodsListByExcellent()
+    {
+        return $this->goodsRepositories->getGoodsListByExcellent();
     }
 }

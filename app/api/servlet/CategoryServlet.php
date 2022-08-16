@@ -32,4 +32,25 @@ class CategoryServlet
         return assertTreeDatum($categories);
     }
 
+    /**
+     * getParentCategoryList
+     * @param int $categoryID
+     * @return array
+     */
+    public function getParentCategoryList(int $categoryID)
+    {
+        $categories = $this->categoryModel->where("status", 1)->where("parentID", $categoryID)->column("id");
+        return $categories;
+    }
+
+    /**
+     * getParentCategoryList
+     * @param int $categoryID
+     * @return array
+     */
+    public function getParentCategories(int $categoryID)
+    {
+        $categories = $this->categoryModel->where("status", 1)->where("parentID", $categoryID)->field(["id", "categoryName", "categoryImgID", "parentID"])->select();
+        return $categories;
+    }
 }
