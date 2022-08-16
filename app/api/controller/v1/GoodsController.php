@@ -3,6 +3,7 @@
 namespace app\api\controller\v1;
 
 use app\api\repositories\GoodsRepositories;
+use think\Request;
 
 /**
  * \app\api\controller\v1\GoodsController
@@ -51,4 +52,23 @@ class GoodsController
         return $this->goodsRepositories->getPlatformGoodsListByRecommended();
     }
 
+    /**
+     * getGoodsListByCategoryID
+     * @param int $categoryID
+     */
+    public function getGoodsListByCategoryID(int $categoryID)
+    {
+        return $this->goodsRepositories->getGoodsListByCategoryID($categoryID);
+    }
+
+    /**
+     * getGoodsListByKeywords
+     * @param \think\Request $request
+     * @return mixed
+     */
+    public function getGoodsListByKeywords(Request $request)
+    {
+        $keywords = $request->param("keywords", "");
+        return $this->goodsRepositories->getGoodsListByKeywords($keywords);
+    }
 }

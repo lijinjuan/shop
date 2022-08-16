@@ -111,4 +111,14 @@ class ShopServlet
         return $this->storesModel->field(["id", "storeName", "storeLogo", "storeDesc", "createdAt"])->order("createdAt", "desc")->limit(10)->select();
     }
 
+    /**
+     * searchShopListByKeywords
+     * @param string $keywords
+     * @return \think\Paginator
+     */
+    public function searchShopListByKeywords(string $keywords)
+    {
+        return $this->storesModel->whereLike("storeName", "%$keywords%")->field(["id", "storeName", "storeLogo", "storeDesc", "createdAt"])->order("createdAt", "desc")->paginate();
+    }
+
 }

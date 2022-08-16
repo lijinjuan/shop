@@ -83,4 +83,15 @@ class ShopRepositories extends AbstractRepositories
 
         return renderPaginateResponse($shopList);
     }
+
+    /**
+     * getShopListByKeywords
+     * @param string $keywords
+     * @return \think\response\Json
+     */
+    public function getShopListByKeywords(string $keywords)
+    {
+        $shopList = $this->servletFactory->shopServ()->searchShopListByKeywords($keywords);
+        return renderPaginateResponse($shopList);
+    }
 }

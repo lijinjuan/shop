@@ -90,4 +90,15 @@ class ShopController
         return $this->shopRepositories->getStoreList2Limit10();
     }
 
+    /**
+     * getShopListByKeywords
+     * @param \think\Request $request
+     * @return mixed
+     */
+    public function getShopListByKeywords(Request $request)
+    {
+        $keywords = $request->param("keywords");
+        return $this->shopRepositories->getShopListByKeywords($keywords);
+    }
+
 }

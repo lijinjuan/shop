@@ -19,7 +19,7 @@ class GoodsRepositories extends AbstractRepositories
      */
     public function getGoodsDetailByGoodsID(int $goodsID)
     {
-        $goodsInfo = $this->servletFactory->GoodsServ()->getGoodsDetailByGoodsID($goodsID);
+        $goodsInfo = $this->servletFactory->goodsServ()->getGoodsDetailByGoodsID($goodsID);
         return renderResponse($goodsInfo);
     }
 
@@ -29,7 +29,7 @@ class GoodsRepositories extends AbstractRepositories
      */
     public function getPlatformGoodsList()
     {
-        $platformGoodsList = $this->servletFactory->GoodsServ()->getPlatformGoodsList();
+        $platformGoodsList = $this->servletFactory->goodsServ()->getPlatformGoodsList();
         $myStoreGoodsID = $this->servletFactory->shopServ()->getGoodsIDsByMyStore();
         $platformGoodsList->each(fn($item) => $item["status"] = in_array($item["id"], $myStoreGoodsID));
 
@@ -57,7 +57,7 @@ class GoodsRepositories extends AbstractRepositories
             default => throw new ParameterException(["errMessage" => "参数异常..."])
         };
 
-        $goodsList = $this->servletFactory->GoodsServ()->getGoodsListByGoodsItem($itemFields, ["goodsSalesAmount" => "desc"], $itemLimit);
+        $goodsList = $this->servletFactory->goodsServ()->getGoodsListByGoodsItem($itemFields, ["goodsSalesAmount" => "desc"], $itemLimit);
         return renderResponse($goodsList);
     }
 
@@ -67,8 +67,30 @@ class GoodsRepositories extends AbstractRepositories
      */
     public function getPlatformGoodsListByRecommended()
     {
-        $recommendList = $this->servletFactory->GoodsServ()->getGoodsListByGoodsRecommend(["goodsSalesAmount" => "desc"]);
+        $recommendList = $this->servletFactory->goodsServ()->getGoodsListByGoodsRecommend(["goodsSalesAmount" => "desc"]);
         return renderPaginateResponse($recommendList);
+    }
+
+    /**
+     * getGoodsListByCategoryID
+     * @param int $categoryID
+     * @return \think\response\Json
+     */
+    public function getGoodsListByCategoryID(int $categoryID)
+    {
+        $goodsList = $this->servletFactory->goodsServ()->getGoodsListByCategoryID($categoryID);
+        return renderPaginateResponse($goodsList);
+    }
+
+    /**
+     * getGoodsListByKeywords
+     * @param string $keywords
+     * @return \think\response\Json
+     */
+    public function getGoodsListByKeywords(string $keywords)
+    {
+        $goodsList = $this->servletFactory->goodsServ()->searchGoodsListByKeyWords($keywords);
+        return renderPaginateResponse($goodsList);
     }
 
 

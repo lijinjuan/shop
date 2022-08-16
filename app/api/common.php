@@ -30,3 +30,22 @@ if (!function_exists("renderPaginateResponse")) {
         return renderResponse($applyResponse);
     }
 }
+
+if (!function_exists("assertTreeDatum")) {
+    function assertTreeDatum(array $arrayAccess)
+    {
+        $items = [];
+        foreach ($arrayAccess as $arrayItem) {
+            $items[$arrayItem['id']] = $arrayItem;
+        }
+        $treeDatum = [];
+        foreach ($items as $k => $item) {
+            if (isset($items[$item['parentID']])) {
+                $items[$item['parentID']]['categories'][] = &$items[$k];
+            } else {
+                $treeDatum[] = &$items[$k];
+            }
+        }
+        return $treeDatum;
+    }
+}
