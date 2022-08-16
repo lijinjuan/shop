@@ -44,7 +44,7 @@ interface ServletFactoryInterface
      * @return UsersShoppingCartServlet
      */
     public function usersShoppingCartServ(): UsersShoppingCartServlet;
-    
+
     /**
      * GoodsServ
      * @return GoodsServlet

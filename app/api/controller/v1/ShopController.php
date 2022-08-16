@@ -53,9 +53,41 @@ class ShopController
         return $this->shopRepositories->apply2OpenStore($shopInfo);
     }
 
+    /**
+     * getGoodsListByMyStore
+     * @return \think\response\Json
+     */
     public function getGoodsListByMyStore()
     {
         return $this->shopRepositories->getGoodsListByMyStore();
+    }
+
+    /**
+     * getGoodsListByShopID
+     * @param int $shopID
+     * @return \think\response\Json
+     */
+    public function getGoodsListByShopID(int $shopID)
+    {
+        return $this->shopRepositories->getGoodsListByShopID($shopID);
+    }
+
+    /**
+     * getStoreList
+     * @return \think\response\Json
+     */
+    public function getStoreList()
+    {
+        return $this->shopRepositories->getStoreList();
+    }
+
+    /**
+     * getStoreList2Limit10
+     * @return \think\response\Json
+     */
+    public function getStoreList2Limit10()
+    {
+        return $this->shopRepositories->getStoreList2Limit10();
     }
 
 }
