@@ -7,6 +7,7 @@ use app\api\servlet\BrandsServlet;
 use app\api\servlet\CategoryServlet;
 use app\api\servlet\GoodsServlet;
 use app\api\servlet\GoodsSkuServlet;
+use app\api\servlet\OrderDetailServlet;
 use app\api\servlet\OrderServlet;
 use app\api\servlet\ShopServlet;
 use app\api\servlet\UsersServlet;
@@ -71,6 +72,11 @@ interface ServletFactoryInterface
      * @return GoodsSkuServlet
      */
     public function goodsSkuServ():GoodsSkuServlet;
+
+    /**
+     * @return OrderDetailServlet
+     */
+    public function orderDetailServ():OrderDetailServlet;
 
 
 }

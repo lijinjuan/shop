@@ -49,3 +49,15 @@ if (!function_exists("assertTreeDatum")) {
         return $treeDatum;
     }
 }
+if (!function_exists('makeOrderNo')) {
+    function makeOrderNo(): string
+    {
+        $yCode = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
+        return $yCode[intval(date('Y')) - 2022] . strtoupper(dechex((int) date('m'))) . date(
+                'd'
+            ) . substr((string) time(), -5) . substr(microtime(), 2, 5) . sprintf(
+                '%02d',
+                rand(0, 99)
+            );
+    }
+}
