@@ -35,6 +35,16 @@ class GoodsServlet
     }
 
     /**
+     * @param array $goodsID
+     * @param array $columns
+     * @return GoodsModel
+     */
+    public function getGoodsListByGoodsID(array $goodsID, array $columns = ['*'])
+    {
+        return $this->goodsModel->whereIn('id', $goodsID)->with(['goodsSku','store'])->field($columns);
+    }
+
+    /*
      * getPlatformGoodsList
      * @return \think\Paginator
      */
@@ -54,6 +64,7 @@ class GoodsServlet
     {
         return $this->goodsModel->where($itemFields)->field(["id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "commission", "goodsSalesAmount", "createdAt"])->order($order)->limit($limit)->select();
     }
+
 
     /**
      * getGoodsListByGoodsRecommend
