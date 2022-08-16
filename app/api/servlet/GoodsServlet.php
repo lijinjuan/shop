@@ -31,5 +31,15 @@ class GoodsServlet
        return  $this->goodsModel->newQuery()->where('id',$goodsID)->where('status',1)->find();
     }
 
+    /**
+     * @param array $goodsID
+     * @param array $columns
+     * @return GoodsModel
+     */
+    public function getGoodsListByGoodsID(array $goodsID, array $columns = ['*'])
+    {
+        return $this->goodsModel->whereIn('id', $goodsID)->with(['goodsSku','store'])->field($columns);
+    }
+
 
 }

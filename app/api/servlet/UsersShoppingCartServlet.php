@@ -31,11 +31,11 @@ class UsersShoppingCartServlet
     public function addShoppingCart2GoodsSku(int $userID, array $goodsDatum)
     {
         $shoppingCart = $this->usersShoppingCartModel->where([['userID', '=', $userID], ['goodsID', '=', $goodsDatum['goodsID'], ['skuID', '=', $goodsDatum['skuID']]]])->find();
-        $goodsDatum['number'] += ($shoppingCart->number ?? 0);
+        $goodsDatum['number'] += ($shoppingCart->goodsNum ?? 0);
         $goodsDatum['number'] = min($goodsDatum['stock'], $goodsDatum['number']);
         $goodsDatum['number'] = max(1, $goodsDatum['number']);
         if ($shoppingCart) {
-            $shoppingCart->number = $goodsDatum['number'];
+            $shoppingCart->goodsNum = $goodsDatum['number'];
         } else {
             $shoppingCart = new UsersShoppingCartModel();
             $shoppingCart->goodsNum = $goodsDatum['number'];

@@ -56,9 +56,28 @@ class ServletFactory implements ServletFactoryInterface
     }
 
 
+    /**
+     * @return GoodsServlet
+     */
     public function GoodsServ(): GoodsServlet
     {
         return invoke(GoodsServlet::class);
+    }
+
+    /**
+     * @return OrderServlet
+     */
+    public function OrderServ(): OrderServlet
+    {
+        return invoke(OrderServlet::class);
+    }
+
+    /**
+     * @return GoodsSkuServlet
+     */
+    public function GoodsSkuServ(): GoodsSkuServlet
+    {
+       return invoke(GoodsSkuServlet::class);
     }
 
 

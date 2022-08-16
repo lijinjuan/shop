@@ -4,15 +4,12 @@ namespace app\common\model;
 
 use think\Model;
 
-/**
- * \app\common\model\GoodsModel
- */
-class GoodsModel extends Model
+class OrdersModel extends Model
 {
     /**
      * @var string
      */
-    protected $table = "s_goods";
+    protected $table = "s_orders";
 
     /**
      * @var string
@@ -25,17 +22,10 @@ class GoodsModel extends Model
     protected $updateTime = "updatedAt";
 
     /**
-     * @var bool
+     * @var string
      */
     protected $autoWriteTimestamp = "timestamp";
 
-    /**
-     * @return \think\model\relation\HasMany
-     */
-    public function goodsSku()
-    {
-        return $this->hasMany(GoodsSkuModel::class, 'goodsID', 'id');
-    }
 
 
 }

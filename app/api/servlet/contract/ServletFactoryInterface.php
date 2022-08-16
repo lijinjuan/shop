@@ -5,6 +5,8 @@ namespace app\api\servlet\contract;
 use app\api\servlet\BannersServlet;
 use app\api\servlet\BrandsServlet;
 use app\api\servlet\GoodsServlet;
+use app\api\servlet\GoodsSkuServlet;
+use app\api\servlet\OrderServlet;
 use app\api\servlet\ShopServlet;
 use app\api\servlet\UsersServlet;
 use app\api\servlet\UsersShoppingCartServlet;
@@ -51,5 +53,18 @@ interface ServletFactoryInterface
      * @return GoodsServlet
      */
     public function GoodsServ():GoodsServlet;
+
+    /**
+     * OrderServ
+     * @return OrderServlet
+     */
+    public function OrderServ():OrderServlet;
+
+    /**
+     * GoodsSkuServ
+     * @return GoodsSkuServlet
+     */
+    public function GoodsSkuServ():GoodsSkuServlet;
+
 
 }

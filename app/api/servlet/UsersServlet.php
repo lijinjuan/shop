@@ -132,4 +132,13 @@ class UsersServlet
         return app()->get("userProfile")?->shoppingCart()->count();
     }
 
+    /**
+     * @param int $addressID
+     * @return mixed
+     */
+    public function isValidAddress(int $addressID)
+    {
+        return app()->get("userProfile")->shipAddress()->where("id", $addressID)->find();
+    }
+
 }
