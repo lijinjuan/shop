@@ -2,6 +2,7 @@
 
 namespace app\common\model;
 
+use think\helper\Str;
 use think\Model;
 
 /**
@@ -34,12 +35,33 @@ class OrdersModel extends Model
      */
     protected $autoWriteTimestamp = "timestamp";
 
+    protected function getForeignKey(string $name): string
+    {
+        if (strpos($name, '\\')) {
+            $name = class_basename($name);
+        }
+
+        return Str::snake($name) . '_orderNo';
+    }
+
     /**
-     * @return mixed
+     * @return \think\model\relation\BelongsToMany
      */
     public function goodsSku()
     {
         return $this->belongsToMany(GoodsSkuModel::class, OrdersDetailModel::class, 'skuID', 'orderNo');
     }
+
+    /**
+     * @return \think\model\relation\HasMany
+     */
+    public function goodsDetail()
+    {
+        return $this->hasMany(OrdersDetailModel::class, 'orderNo', 'orderNo');
+    }
+
+
+
+
 
 }

@@ -98,8 +98,13 @@ Route::group(":version", function () {
     // 下订单接口
     Route::post("place-order", ":version.Order/placeOrder");
     // 购买接口
-    Route::post("payment-order/:orderSn", ":version.Order/payment");
-
+    Route::post("payment-order", ":version.Order/payment");
+    //订单列表
+    Route::get("order-list/:type", ":version.Order/orderList");
+    //订单详情
+    Route::get("order-detail/:orderNo", ":version.Order/orderDetail");
+    //订单统计数据
+    Route::get("order-count", ":version.Order/orderCount");
 
 })->middleware(JwtAuthMiddleware::class)->json()->allowCrossDomain();
 
