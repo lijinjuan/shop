@@ -2,28 +2,60 @@
 
 namespace app\api\repositories;
 
+use app\common\model\UserAddressModel;
 use app\lib\exception\ParameterException;
+use think\facade\Db;
 
+/**
+ * \app\api\repositories\OrderRepositories
+ */
 class OrderRepositories extends AbstractRepositories
 {
-    public function placeOrder(int $addressID, array $goodsInfo)
+    /**
+     * @param int $addressID
+     * @param array $goodsInfo
+     * @param int $storeID
+     * @return \think\response\Json
+     * @throws ParameterException
+     */
+    public function placeOrder(int $addressID, array $goodsInfo, int $storeID = 0)
     {
         //{'goodsID':1,'skuID':2,'mumber':1},{'goodsID':1,'skuID':2,'mumber':1},
         $isValid = $this->servletFactory->userServ()->isValidAddress($addressID);
         if (!$isValid) {
             throw  new ParameterException();
         }
+        if ($storeID) {
+            if (!$this->checkStore($storeID)) {
+                throw  new ParameterException(['errMessage' => '店铺不存在...']);
+            }
+        }
         //检测商品
-        $this->checkGoods($goodsInfo);
+        $newGoodsInfo = $this->checkGoods($goodsInfo);
         //检测库存
         $this->checkStock($goodsInfo);
-
+        $orderSn = $this->makeOrderData($newGoodsInfo, $goodsInfo, $isValid, $storeID);
+        //计算店铺佣金，店铺入账记录
+        return renderResponse($orderSn);
 
     }
 
     /**
+     * @param int $storeID
+     * @return \app\common\model\StoresModel|array|mixed|\think\Model|null
+     * @throws ParameterException
+     */
+    protected function checkStore(int $storeID)
+    {
+        return $this->servletFactory->shopServ()->getShopInfoByShopID($storeID);
+    }
+
+    /**
      * @param array $goods
-     * @return array|void
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     protected function checkGoods(array $goods)
     {
@@ -39,24 +71,23 @@ class OrderRepositories extends AbstractRepositories
                 $newGoodsInfo[$item['id']] = $item;
             }
             foreach ($input_goodsIDs as $item) {
-                if ($goodsInfo) {
-                    if (!isset($newGoodsInfo[$item])) {
-                        throw new ParametersException(['errMessage' => '商品' . $item . '不存在...']);
-                    }
-                    if ($newGoodsInfo[$item]['status'] != 1) {
-                        throw new ParametersException(['errMessage' => '商品' . $item['id'] . '已下架...']);
-                    }
+                if (!isset($newGoodsInfo[$item])) {
+                    throw new ParametersException(['errMessage' => '商品' . $item . '不存在...']);
                 }
-
+                if ($newGoodsInfo[$item]['status'] != 1) {
+                    throw new ParametersException(['errMessage' => '商品' . $item['id'] . '已下架...']);
+                }
             }
         }
         return $goodsInfo;
     }
 
     /**
-     * 检测库存
+     * @param array $goods
      * @return bool
-     * @throws ParametersException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     protected function checkStock(array $goods)
     {
@@ -66,17 +97,105 @@ class OrderRepositories extends AbstractRepositories
         if (is_null($stocksInfo)) {
             throw new ParametersException(['errMessage' => '商品规格不存在...']);
         }
-        foreach ($input_skuIDs as $key => $item) {
-            if (!$stocksInfo->groupBy('id')->has(key: $key)) {
-                throw new ParametersException(errMessage: '商品规格' . $item . '不存在...');
+        $stocksInfo = $stocksInfo->toArray();
+        $newStockInfo = [];
+        if ($stocksInfo) {
+            foreach ($stocksInfo as $item) {
+                $newStockInfo[$item['id']] = $item;
             }
-        }
-        foreach ($stocksInfo as $item) {
-            if ($item->stock < 1 || $item->stock < $input_skuIDs[$item->id]) {
-                throw new ParametersException(errMessage: '商品' . $item->goodsID . '库存不足...');
+            foreach ($input_skuIDs as $key => $item) {
+                if (!isset($newStockInfo[$key])) {
+                    throw new ParametersException(['errMessage' => '商品规格' . $item . '不存在...']);
+                }
+                if ($newStockInfo[$key]['skuStock'] < 1 || $newStockInfo[$key]['skuStock'] < $item) {
+                    throw new ParametersException(['errMessage' => '商品' . $newStockInfo[$key]['goodsID'] . '库存不足...']);
+                }
             }
         }
         return true;
+    }
+
+    /**
+     * @param array $newGoodsInfo
+     * @param array $goodsInfo
+     * @param UserAddressModel $addressInfo
+     * @param int $storeID
+     * @return string
+     */
+    protected function makeOrderData(array $newGoodsInfo, array $goodsInfo, UserAddressModel $addressInfo, int $storeID)
+    {
+        $order_info = $par_goods_info = [];
+        $orderSn = $order_info['orderSn'] = makeOrderNo();
+        foreach ($newGoodsInfo as $item) {
+            if (!empty($item['goodsSku'])) {
+                $goodsSku = [];
+                foreach ($item['goodsSku'] as $item2) {
+                    $goodsSku[$item2['id']] = $item2;
+                }
+                $item['goodsSku'] = $goodsSku;
+            }
+            $par_goods_info[$item['id']] = $item;
+        }
+        //子订单信息
+        $trade_order_info = $this->makeGoodsOrder($goodsInfo, $par_goods_info, $orderSn);
+        //总订单信息
+        $order_info = $this->makeOrderInfo($orderSn, $trade_order_info, $addressInfo, $storeID);
+        Db::transaction(function () use ($order_info, $trade_order_info) {
+            $this->servletFactory->orderServ()->addOrder($order_info);
+            $this->servletFactory->orderDetailServ()->addOrder($trade_order_info);
+        });
+
+        return $orderSn;
+    }
+
+    /**
+     * @param array $goods
+     * @param array $par_goods_info
+     * @param string $orderSn
+     * @param int $storeID
+     * @return array
+     */
+    protected function makeGoodsOrder(array $goods, array $par_goods_info, string $orderSn, int $storeID = 0)
+    {
+        $goods_order_info = [];
+        foreach ($goods as $key2 => $val) {
+            $goods_order_info[$key2]['userID'] = app()->get('userProfile')->id;
+            $goods_order_info[$key2]['orderNo'] = $orderSn;
+            $goods_order_info[$key2]['tradeNo'] = time() . rand(10000, 99999);
+            $goods_order_info[$key2]['goodsID'] = $val['goodsID'];
+            $goods_order_info[$key2]['storeID'] = $storeID;
+            $goods_order_info[$key2]['skuID'] = $val['skuID'];
+            $goods_order_info[$key2]['goodsName'] = $par_goods_info[$val['goodsID']]['goodsName'];
+            $goods_order_info[$key2]['skuName'] = $par_goods_info[$val['goodsID']]['goodsSku'][$val['skuID']]['sku'];
+            $goods_order_info[$key2]['skuImage'] = $par_goods_info[$val['goodsID']]['goodsSku'][$val['skuID']]['skuImg'];
+            $goodsPrice = $par_goods_info[$val['goodsID']]['goodsSku'][$val['skuID']]['skuDiscountPrice'];
+            $goods_order_info[$key2]['goodsPrice'] = (string)$goodsPrice;
+            $goods_order_info[$key2]['goodsNum'] = $val['number'];
+            $goods_order_info[$key2]['goodsTotalPrice'] = bcmul($goodsPrice, (string)$val['number'], 2);
+        }
+        return $goods_order_info;
+    }
+
+    protected function makeOrderInfo(string $orderSn, array $orderInfo, UserAddressModel $addressInfo, int $storeID)
+    {
+        //总订单数据
+        $order_info['orderNo'] = $orderSn;
+        $order_info['userID'] = app()->get('userProfile')->id;
+        $order_info['storeID'] = $storeID;
+        $order_info['agentID'] = 'dd';
+        $order_info['agentAmount'] = '代理商';
+        $order_info['goodsTotalPrice'] = sprintf('%.2f', round(array_sum(array_column($orderInfo, 'goodsTotalPrice')), 2));
+        $order_info['orderStatus'] = 0;
+        $order_info['goodsNum'] = array_sum(array_column($orderInfo, 'goodsNum'));
+        $order_info['orderCommission'] = 0.00;
+        $order_info['userPayPrice'] = 0.00;
+        $order_info['userPayStyle'] = '';
+        $order_info['userPayAt'] = NULL;
+        $order_info['receivingID'] = (int)$addressInfo->id;
+        $order_info['receiver'] = $addressInfo->receiver;
+        $order_info['receiverMobile'] = $addressInfo->mobile;
+        $order_info['receiverAddress'] = $addressInfo->address;
+        return $order_info;
     }
 
 }

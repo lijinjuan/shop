@@ -94,4 +94,5 @@ class ShopRepositories extends AbstractRepositories
         $shopList = $this->servletFactory->shopServ()->searchShopListByKeywords($keywords);
         return renderPaginateResponse($shopList);
     }
+
 }

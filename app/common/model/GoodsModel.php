@@ -34,7 +34,7 @@ class GoodsModel extends Model
      */
     public function goodsSku()
     {
-        return $this->hasMany(GoodsSkuModel::class, 'goodsID', 'id');
+        return $this->hasMany(GoodsSkuModel::class, 'goodsID', 'id')->field(['id','goodsID','skuName','sku','skuImg','skuStock','saleAmount','skuDiscountPrice','skuPrice','createdAt']);
     }
 
 

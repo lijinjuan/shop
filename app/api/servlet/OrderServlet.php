@@ -20,6 +20,11 @@ class OrderServlet
         $this->ordersModel = $ordersModel;
     }
 
+    public function addOrder(array $orderData)
+    {
+        return $this->ordersModel->save($orderData);
+    }
+
 
 
 

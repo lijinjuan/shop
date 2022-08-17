@@ -89,6 +89,16 @@ Route::group(":version", function () {
 
 })->middleware(JwtAuthMiddleware::class)->json();
 
+//客户端订单相关模块
+Route::group(":version", function () {
+    // 下订单接口
+    Route::post("place-order", ":version.Order/placeOrder");
+    // 购买接口
+    Route::post("payment-order/:orderSn", ":version.Order/payment");
+
+
+})->middleware(JwtAuthMiddleware::class)->json();
+
 Route::group(":version", function () {
     // test token
     Route::post("test/token", ":version.Entry/testToken")->middleware(JwtAuthMiddleware::class);

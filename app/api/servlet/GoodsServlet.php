@@ -37,11 +37,14 @@ class GoodsServlet
     /**
      * @param array $goodsID
      * @param array $columns
-     * @return GoodsModel
+     * @return GoodsModel[]|array|\think\Collection
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     public function getGoodsListByGoodsID(array $goodsID, array $columns = ['*'])
     {
-        return $this->goodsModel->whereIn('id', $goodsID)->with(['goodsSku','store'])->field($columns);
+        return $this->goodsModel->whereIn('id', $goodsID)->with(['goodsSku'])->field($columns)->select();
     }
 
     /*
