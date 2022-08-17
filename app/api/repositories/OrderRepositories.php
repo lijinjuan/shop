@@ -6,6 +6,7 @@ use app\common\model\UserAddressModel;
 use app\lib\exception\ParameterException;
 use think\db\concern\Transaction;
 use think\facade\Db;
+use think\facade\Snowflake;
 
 /**
  * \app\api\repositories\OrderRepositories
@@ -162,7 +163,7 @@ class OrderRepositories extends AbstractRepositories
         foreach ($goods as $key2 => $val) {
             $goods_order_info[$key2]['userID'] = app()->get('userProfile')->id;
             $goods_order_info[$key2]['orderNo'] = $orderSn;
-            $goods_order_info[$key2]['tradeNo'] = time() . rand(10000, 99999);
+            $goods_order_info[$key2]['tradeNo'] = Snowflake::generate();
             $goods_order_info[$key2]['goodsID'] = $val['goodsID'];
             $goods_order_info[$key2]['storeID'] = $storeID;
             $goods_order_info[$key2]['skuID'] = $val['skuID'];
@@ -282,7 +283,7 @@ class OrderRepositories extends AbstractRepositories
             5 => [6, 7],
             6 => 6,
             7 => 7,
-            default => [0,1,2,3]
+            default => [0, 1, 2, 3]
         };
         return renderResponse($this->servletFactory->orderServ()->orderList($status));
     }
@@ -307,6 +308,47 @@ class OrderRepositories extends AbstractRepositories
     public function orderDetail(string $orderNo)
     {
         return renderResponse($this->servletFactory->orderServ()->orderDetail($orderNo));
+    }
+
+
+    /**
+     * @param array $refundData
+     * @return \think\response\Json
+     */
+    public function orderRefund(array $refundData)
+    {
+        //这块有问题
+//        $detail = $this->servletFactory->orderDetailServ()->getDetailByID($refundData['orderID']);
+//        if (!empty($detail)){
+//            throw new ParameterException(['errMessage'=>'订单不存在...']);
+//        }
+        $refundData['userID'] = app()->get('userProfile')->id;
+        $this->servletFactory->refundServ()->addRefund(array_filter($refundData));
+        return renderResponse();
+    }
+
+    /**
+     * @return \think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function storeOrderList(int $type)
+    {
+        //0->用户未支付 1->商家待进货（商家待付款）2->待发货 3->待收货 4->已收货 5->已完成 6->退款中 7->已退款
+        if (!in_array($type, [0, 1, 2, 3, 4, 5])) {
+            $type = 1;
+        }
+        return renderResponse($this->servletFactory->orderServ()->storeOrderList($type - 1));
+    }
+
+    /**
+     * @return \think\response\Json
+     * @throws \think\db\exception\DbException
+     */
+    public function storeOrderCount()
+    {
+        return renderResponse($this->servletFactory->orderServ()->storeOrderCount());
     }
 
 

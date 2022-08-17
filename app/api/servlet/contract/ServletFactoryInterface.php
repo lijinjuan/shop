@@ -10,6 +10,7 @@ use app\api\servlet\GoodsServlet;
 use app\api\servlet\GoodsSkuServlet;
 use app\api\servlet\OrderDetailServlet;
 use app\api\servlet\OrderServlet;
+use app\api\servlet\RefundServlet;
 use app\api\servlet\ShopServlet;
 use app\api\servlet\UserAddressServlet;
 use app\api\servlet\UsersServlet;
@@ -91,6 +92,11 @@ interface ServletFactoryInterface
      * @return \app\api\servlet\CommissionConfigServlet
      */
     public function commissionServ(): CommissionConfigServlet;
+
+    /**
+     * @return RefundServlet
+     */
+    public function refundServ():RefundServlet;
 
 
 }
