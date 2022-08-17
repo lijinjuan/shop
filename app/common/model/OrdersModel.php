@@ -2,10 +2,16 @@
 
 namespace app\common\model;
 
+use think\helper\Str;
 use think\Model;
 
 class OrdersModel extends Model
 {
+    /**
+     * @var string
+     */
+    protected $pk = "orderNo";
+
     /**
      * @var string
      */
@@ -26,8 +32,17 @@ class OrdersModel extends Model
      */
     protected $autoWriteTimestamp = "timestamp";
 
+    protected function getForeignKey(string $name): string
+    {
+        if (strpos($name, '\\')) {
+            $name = class_basename($name);
+        }
+
+        return Str::snake($name) . '_orderNo';
+    }
+
     /**
-     * @return mixed
+     * @return \think\model\relation\BelongsToMany
      */
     public function goodsSku()
     {
@@ -39,8 +54,9 @@ class OrdersModel extends Model
      */
     public function goodsDetail()
     {
-        return $this->hasMany(OrdersDetailModel::class, 'orderSn', 'orderSn');
+        return $this->hasMany(OrdersDetailModel::class, 'orderNo', 'orderNo');
     }
+
 
 
 

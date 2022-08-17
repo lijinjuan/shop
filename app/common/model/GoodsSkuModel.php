@@ -32,4 +32,13 @@ class GoodsSkuModel extends Model
      */
     protected $autoWriteTimestamp = "timestamp";
 
+
+    /**
+     * @return \think\model\relation\BelongsTo
+     */
+    public function goods(): \think\model\relation\BelongsTo
+    {
+        return $this->belongsTo(GoodsModel::class, 'goodsID', 'id');
+    }
+
 }

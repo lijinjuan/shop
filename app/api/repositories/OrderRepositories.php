@@ -142,8 +142,8 @@ class OrderRepositories extends AbstractRepositories
         //总订单信息
         $order_info = $this->makeOrderInfo($orderSn, $trade_order_info, $addressInfo, $storeID);
         Db::transaction(function () use ($order_info, $trade_order_info) {
-            $this->servletFactory->orderServ()->addOrder($order_info);
-            $this->servletFactory->orderDetailServ()->addOrder($trade_order_info);
+            $orderModel = $this->servletFactory->orderServ()->addOrder($order_info);
+            $orderModel->goodsDetail()->saveAll($trade_order_info);
         });
 
         return $orderSn;
@@ -201,14 +201,13 @@ class OrderRepositories extends AbstractRepositories
 
     /**
      * @param string $orderSn
-     * @param float $userPayPrice
      * @return \think\response\Json
      * @throws ParameterException
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function payment(string $orderSn, float $userPayPrice)
+    public function payment(string $orderSn)
     {
         $order = $this->servletFactory->orderServ()->getOrderDetailByID($orderSn);
         if (is_null($order)) {
@@ -220,24 +219,23 @@ class OrderRepositories extends AbstractRepositories
         if ($order->userID != app()->get('userProfile')->id) {
             throw new ParameterException(['errMessage' => '不能支付别人的订单...']);
         }
-        if ($order->goodsTotalPrice != $userPayPrice) {
-            throw new ParameterException(['errMessage' => '支付金额错误，请核对之后重新支付...']);
-        }
-        if (app()->get('userProfile')->balance < $userPayPrice) {
+        if (app()->get('userProfile')->balance < $order->goodsTotalPrice) {
             throw new ParameterException(['errMessage' => '账户余额不足支付失败...']);
         }
-        Db::transaction(function () use ($orderSn, $userPayPrice, $order) {
-            $this->servletFactory->userServ()->updateUserInfoByID(app()->get('userProfile')->id, ['balance' => bcsub(app()->get('userProfile')->balance - $userPayPrice, 2)]);
+        Db::transaction(function () use ($orderSn, $order) {
+            $this->servletFactory->userServ()->updateUserInfoByID(app()->get('userProfile')->id, ['balance' => bcsub(app()->get('userProfile')->balance - $order->goodsTotalPrice, 2)]);
             $commission = $this->servletFactory->commissionServ()->getCommissionByType(2);
             $goodsCommission = json_decode($commission->content, true);
             $goodsCommission = $goodsCommission['goodsCommission'];
             $updateData = [
-                'userPayPrice' => $userPayPrice,
+                'userPayPrice' => $order->goodsTotalPrice,
                 'orderStatus' => 1,
-                'orderCommission' => $order->storeID ?? sprintf('%.2f', round($order->goodsTotalPrice * ($goodsCommission / 100), 2))
+                'orderCommission' => $order->storeID ?? sprintf('%.2f', round($order->goodsTotalPrice * ($goodsCommission / 100), 2)),
+                'userPayAt' => date('Y-m-d H:i:s'),
+                'userPayStyle' => '余额支付',
             ];
             $order::update($updateData, ['id' => $order->id]);
-            $order->goodsDetail()->update(['status' => 1]);
+            $order->goodsDetail()->where('orderNo', $order->orderNo)->update(['status' => 1]);
             //减库存 增销量
             $order->goodsSku?->each($this->addSalesAmount());
             $order->save();
@@ -251,11 +249,11 @@ class OrderRepositories extends AbstractRepositories
      */
     protected function calculateSalesAmount($goodsSku)
     {
-        $goodsSku->stock -= $goodsSku->pivot->goodsNum;
-        $goodsSku->goods->stock -= $goodsSku->pivot->goodsNum;
-        $goodsSku->salesAmount += $goodsSku->pivot->goodsNum;
-        $goodsSku->goods->salesAmount += $goodsSku->pivot->goodsNum;
-        return $goodsSku->push();
+        $goodsSku->skuStock -= $goodsSku->pivot->goodsNum;
+        $goodsSku->goods->goodsStock -= $goodsSku->pivot->goodsNum;
+        $goodsSku->saleAmount += $goodsSku->pivot->goodsNum;
+        $goodsSku->goods->goodsSalesAmount += $goodsSku->pivot->goodsNum;
+        return $goodsSku->save();
     }
 
     /**
@@ -264,6 +262,51 @@ class OrderRepositories extends AbstractRepositories
     protected function addSalesAmount()
     {
         return fn($goodsSku) => $this->calculateSalesAmount($goodsSku);
+    }
+
+    /**
+     * @param int $type
+     * @return \think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function orderList(int $type)
+    {
+        //0->用户未支付 1->商家待进货（商家待付款）2->待发货 3->待收货 4->已收货 5->已完成 6->退款中 7->已退款
+        $status = match ($type) {
+            1 => 0,
+            2 => [1, 2],
+            3 => 3,
+            4 => 4,
+            5 => [6, 7],
+            6 => 6,
+            7 => 7,
+            default => [0,1,2,3]
+        };
+        return renderResponse($this->servletFactory->orderServ()->orderList($status));
+    }
+
+    /**
+     * @return \think\response\Json
+     * @throws \think\db\exception\DbException
+     */
+    public function orderCount()
+    {
+        return renderResponse($this->servletFactory->orderServ()->orderCount());
+    }
+
+    /**
+     * @param string $orderNo
+     * @return \think\response\Json
+     * @throws ParameterException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function orderDetail(string $orderNo)
+    {
+        return renderResponse($this->servletFactory->orderServ()->orderDetail($orderNo));
     }
 
 
