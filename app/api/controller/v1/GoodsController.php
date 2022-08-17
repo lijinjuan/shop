@@ -67,9 +67,10 @@ class GoodsController
      * @param int $categoryID
      * @return \think\response\Json
      */
-    public function getGoodsListByCategoryID(int $categoryID)
+    public function getGoodsListByCategoryID(int $categoryID, Request $request)
     {
-        return $this->goodsRepositories->getGoodsListByCategoryID($categoryID);
+        $keywords = (string)$request->param("keywords", "");
+        return $this->goodsRepositories->getGoodsListByCategoryID($categoryID,$keywords);
     }
 
     /**

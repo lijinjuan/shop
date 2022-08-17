@@ -35,6 +35,7 @@ class ShopRepositories extends AbstractRepositories
      */
     public function apply2OpenStore(array $shopInfo)
     {
+        // 判断inviteCode 是否存在
         $this->servletFactory->shopServ()->apply2CreateStore($shopInfo);
         return renderResponse();
     }

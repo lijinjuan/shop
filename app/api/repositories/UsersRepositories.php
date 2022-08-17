@@ -47,19 +47,21 @@ class UsersRepositories extends AbstractRepositories
     protected function getLaunch2UserProfile(UsersModel $userModel)
     {
         $accessToken = JWTAuth::builder(["userID" => (int)$userModel->getAttr("id")]);
-        return renderResponse($this->getUserProfileByUserID($userModel, $accessToken));
+        $creditScore = ($userModel->isStore != 0) ? $userModel->store->creditScore : 0;
+        return renderResponse($this->getUserProfileByUserID($userModel, $accessToken, $creditScore));
     }
 
     /**
      * getUserProfileByUserID
-     * @param Model $user
+     * @param \think\Model $userModel
      * @param string $accessToken
+     * @param int $creditScore
      * @return mixed
      */
-    protected function getUserProfileByUserID(Model $userModel, string $accessToken)
+    protected function getUserProfileByUserID(Model $userModel, string $accessToken, int $creditScore)
     {
-        return new class($userModel->hidden(["password", "createdAt", "updatedAt", "deletedAt"]), $accessToken) {
-            public function __construct(public Model $userProfile, public string $accessToken)
+        return new class($userModel->hidden(["password", "createdAt", "updatedAt", "deletedAt", "store"]), $accessToken, $creditScore) {
+            public function __construct(public Model $userProfile, public string $accessToken, public int $creditScore)
             {
             }
         };
@@ -79,16 +81,12 @@ class UsersRepositories extends AbstractRepositories
     /**
      * alterUserPassword
      * @param string $loginPassword
-     * @param string $rePassword
+     * @param string $payPassword
      * @param string $emailCode
      */
-    public function alterUserPassword(string $loginPassword, string $rePassword, string $emailCode)
+    public function alterUserPassword(string $loginPassword, string $payPassword, string $emailCode)
     {
-        if ($loginPassword != $rePassword) {
-            throw new ParameterException(["errMessage" => "前后两次密码不一致..."]);
-        }
-
-        $this->servletFactory->userServ()->alterUserPassword($loginPassword);
+        $this->servletFactory->userServ()->alterUserPassword($loginPassword, $payPassword);
         return renderResponse();
     }
 }

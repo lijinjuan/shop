@@ -5,6 +5,9 @@ namespace app\common\model;
 use think\helper\Str;
 use think\Model;
 
+/**
+ * \app\common\model\OrdersModel
+ */
 class OrdersModel extends Model
 {
     /**

@@ -62,4 +62,16 @@ class UserAddressRepositories extends AbstractRepositories
         $address = $this->servletFactory->userServ()->getUserAddressByAddressID($addressID);
         return renderResponse($address);
     }
+
+    /**
+     * setUserAddressByDefault
+     * @param int $addressID
+     * @param int $isDefault
+     * @return \think\response\Json
+     */
+    public function setUserAddressByDefault(int $addressID, int $isDefault)
+    {
+        $this->servletFactory->userServ()->setUserAddressByDefault($addressID, $isDefault);
+        return renderResponse();
+    }
 }

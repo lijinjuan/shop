@@ -43,6 +43,18 @@ class UserAddressController
     }
 
     /**
+     * setUserAddressByDefault
+     * @param int $addressID
+     * @param \think\Request $request
+     * @return \think\response\Json
+     */
+    public function setUserAddressByDefault(int $addressID, Request $request)
+    {
+        $isDefault = (int)$request->param("isDefault", 0);
+        return $this->userAddressRepositories->setUserAddressByDefault($addressID, $isDefault);
+    }
+
+    /**
      * createUserAddress
      * @param \think\Request $request
      * @return \think\response\Json

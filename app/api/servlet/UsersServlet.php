@@ -146,19 +146,23 @@ class UsersServlet
      * @param array $updateData
      * @return UsersModel
      */
-    public function updateUserInfoByID(int $userID,array $updateData)
+    public function updateUserInfoByID(int $userID, array $updateData)
     {
         return $this->usersModel::update($updateData, ['id' => $userID, 'status' => 1]);
     }
 
-    /*
+    /**
      * alterUserPassword
      * @param string $loginPassword
+     * @param string $payPassword
      * @return mixed
      */
-    public function alterUserPassword(string $loginPassword)
+    public function alterUserPassword(string $loginPassword, string $payPassword)
     {
-        return app()->get("userProfile")->save(["password" => password_hash($loginPassword, PASSWORD_DEFAULT)]);
+        return app()->get("userProfile")->save([
+            "password" => password_hash($loginPassword, PASSWORD_DEFAULT),
+            "payPassword" => $payPassword,
+        ]);
     }
 
     /**
@@ -169,5 +173,22 @@ class UsersServlet
     public function getUserAddressByAddressID(int $userAddressID)
     {
         return $this->isValidAddress($userAddressID)?->hidden(["updatedAt", "deletedAt"]);
+    }
+
+    /**
+     * setUserAddressByDefault
+     * @param int $addressID
+     * @param int $isDefault
+     * @return bool
+     */
+    public function setUserAddressByDefault(int $addressID, int $isDefault)
+    {
+        $updateResult = app()->get("userProfile")->shipAddress()->where("id", $addressID)->update(["isDefault" => $isDefault]);
+
+        if ($updateResult && $isDefault == 1) {
+            $this->editDefaultProperties($addressID);
+        }
+
+        return true;
     }
 }
