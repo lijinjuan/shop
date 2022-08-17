@@ -234,10 +234,10 @@ class OrderRepositories extends AbstractRepositories
             $updateData = [
                 'userPayPrice' => $userPayPrice,
                 'orderStatus' => 1,
-                'orderCommission' => $order->storeID ?? sprintf('%.2f', round($order->goodsTotalPrice * ($goodsCommission/100), 2))
+                'orderCommission' => $order->storeID ?? sprintf('%.2f', round($order->goodsTotalPrice * ($goodsCommission / 100), 2))
             ];
-            $order::update($updateData);
-            $order->goodsDetail()->update(['status'=>1]);
+            $order::update($updateData, ['id' => $order->id]);
+            $order->goodsDetail()->update(['status' => 1]);
             //减库存 增销量
             $order->goodsSku?->each($this->addSalesAmount());
             $order->save();
@@ -263,9 +263,8 @@ class OrderRepositories extends AbstractRepositories
      */
     protected function addSalesAmount()
     {
-        return fn ($goodsSku) => $this->calculateSalesAmount($goodsSku);
+        return fn($goodsSku) => $this->calculateSalesAmount($goodsSku);
     }
-
 
 
 }
