@@ -96,9 +96,7 @@ Route::group(":version", function () {
     // 下订单接口
     Route::post("place-order", ":version.Order/placeOrder");
     // 购买接口
-    Route::post("payment-order/:orderSn", ":version.Order/payment");
-
-
+    Route::post("payment-order", ":version.Order/payment");
 })->middleware(JwtAuthMiddleware::class)->json()->allowCrossDomain();
 
 Route::group(":version", function () {
