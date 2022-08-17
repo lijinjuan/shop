@@ -7,10 +7,12 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'think\\trace\\' => array($vendorDir . '/topthink/think-trace/src'),
+    'think\\facade\\' => array($vendorDir . '/hardphp/thinkphp-snowflake/src/facade'),
     'think\\app\\' => array($vendorDir . '/topthink/think-multi-app/src'),
     'think\\annotation\\' => array($vendorDir . '/topthink/think-annotation/src'),
-    'think\\' => array($vendorDir . '/topthink/framework/src/think', $vendorDir . '/topthink/think-helper/src', $vendorDir . '/topthink/think-orm/src'),
+    'think\\' => array($vendorDir . '/topthink/framework/src/think', $vendorDir . '/topthink/think-helper/src', $vendorDir . '/topthink/think-orm/src', $vendorDir . '/topthink/think-factory/src'),
     'thans\\jwt\\' => array($vendorDir . '/thans/tp-jwt-auth/src'),
+    'hardphp\\snowflake\\' => array($vendorDir . '/hardphp/thinkphp-snowflake/src'),
     'app\\' => array($baseDir . '/app'),
     'Symfony\\Polyfill\\Php80\\' => array($vendorDir . '/symfony/polyfill-php80'),
     'Symfony\\Polyfill\\Php72\\' => array($vendorDir . '/symfony/polyfill-php72'),

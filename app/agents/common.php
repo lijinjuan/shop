@@ -1,6 +1,7 @@
 <?php
 // 这是系统自动生成的公共文件
 
+use think\facade\Snowflake;
 use think\Paginator;
 
 if (!function_exists("renderResponse")) {
@@ -47,5 +48,12 @@ if (!function_exists("assertTreeDatum")) {
             }
         }
         return $treeDatum;
+    }
+}
+
+if (!function_exists("makeSubOrderSn")) {
+    function makeSubOrderSn(): string
+    {
+        return (string)time() . (string)Snowflake::generate();
     }
 }

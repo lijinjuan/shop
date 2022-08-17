@@ -236,10 +236,10 @@ class OrderRepositories extends AbstractRepositories
      */
     protected function calculateSalesAmount($goodsSku)
     {
-        $goodsSku->stock -= $goodsSku->pivot->skuStock;
-        $goodsSku->goods->stock -= $goodsSku->pivot->skuStock;
-        $goodsSku->salesAmount += $goodsSku->pivot->saleAmount;
-        $goodsSku->goods->salesAmount += $goodsSku->pivot->saleAmount;
+        $goodsSku->stock -= $goodsSku->pivot->goodsNum;
+        $goodsSku->goods->stock -= $goodsSku->pivot->goodsNum;
+        $goodsSku->salesAmount += $goodsSku->pivot->goodsNum;
+        $goodsSku->goods->salesAmount += $goodsSku->pivot->goodsNum;
         return $goodsSku->push();
     }
 

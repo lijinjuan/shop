@@ -4,8 +4,61 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dc45445ef7d4dc371d6ba3b372f89af6",
+    "content-hash": "a467bb151598566bfec78a1198c8ece3",
     "packages": [
+        {
+            "name": "hardphp/thinkphp-snowflake",
+            "version": "0.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hardphp/thinkphp-snowflake.git",
+                "reference": "8c5b7634c7dd34b5ef40931d5a3abadf76eb6717"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hardphp/thinkphp-snowflake/zipball/8c5b7634c7dd34b5ef40931d5a3abadf76eb6717",
+                "reference": "8c5b7634c7dd34b5ef40931d5a3abadf76eb6717",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "php": ">=7.1.0",
+                "topthink/framework": "^6.0.0",
+                "topthink/think-factory": "^1.0.0"
+            },
+            "type": "library",
+            "extra": {
+                "think": {
+                    "services": [
+                        "hardphp\\snowflake\\Service"
+                    ],
+                    "config": {
+                        "snowflake": "src/config.php"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "think\\facade\\": "src/facade/",
+                    "hardphp\\snowflake\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "thinkphp6.0 snowflake,使用snowflake算法生成全局唯一且趋势递增的ID",
+            "support": {
+                "issues": "https://github.com/hardphp/thinkphp-snowflake/issues",
+                "source": "https://github.com/hardphp/thinkphp-snowflake/tree/master"
+            },
+            "time": "2020-01-03T12:13:04+00:00"
+        },
         {
             "name": "league/flysystem",
             "version": "1.1.9",
@@ -828,6 +881,53 @@
                 "source": "https://github.com/top-think/think-annotation/tree/v2.0.1"
             },
             "time": "2021-05-14T15:01:47+00:00"
+        },
+        {
+            "name": "topthink/think-factory",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/top-think/think-factory.git",
+                "reference": "b8080a6472aae1cff47ceb8c30feec3c2835364b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/top-think/think-factory/zipball/b8080a6472aae1cff47ceb8c30feec3c2835364b",
+                "reference": "b8080a6472aae1cff47ceb8c30feec3c2835364b",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "topthink/framework": "^6.0.0",
+                "topthink/think-helper": "^3.0.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "think\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "yunwuxin",
+                    "email": "448901948@qq.com"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/top-think/think-factory/issues",
+                "source": "https://github.com/top-think/think-factory/tree/v1.0.1"
+            },
+            "abandoned": true,
+            "time": "2019-04-15T06:55:28+00:00"
         },
         {
             "name": "topthink/think-helper",

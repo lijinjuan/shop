@@ -4,12 +4,14 @@ use app\api\middleware\JwtAuthMiddleware;
 use think\facade\Route;
 
 // 登录
-Route::post(":version/launch", ":version.Entry/userLaunch")->json();
+Route::post(":version/launch", ":version.Entry/userLaunch")->json()->allowCrossDomain();
 // 注册
-Route::post(":version/register", ":version.Entry/registerNewUser")->json();
+Route::post(":version/register", ":version.Entry/registerNewUser")->json()->allowCrossDomain();
 
 // 用户收货地址的管理
 Route::group(":version", function () {
+    // 用户修改密码
+    Route::post("alter-password", ":version.Entry/alterUserPassword");
     // 获取用户收货地址的接口
     Route::get("ship-address", ":version.UserAddress/getUserAddressListByToken");
     // 新增用户收货地址的接口
@@ -19,7 +21,7 @@ Route::group(":version", function () {
     // 删除用户收货地址的接口
     Route::delete("del-ship-address/:addressID", ":version.UserAddress/deleteUserAddress");
 
-})->middleware(JwtAuthMiddleware::class)->json();
+})->middleware(JwtAuthMiddleware::class)->json()->allowCrossDomain();
 
 // 客户端首页接口
 Route::group(":version", function () {
@@ -54,7 +56,7 @@ Route::group(":version", function () {
     // 获取优品推荐的商品列表的接口
     Route::get("excellent-goods-list", ":version.Goods/getGoodsListByExcellent");
 
-})->json();
+})->json()->allowCrossDomain();
 
 
 // 客户端店铺接口
@@ -70,7 +72,7 @@ Route::group(":version", function () {
     // 获取所有的商品列表的接口
     Route::get("goods", ":version.Goods/getPlatformGoods");
 
-})->middleware(JwtAuthMiddleware::class)->json();
+})->middleware(JwtAuthMiddleware::class)->json()->allowCrossDomain();
 
 //客户端购物车接口
 Route::group(":version", function () {
@@ -85,7 +87,7 @@ Route::group(":version", function () {
     //获取我的购物车的数量
     Route::get("count-shopping-cart", ":version.ShoppingCart/countCart");
 
-})->middleware(JwtAuthMiddleware::class)->json();
+})->middleware(JwtAuthMiddleware::class)->json()->allowCrossDomain();
 
 //客户端订单相关模块
 Route::group(":version", function () {
@@ -95,7 +97,7 @@ Route::group(":version", function () {
     Route::post("payment-order/:orderSn", ":version.Order/payment");
 
 
-})->middleware(JwtAuthMiddleware::class)->json();
+})->middleware(JwtAuthMiddleware::class)->json()->allowCrossDomain();
 
 Route::group(":version", function () {
     // test token

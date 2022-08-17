@@ -2,9 +2,8 @@
 
 namespace app\agents\controller\v1;
 
-
+use think\facade\Snowflake;
 use think\Request;
-use think\Response;
 
 /**
  * \app\agents\controller\v1\EntryController
@@ -12,14 +11,13 @@ use think\Response;
 class EntryController
 {
 
-
     /**
      * userLaunch
-     * @return \think\Response
+     * @param \think\Request $request
+     * @return string
      */
-    public function userLaunch(Request $request): Response
+    public function userLaunch(Request $request)
     {
-
+        return Snowflake::generate();
     }
-
 }

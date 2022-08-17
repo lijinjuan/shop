@@ -31,7 +31,7 @@ class UsersServlet
      */
     public function createNewUser(array $userProfile): UsersModel
     {
-        return $this->usersModel::create($userProfile, ["userName", "email", "userAvatar", "balance", "password", "isStore"]);
+        return $this->usersModel::create($userProfile, ["userName", "email", "payPassword", "userAvatar", "balance", "password", "isStore"]);
     }
 
     /**
@@ -148,7 +148,17 @@ class UsersServlet
      */
     public function updateUserInfoByID(int $userID,array $updateData)
     {
-        return $this->usersModel::update($updateData,['userID'=>$userID,'status'=>1]);
+        return $this->usersModel::update($updateData, ['userID' => $userID, 'status' => 1]);
+    }
+
+    /*
+     * alterUserPassword
+     * @param string $loginPassword
+     * @return mixed
+     */
+    public function alterUserPassword(string $loginPassword)
+    {
+        return app()->get("userProfile")->save(["password" => password_hash($loginPassword, PASSWORD_DEFAULT)]);
     }
 
 }

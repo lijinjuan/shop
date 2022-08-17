@@ -45,7 +45,20 @@ class EntryController
     public function registerNewUser(Request $request)
     {
         (new UsersValidate())->goCheck();
-        $userProfile = $request->only(["email", "password"]);
+        $userProfile = $request->only(["email", "password", "payPassword"]);
         return $this->usersRepositories->registerNewUser($userProfile);
+    }
+
+    /**
+     * alterUserPassword
+     * @param \think\Request $request
+     * @return mixed
+     */
+    public function alterUserPassword(Request $request)
+    {
+        $loginPassword = $request->param("inputPassword");
+        $rePassword = $request->param("rePassword");
+        $emailCode = $request->param("emailCode");
+        return $this->usersRepositories->alterUserPassword($loginPassword, $rePassword, $emailCode);
     }
 }

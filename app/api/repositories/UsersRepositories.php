@@ -75,4 +75,20 @@ class UsersRepositories extends AbstractRepositories
     {
         return password_verify($input, $origin);
     }
+
+    /**
+     * alterUserPassword
+     * @param string $loginPassword
+     * @param string $rePassword
+     * @param string $emailCode
+     */
+    public function alterUserPassword(string $loginPassword, string $rePassword, string $emailCode)
+    {
+        if ($loginPassword != $rePassword) {
+            throw new ParameterException(["errMessage" => "前后两次密码不一致..."]);
+        }
+
+        $this->servletFactory->userServ()->alterUserPassword($loginPassword);
+        return renderResponse();
+    }
 }
