@@ -77,7 +77,7 @@ class ServletFactory implements ServletFactoryInterface
      */
     public function goodsSkuServ(): GoodsSkuServlet
     {
-       return invoke(GoodsSkuServlet::class);
+        return invoke(GoodsSkuServlet::class);
     }
 
     /*
@@ -95,6 +95,15 @@ class ServletFactory implements ServletFactoryInterface
     public function orderDetailServ(): OrderDetailServlet
     {
         return invoke(OrderDetailServlet::class);
+    }
+
+    /**
+     * userAddressServ
+     * @return \app\api\servlet\UserAddressServlet
+     */
+    public function userAddressServ(): UserAddressServlet
+    {
+        return invoke(UserAddressServlet::class);
     }
 
 }

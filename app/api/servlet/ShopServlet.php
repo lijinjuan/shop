@@ -84,7 +84,7 @@ class ShopServlet
 
         return $storeModel->goods()->where("s_goods.status", 1)
             ->field(["s_goods.id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "commission", "goodsSalesAmount", "s_goods.createdAt"])
-            ->hidden(["pivot", "updatedAt", "deletedAt", "brandID", "goodsContent", "goodsStock", "isRank", "isNew", "isItem"])->paginate();
+            ->hidden(["pivot", "updatedAt", "deletedAt", "brandID", "goodsContent", "goodsStock", "isRank", "isNew", "isItem"])->paginate((int)request()->param("pageSize"));
     }
 
     /**
@@ -102,7 +102,7 @@ class ShopServlet
      */
     public function getStore2List()
     {
-        return $this->storesModel->field(["id", "storeName", "storeLogo", "storeDesc", "createdAt"])->order("createdAt", "desc")->paginate();
+        return $this->storesModel->field(["id", "storeName", "storeLogo", "storeDesc", "createdAt"])->order("createdAt", "desc")->paginate((int)request()->param("pageSize"));
     }
 
     /**
@@ -121,7 +121,7 @@ class ShopServlet
      */
     public function searchShopListByKeywords(string $keywords)
     {
-        return $this->storesModel->whereLike("storeName", "%$keywords%")->field(["id", "storeName", "storeLogo", "storeDesc", "createdAt"])->order("createdAt", "desc")->paginate();
+        return $this->storesModel->whereLike("storeName", "%$keywords%")->field(["id", "storeName", "storeLogo", "storeDesc", "createdAt"])->order("createdAt", "desc")->paginate((int)request()->param("pageSize"));
     }
 
 }

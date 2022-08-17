@@ -53,7 +53,7 @@ class GoodsServlet
      */
     public function getPlatformGoodsList()
     {
-        return $this->goodsModel->field(["id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "commission", "goodsSalesAmount", "createdAt"])->order("goodsSalesAmount", "desc")->paginate();
+        return $this->goodsModel->field(["id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "commission", "goodsSalesAmount", "createdAt"])->order("goodsSalesAmount", "desc")->paginate((int)request()->param("pageSize", 20));
     }
 
     /**
@@ -76,7 +76,7 @@ class GoodsServlet
      */
     public function getGoodsListByGoodsRecommend(array $order)
     {
-        return $this->goodsModel->where("status", 1)->where("isRecommend", 1)->field(["id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "commission", "goodsSalesAmount", "createdAt"])->order($order)->paginate();
+        return $this->goodsModel->where("status", 1)->where("isRecommend", 1)->field(["id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "commission", "goodsSalesAmount", "createdAt"])->order($order)->paginate((int)request()->param("pageSize"));
     }
 
     /**
@@ -96,7 +96,7 @@ class GoodsServlet
      */
     public function getGoodsListByCategoryID(int $categoryID)
     {
-        return $this->goodsModel->where("status", 1)->where("categoryID", $categoryID)->field(["id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "commission", "goodsSalesAmount", "createdAt"])->order("goodsSalesAmount", "desc")->paginate();
+        return $this->goodsModel->where("status", 1)->where("categoryID", $categoryID)->field(["id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "commission", "goodsSalesAmount", "createdAt"])->order("goodsSalesAmount", "desc")->paginate((int)request()->param("pageSize"));
     }
 
     /**
@@ -106,7 +106,7 @@ class GoodsServlet
      */
     public function searchGoodsListByKeyWords(string $keywords)
     {
-        return $this->goodsModel->where("status", 1)->whereLike("goodsName", "%$keywords%")->field(["id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "commission", "goodsSalesAmount", "createdAt"])->order("goodsSalesAmount", "desc")->paginate();
+        return $this->goodsModel->where("status", 1)->whereLike("goodsName", "%$keywords%")->field(["id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "commission", "goodsSalesAmount", "createdAt"])->order("goodsSalesAmount", "desc")->paginate((int)request()->param("pageSize"));
     }
 
     /**
@@ -116,7 +116,7 @@ class GoodsServlet
      */
     public function getGoodsListByCategoryIDs(array $categories)
     {
-        return $this->goodsModel->whereIn("id", $categories)->where("status", 1)->field(["id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "commission", "goodsSalesAmount", "createdAt"])->order("goodsSalesAmount", "desc")->paginate();
+        return $this->goodsModel->whereIn("id", $categories)->where("status", 1)->field(["id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "commission", "goodsSalesAmount", "createdAt"])->order("goodsSalesAmount", "desc")->paginate((int)request()->param("pageSize"));
     }
 
     /**

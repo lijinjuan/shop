@@ -57,7 +57,7 @@ class UsersServlet
      */
     public function getUserAddressList()
     {
-        return app()->get("userProfile")->shipAddress()->field(["id", "receiver", "mobile", "address", "postCode", "isDefault", "createdAt"])->order("isDefault", "desc")->paginate();
+        return app()->get("userProfile")->shipAddress()->field(["id", "receiver", "mobile", "address", "postCode", "isDefault", "createdAt"])->order("isDefault", "desc")->paginate((int)request()->param("pageSize"));
     }
 
     /**
@@ -151,4 +151,13 @@ class UsersServlet
         return app()->get("userProfile")->save(["password" => password_hash($loginPassword, PASSWORD_DEFAULT)]);
     }
 
+    /**
+     * getUserAddressByAddressID
+     * @param int $userAddressID
+     * @return \app\common\model\UserAddressModel|array|mixed|\think\Model|null
+     */
+    public function getUserAddressByAddressID(int $userAddressID)
+    {
+        return $this->isValidAddress($userAddressID)?->hidden(["updatedAt", "deletedAt"]);
+    }
 }

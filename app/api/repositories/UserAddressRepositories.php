@@ -51,4 +51,15 @@ class UserAddressRepositories extends AbstractRepositories
         $this->servletFactory->userServ()->deleteUserAddress($addressID);
         return renderResponse();
     }
+
+    /**
+     * getUserAddressByAddressID
+     * @param int $addressID
+     * @return \think\response\Json
+     */
+    public function getUserAddressByAddressID(int $addressID)
+    {
+        $address = $this->servletFactory->userServ()->getUserAddressByAddressID($addressID);
+        return renderResponse($address);
+    }
 }

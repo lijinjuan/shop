@@ -14,6 +14,8 @@ Route::group(":version", function () {
     Route::post("alter-password", ":version.Entry/alterUserPassword");
     // 获取用户收货地址的接口
     Route::get("ship-address", ":version.UserAddress/getUserAddressListByToken");
+    // 获取用户的单个收货地址的接口
+    Route::get("get-ship-address/:addressID", ":version.UserAddress/getUserAddressByAddressID");
     // 新增用户收货地址的接口
     Route::post("add-ship-address", ":version.UserAddress/createUserAddress");
     // 编辑用户收货地址的接口

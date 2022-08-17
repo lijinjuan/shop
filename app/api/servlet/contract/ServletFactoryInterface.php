@@ -10,6 +10,7 @@ use app\api\servlet\GoodsSkuServlet;
 use app\api\servlet\OrderDetailServlet;
 use app\api\servlet\OrderServlet;
 use app\api\servlet\ShopServlet;
+use app\api\servlet\UserAddressServlet;
 use app\api\servlet\UsersServlet;
 use app\api\servlet\UsersShoppingCartServlet;
 
@@ -77,6 +78,12 @@ interface ServletFactoryInterface
      * @return OrderDetailServlet
      */
     public function orderDetailServ():OrderDetailServlet;
+
+    /**
+     * userAddressServ
+     * @return \app\api\servlet\UserAddressServlet
+     */
+    public function userAddressServ(): UserAddressServlet;
 
 
 }

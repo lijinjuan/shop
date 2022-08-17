@@ -33,6 +33,16 @@ class UserAddressController
     }
 
     /**
+     * getUserAddressByAddressID
+     * @param \think\Request $request
+     * @return \think\response\Json
+     */
+    public function getUserAddressByAddressID(int $addressID)
+    {
+        return $this->userAddressRepositories->getUserAddressByAddressID($addressID);
+    }
+
+    /**
      * createUserAddress
      * @param \think\Request $request
      * @return \think\response\Json
