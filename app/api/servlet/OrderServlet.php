@@ -67,7 +67,7 @@ class OrderServlet
         } else {
             $model->whereIn('orderStatus', $status);
         }
-        return $model->with(['goodsDetail'])->order('createdAt', 'desc')->field(['id','orderNo','goodsTotalPrice','goodsNum','orderStatus','createdAt'])->hidden(['goodsDetail.createdAt','goodsDetail.updatedAt','goodsDetail.userID','goodsDetail.storeID','goodsDetail.skuID','goodsDetail.skuName'])->select();
+        return $model->with(['goodsDetail'])->order('createdAt', 'desc')->field(['id','orderNo','goodsTotalPrice','goodsNum','orderStatus','createdAt'])->hidden(['goodsDetail.createdAt','goodsDetail.updatedAt','goodsDetail.userID','goodsDetail.skuID','goodsDetail.skuName'])->select();
     }
 
     /**
@@ -102,6 +102,42 @@ class OrderServlet
         }
         return $orderModel->where('orderNo',$orderNo)->with(['goodsDetail'])->field(['id','orderNo','orderStatus','goodsNum','createdAt'])->hidden(['goodsDetail.createdAt','goodsDetail.updatedAt','goodsDetail.userID','goodsDetail.storeID','goodsDetail.skuID','goodsDetail.skuName'])->find();
     }
+
+    /**
+     * @param int $status
+     * @return OrdersModel[]|array|\think\Collection
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function storeOrderList(int $status)
+    {
+        $model = $this->ordersModel->where('storeID', app()->get('userProfile')->store?->id)->where('orderStatus',$status);
+        return $model->with(['goodsDetail'])->order('createdAt', 'desc')->field(['id','orderNo','goodsTotalPrice','goodsNum','orderStatus','orderCommission','createdAt'])->hidden(['goodsDetail.createdAt','goodsDetail.updatedAt','goodsDetail.userID','goodsDetail.skuID','goodsDetail.skuName'])->select();
+    }
+
+    /**
+     * @return array
+     * @throws \think\db\exception\DbException
+     */
+    public function storeOrderCount()
+    {
+        $storeID = app()->get('userProfile')->store?->id;
+        $noUserPay = $this->ordersModel->where('storeID', $storeID)->where('orderStatus', 0)->count();
+        $noStorePay = $this->ordersModel->where('storeID', $storeID)->where('orderStatus', 1)->count();
+        $noDelivery = $this->ordersModel->where('storeID', $storeID)->where('orderStatus', 2)->count();
+        $noReceived = $this->ordersModel->where('storeID', $storeID)->where('orderStatus', 3)->count();
+        $received = $this->ordersModel->where('storeID', $storeID)->where('orderStatus', 4)->count();
+        $refund = $this->ordersModel->where('storeID', $storeID)->whereIn('orderStatus', [6, 7])->count();
+        $totalOrder = $this->ordersModel->where('storeID',$storeID)->where('orderStatus','>=',0)->count();
+        $totalOrderPrice = sprintf('%.2f',round($this->ordersModel->where('storeID',$storeID)->where('orderStatus','>=',0)->sum('goodsTotalPrice'),2));
+        return compact('noUserPay', 'noStorePay','noDelivery', 'noReceived', 'received', 'refund','totalOrder','totalOrderPrice');
+
+    }
+
+
+
+
 
 
 }

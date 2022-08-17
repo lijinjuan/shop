@@ -70,9 +70,9 @@ Route::group(":version", function () {
     // 提交开店铺的信息
     Route::post("shop-apply", ":version.Shop/apply2OpenStore");
     // 获取我的店铺的商品列表的接口
-    Route::get("shop-goods-list", ":version.Shop/getGoodsListByMyStore");
+    Route::post("shop-goods-list", ":version.Shop/getGoodsListByMyStore");
     // 获取所有的商品列表的接口
-    Route::get("goods", ":version.Goods/getPlatformGoods");
+    Route::post("goods", ":version.Goods/getPlatformGoods");
 
 })->middleware(JwtAuthMiddleware::class)->json()->allowCrossDomain();
 
@@ -97,12 +97,19 @@ Route::group(":version", function () {
     Route::post("place-order", ":version.Order/placeOrder");
     // 购买接口
     Route::post("payment-order", ":version.Order/payment");
-    //订单列表
+    //普通用户订单列表
     Route::get("order-list/:type", ":version.Order/orderList");
     //订单详情
     Route::get("order-detail/:orderNo", ":version.Order/orderDetail");
-    //订单统计数据
+    //普通用户订单统计数据
     Route::get("order-count", ":version.Order/orderCount");
+    //申请退款
+    Route::post('order-refund',":version.Order/orderRefund");
+    //店铺订单列表
+    Route::get('store-order-list/:type',":version.Order/storeOrderList");
+    //店铺订单统计信息
+    Route::get('store-order-count',':version.Order/storeOrderCount');
+
 
 })->middleware(JwtAuthMiddleware::class)->json()->allowCrossDomain();
 

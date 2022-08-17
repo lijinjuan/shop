@@ -39,6 +39,18 @@ class OrderDetailServlet
         return $this->detailModel::update($updateData,['orderSn'=>$orderSn]);
     }
 
+    /**
+     * @param int $orderID
+     * @return OrdersDetailModel|array|mixed|\think\Model|null
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function getDetailByID(int $orderID)
+    {
+        return $this->detailModel->where('id',$orderID)->where('userID',app()->get('userProfile')->id)->find();
+    }
+
 
 
 }

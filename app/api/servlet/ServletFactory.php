@@ -115,4 +115,12 @@ class ServletFactory implements ServletFactoryInterface
         return invoke(CommissionConfigServlet::class);
     }
 
+    /**
+     * @return RefundServlet
+     */
+    public function refundServ(): RefundServlet
+    {
+        return invoke(RefundServlet::class);
+    }
+
 }
