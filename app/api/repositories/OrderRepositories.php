@@ -227,7 +227,7 @@ class OrderRepositories extends AbstractRepositories
             throw new ParameterException(['errMessage' => '账户余额不足支付失败...']);
         }
         Db::transaction(function () use ($orderSn, $userPayPrice, $order) {
-            $this->servletFactory->userServ()->updateUserInfoByID(app()->get('userProfile')->id, ['balance' => busub(app()->get('userProfile')->balance - $userPayPrice, 2)]);
+            $this->servletFactory->userServ()->updateUserInfoByID(app()->get('userProfile')->id, ['balance' => bcsub(app()->get('userProfile')->balance - $userPayPrice, 2)]);
             $commission = $this->servletFactory->commissionServ()->getCommissionByType(2);
             $goodsCommission = json_decode($commission->content, true);
             $goodsCommission = $goodsCommission['goodsCommission'];
