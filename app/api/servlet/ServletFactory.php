@@ -106,4 +106,13 @@ class ServletFactory implements ServletFactoryInterface
         return invoke(UserAddressServlet::class);
     }
 
+    /**
+     * commissionServ
+     * @return \app\api\servlet\CommissionConfigServlet
+     */
+    public function commissionServ(): CommissionConfigServlet
+    {
+        return invoke(CommissionConfigServlet::class);
+    }
+
 }

@@ -26,6 +26,12 @@ class OrdersModel extends Model
      */
     protected $autoWriteTimestamp = "timestamp";
 
-
+    /**
+     * @return mixed
+     */
+    public function goodsSku()
+    {
+        return $this->belongsToMany(GoodsSkuModel::class, OrdersDetailModel::class, 'skuID', 'orderNo');
+    }
 
 }

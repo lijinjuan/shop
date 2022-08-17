@@ -142,6 +142,16 @@ class UsersServlet
     }
 
     /**
+     * @param int $userID
+     * @param array $updateData
+     * @return UsersModel
+     */
+    public function updateUserInfoByID(int $userID,array $updateData)
+    {
+        return $this->usersModel::update($updateData, ['userID' => $userID, 'status' => 1]);
+    }
+
+    /*
      * alterUserPassword
      * @param string $loginPassword
      * @return mixed
