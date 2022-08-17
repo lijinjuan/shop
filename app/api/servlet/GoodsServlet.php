@@ -92,11 +92,19 @@ class GoodsServlet
     /**
      * getGoodsListByCategoryID
      * @param int $categoryID
+     * @param string $keywords
      * @return \think\Paginator
      */
-    public function getGoodsListByCategoryID(int $categoryID)
+    public function getGoodsListByCategoryID(int $categoryID, string $keywords)
     {
-        return $this->goodsModel->where("status", 1)->where("categoryID", $categoryID)->field(["id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "commission", "goodsSalesAmount", "createdAt"])->order("goodsSalesAmount", "desc")->paginate((int)request()->param("pageSize"));
+        $order = request()->only(["goodsDiscountPrice", "goodsSalesAmount"]);
+        $order["goodsDiscountPrice"] ??= "asc";
+        $order["goodsSalesAmount"] ??= "asc";
+        return $this->goodsModel->where("status", 1)
+            ->where("categoryID", $categoryID)
+            ->whereLike("goodsName", "%$keywords%")
+            ->field(["id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "commission", "goodsSalesAmount", "createdAt"])
+            ->order($order)->paginate((int)request()->param("pageSize"));
     }
 
     /**
@@ -106,7 +114,13 @@ class GoodsServlet
      */
     public function searchGoodsListByKeyWords(string $keywords)
     {
-        return $this->goodsModel->where("status", 1)->whereLike("goodsName", "%$keywords%")->field(["id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "commission", "goodsSalesAmount", "createdAt"])->order("goodsSalesAmount", "desc")->paginate((int)request()->param("pageSize"));
+        $order = request()->only(["goodsDiscountPrice", "goodsSalesAmount"]);
+        $order["goodsDiscountPrice"] ??= "asc";
+        $order["goodsSalesAmount"] ??= "asc";
+        return $this->goodsModel->where("status", 1)
+            ->whereLike("goodsName", "%$keywords%")
+            ->field(["id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "commission", "goodsSalesAmount", "createdAt"])
+            ->order($order)->paginate((int)request()->param("pageSize"));
     }
 
     /**

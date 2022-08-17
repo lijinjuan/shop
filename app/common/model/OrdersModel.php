@@ -4,8 +4,16 @@ namespace app\common\model;
 
 use think\Model;
 
+/**
+ * \app\common\model\OrdersModel
+ */
 class OrdersModel extends Model
 {
+    /**
+     * @var string
+     */
+    protected $pk = "orderNo";
+
     /**
      * @var string
      */

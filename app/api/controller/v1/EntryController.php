@@ -52,13 +52,13 @@ class EntryController
     /**
      * alterUserPassword
      * @param \think\Request $request
-     * @return mixed
+     * @return \think\response\Json
      */
     public function alterUserPassword(Request $request)
     {
         $loginPassword = $request->param("inputPassword");
-        $rePassword = $request->param("rePassword");
+        $payPassword = $request->param("payPassword");
         $emailCode = $request->param("emailCode");
-        return $this->usersRepositories->alterUserPassword($loginPassword, $rePassword, $emailCode);
+        return $this->usersRepositories->alterUserPassword($loginPassword, $payPassword, $emailCode);
     }
 }

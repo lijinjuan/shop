@@ -49,7 +49,7 @@ class ShopController
      */
     public function apply2OpenStore(Request $request)
     {
-        $shopInfo = $request->only(["storeName", "storeLogo", "storeDesc", "storeRemark", "mobile", "cardID", "frontPhoto", "backPhoto"]);
+        $shopInfo = $request->only(["inviteCode", "storeName", "storeLogo", "storeDesc", "storeRemark", "mobile", "cardID", "frontPhoto", "backPhoto"]);
         return $this->shopRepositories->apply2OpenStore($shopInfo);
     }
 

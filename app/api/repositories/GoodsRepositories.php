@@ -74,11 +74,12 @@ class GoodsRepositories extends AbstractRepositories
     /**
      * getGoodsListByCategoryID
      * @param int $categoryID
+     * @param string $keywords
      * @return \think\response\Json
      */
-    public function getGoodsListByCategoryID(int $categoryID)
+    public function getGoodsListByCategoryID(int $categoryID, string $keywords)
     {
-        $goodsList = $this->servletFactory->goodsServ()->getGoodsListByCategoryID($categoryID);
+        $goodsList = $this->servletFactory->goodsServ()->getGoodsListByCategoryID($categoryID, $keywords);
         return renderPaginateResponse($goodsList);
     }
 

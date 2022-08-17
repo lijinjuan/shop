@@ -65,9 +65,9 @@ class ShopServlet
      */
     public function apply2CreateStore(array $shopInfo)
     {
-        // 邀请码
-        // 判断上下级
-        //
+        if (isset($shopInfo["inviteCode"])) {
+            $parentStores = $this->getShopByInviteCode($shopInfo["inviteCode"]);
+        }
         return app()->get("userProfile")->store()->save($shopInfo);
     }
 
@@ -122,6 +122,17 @@ class ShopServlet
     public function searchShopListByKeywords(string $keywords)
     {
         return $this->storesModel->whereLike("storeName", "%$keywords%")->field(["id", "storeName", "storeLogo", "storeDesc", "createdAt"])->order("createdAt", "desc")->paginate((int)request()->param("pageSize"));
+    }
+
+    /**
+     * getShopByInviteCode
+     * @param string $inviteCode
+     * @return \app\common\model\StoresModel|array|mixed|\think\Model|null
+     *
+     */
+    public function getShopByInviteCode(string $inviteCode)
+    {
+        return $this->storesModel->where("status", 1)->where("inviteCode", $inviteCode)->find();
     }
 
 }
