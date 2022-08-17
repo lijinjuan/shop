@@ -34,4 +34,15 @@ class OrdersModel extends Model
         return $this->belongsToMany(GoodsSkuModel::class, OrdersDetailModel::class, 'skuID', 'orderNo');
     }
 
+    /**
+     * @return \think\model\relation\HasMany
+     */
+    public function goodsDetail()
+    {
+        return $this->hasMany(OrdersDetailModel::class, 'orderSn', 'orderSn');
+    }
+
+
+
+
 }

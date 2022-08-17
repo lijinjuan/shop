@@ -199,6 +199,15 @@ class OrderRepositories extends AbstractRepositories
         return $order_info;
     }
 
+    /**
+     * @param string $orderSn
+     * @param float $userPayPrice
+     * @return \think\response\Json
+     * @throws ParameterException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
     public function payment(string $orderSn, float $userPayPrice)
     {
         $order = $this->servletFactory->orderServ()->getOrderDetailByID($orderSn);
@@ -222,12 +231,18 @@ class OrderRepositories extends AbstractRepositories
             $commission = $this->servletFactory->commissionServ()->getCommissionByType(2);
             $goodsCommission = json_decode($commission->content, true);
             $goodsCommission = $goodsCommission['goodsCommission'];
-            $this->servletFactory->orderServ()->editOrderByID($orderSn, ['userPayPrice' => $userPayPrice, 'orderStatus' => 1, 'orderCommission' => $order->storeID ?? sprintf('%.2f', round($order->goodsTotalPrice * ($goodsCommission/100), 2))]);
-            $this->servletFactory->orderDetailServ()->editOrderByOrderSn($orderSn,['status'=>1]);
+            $updateData = [
+                'userPayPrice' => $userPayPrice,
+                'orderStatus' => 1,
+                'orderCommission' => $order->storeID ?? sprintf('%.2f', round($order->goodsTotalPrice * ($goodsCommission/100), 2))
+            ];
+            $order::update($updateData);
+            $order->goodsDetail()->update(['status'=>1]);
             //减库存 增销量
             $order->goodsSku?->each($this->addSalesAmount());
+            $order->save();
         });
-
+        return renderResponse();
     }
 
     /**

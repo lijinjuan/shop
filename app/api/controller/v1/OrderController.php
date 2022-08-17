@@ -35,11 +35,19 @@ class OrderController
 
     }
 
+    /**
+     * @param Request $request
+     * @return \think\response\Json
+     * @throws \app\lib\exception\ParameterException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
     public function payment(Request $request)
     {
         $orderSn = $request->post('orderSn');
-
-
+        $payPrice = $request->post('totalPrice');
+        return $this->orderRepositories->payment($orderSn,$payPrice);
     }
 
 
