@@ -31,7 +31,7 @@ class UsersServlet
      */
     public function createNewUser(array $userProfile): UsersModel
     {
-        return $this->usersModel::create($userProfile, ["userName", "email", "userAvatar", "balance", "password", "isStore"]);
+        return $this->usersModel::create($userProfile, ["userName", "email", "payPassword", "userAvatar", "balance", "password", "isStore"]);
     }
 
     /**
@@ -139,6 +139,16 @@ class UsersServlet
     public function isValidAddress(int $addressID)
     {
         return app()->get("userProfile")->shipAddress()->where("id", $addressID)->find();
+    }
+
+    /**
+     * alterUserPassword
+     * @param string $loginPassword
+     * @return mixed
+     */
+    public function alterUserPassword(string $loginPassword)
+    {
+        return app()->get("userProfile")->save(["password" => password_hash($loginPassword, PASSWORD_DEFAULT)]);
     }
 
 }

@@ -10,6 +10,8 @@ Route::post(":version/register", ":version.Entry/registerNewUser")->json();
 
 // 用户收货地址的管理
 Route::group(":version", function () {
+    // 用户修改密码
+    Route::post("alter-password", ":version.Entry/alterUserPassword");
     // 获取用户收货地址的接口
     Route::get("ship-address", ":version.UserAddress/getUserAddressListByToken");
     // 新增用户收货地址的接口
