@@ -21,6 +21,11 @@ class OrderController
     }
 
 
+    /**
+     * @param Request $request
+     * @return \think\response\Json
+     * @throws \app\lib\exception\ParameterException
+     */
     public function placeOrder(Request $request)
     {
         $addressID = $request->post('addressID');
@@ -30,8 +35,10 @@ class OrderController
 
     }
 
-    public function payment()
+    public function payment(Request $request)
     {
+        $orderSn = $request->post('orderSn');
+
 
     }
 

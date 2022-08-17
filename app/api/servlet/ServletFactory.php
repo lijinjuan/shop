@@ -97,4 +97,12 @@ class ServletFactory implements ServletFactoryInterface
         return invoke(OrderDetailServlet::class);
     }
 
+    /**
+     * @return CommissionConfigServlet
+     */
+    public function commissionServ(): CommissionConfigServlet
+    {
+        return invoke(CommissionConfigServlet::class);
+    }
+
 }

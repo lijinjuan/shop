@@ -4,6 +4,7 @@ namespace app\api\repositories;
 
 use app\common\model\UserAddressModel;
 use app\lib\exception\ParameterException;
+use think\db\concern\Transaction;
 use think\facade\Db;
 
 /**
@@ -197,5 +198,59 @@ class OrderRepositories extends AbstractRepositories
         $order_info['receiverAddress'] = $addressInfo->address;
         return $order_info;
     }
+
+    public function payment(string $orderSn, float $userPayPrice)
+    {
+        $order = $this->servletFactory->orderServ()->getOrderDetailByID($orderSn);
+        if (is_null($order)) {
+            throw new ParameterException(['errMessage' => '订单不存在...']);
+        }
+        if ($order->orderStatus != 0) {
+            throw new ParameterException(['errMessage' => '订单已支付请不要重复支付...']);
+        }
+        if ($order->userID != app()->get('userProfile')->id) {
+            throw new ParameterException(['errMessage' => '不能支付别人的订单...']);
+        }
+        if ($order->goodsTotalPrice != $userPayPrice) {
+            throw new ParameterException(['errMessage' => '支付金额错误，请核对之后重新支付...']);
+        }
+        if (app()->get('userProfile')->balance < $userPayPrice) {
+            throw new ParameterException(['errMessage' => '账户余额不足支付失败...']);
+        }
+        Db::transaction(function () use ($orderSn, $userPayPrice, $order) {
+            $this->servletFactory->userServ()->updateUserInfoByID(app()->get('userProfile')->id, ['balance' => busub(app()->get('userProfile')->balance - $userPayPrice, 2)]);
+            $commission = $this->servletFactory->commissionServ()->getCommissionByType(2);
+            $goodsCommission = json_decode($commission->content, true);
+            $goodsCommission = $goodsCommission['goodsCommission'];
+            $this->servletFactory->orderServ()->editOrderByID($orderSn, ['userPayPrice' => $userPayPrice, 'orderStatus' => 1, 'orderCommission' => $order->storeID ?? sprintf('%.2f', round($order->goodsTotalPrice * ($goodsCommission/100), 2))]);
+            $this->servletFactory->orderDetailServ()->editOrderByOrderSn($orderSn,['status'=>1]);
+            //减库存 增销量
+            $order->goodsSku?->each($this->addSalesAmount());
+        });
+
+    }
+
+    /**
+     * @param $goodsSku
+     * @return mixed
+     */
+    protected function calculateSalesAmount($goodsSku)
+    {
+        $goodsSku->stock -= $goodsSku->pivot->skuStock;
+        $goodsSku->goods->stock -= $goodsSku->pivot->skuStock;
+        $goodsSku->salesAmount += $goodsSku->pivot->saleAmount;
+        $goodsSku->goods->salesAmount += $goodsSku->pivot->saleAmount;
+        return $goodsSku->push();
+    }
+
+    /**
+     * @return \Closure
+     */
+    protected function addSalesAmount()
+    {
+        return fn ($goodsSku) => $this->calculateSalesAmount($goodsSku);
+    }
+
+
 
 }

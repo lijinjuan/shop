@@ -141,4 +141,14 @@ class UsersServlet
         return app()->get("userProfile")->shipAddress()->where("id", $addressID)->find();
     }
 
+    /**
+     * @param int $userID
+     * @param array $updateData
+     * @return UsersModel
+     */
+    public function updateUserInfoByID(int $userID,array $updateData)
+    {
+        return $this->usersModel::update($updateData,['userID'=>$userID,'status'=>1]);
+    }
+
 }

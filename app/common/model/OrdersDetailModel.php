@@ -2,9 +2,9 @@
 
 namespace app\common\model;
 
-use think\Model;
+use think\model\Pivot;
 
-class OrdersDetailModel extends Model
+class OrdersDetailModel extends Pivot
 {
     /**
      * @var string
@@ -25,5 +25,7 @@ class OrdersDetailModel extends Model
      * @var string
      */
     protected $autoWriteTimestamp = "timestamp";
+
+
 
 }

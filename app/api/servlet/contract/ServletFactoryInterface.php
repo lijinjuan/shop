@@ -5,6 +5,7 @@ namespace app\api\servlet\contract;
 use app\api\servlet\BannersServlet;
 use app\api\servlet\BrandsServlet;
 use app\api\servlet\CategoryServlet;
+use app\api\servlet\CommissionConfigServlet;
 use app\api\servlet\GoodsServlet;
 use app\api\servlet\GoodsSkuServlet;
 use app\api\servlet\OrderDetailServlet;
@@ -77,6 +78,11 @@ interface ServletFactoryInterface
      * @return OrderDetailServlet
      */
     public function orderDetailServ():OrderDetailServlet;
+
+    /**
+     * @return CommissionConfigServlet
+     */
+    public function commissionServ():CommissionConfigServlet;
 
 
 }
