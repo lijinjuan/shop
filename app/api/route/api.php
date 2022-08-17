@@ -72,9 +72,9 @@ Route::group(":version", function () {
     // 提交开店铺的信息
     Route::post("shop-apply", ":version.Shop/apply2OpenStore");
     // 获取我的店铺的商品列表的接口
-    Route::get("shop-goods-list", ":version.Shop/getGoodsListByMyStore");
+    Route::post("shop-goods-list", ":version.Shop/getGoodsListByMyStore");
     // 获取所有的商品列表的接口
-    Route::get("goods", ":version.Goods/getPlatformGoods");
+    Route::post("goods", ":version.Goods/getPlatformGoods");
 
 })->middleware(JwtAuthMiddleware::class)->json()->allowCrossDomain();
 

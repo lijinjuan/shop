@@ -27,9 +27,14 @@ class GoodsRepositories extends AbstractRepositories
      * getPlatformGoodsList
      * @return \think\response\Json
      */
-    public function getPlatformGoodsList()
+    public function getPlatformGoodsList(string $keywords)
     {
-        $platformGoodsList = $this->servletFactory->goodsServ()->getPlatformGoodsList();
+        $categoryID = request()->param("categoryID", 0);
+        $categories = [];
+        if ($categoryID > 0)
+            $categories = $this->servletFactory->categoryServ()->getParentCategoryList($categoryID);
+
+        $platformGoodsList = $this->servletFactory->goodsServ()->getPlatformGoodsList($keywords, $categories);
         $myStoreGoodsID = $this->servletFactory->shopServ()->getGoodsIDsByMyStore();
         $platformGoodsList->each(fn($item) => $item["status"] = in_array($item["id"], $myStoreGoodsID));
 

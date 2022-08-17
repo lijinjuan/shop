@@ -47,13 +47,26 @@ class GoodsServlet
         return $this->goodsModel->whereIn('id', $goodsID)->with(['goodsSku'])->field($columns)->select();
     }
 
-    /*
+    /**
      * getPlatformGoodsList
+     * @param string $keywords
+     * @param array $categories
      * @return \think\Paginator
      */
-    public function getPlatformGoodsList()
+    public function getPlatformGoodsList(string $keywords, array $categories)
     {
-        return $this->goodsModel->field(["id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "commission", "goodsSalesAmount", "createdAt"])->order("goodsSalesAmount", "desc")->paginate((int)request()->param("pageSize", 20));
+        $order = request()->only(["goodsDiscountPrice", "goodsSalesAmount", "commission"]);
+        $order["goodsDiscountPrice"] ??= "asc";
+        $order["goodsSalesAmount"] ??= "asc";
+        $order["commission"] ??= "asc";
+
+        $goodsList = $this->goodsModel->field(["id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "commission", "goodsSalesAmount", "categoryID", "createdAt"])
+            ->whereLike("goodsName", "%$keywords%");
+
+        if (request()->param("categoryID", 0) > 0)
+            $goodsList->whereIn("categoryID", $categories);
+        
+        return $goodsList->order($order)->paginate((int)request()->param("pageSize", 20));
     }
 
     /**

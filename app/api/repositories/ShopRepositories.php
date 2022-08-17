@@ -42,11 +42,17 @@ class ShopRepositories extends AbstractRepositories
 
     /**
      * getGoodsListByMyStore
+     * @param string $keywords
      * @return \think\response\Json
      */
-    public function getGoodsListByMyStore()
+    public function getGoodsListByMyStore(string $keywords)
     {
-        $storeGoodsList = $this->servletFactory->shopServ()->getGoodsListByMyStore();
+        $categoryID = request()->param("categoryID", 0);
+        $categories = [];
+        if ($categoryID > 0)
+            $categories = $this->servletFactory->categoryServ()->getParentCategoryList($categoryID);
+
+        $storeGoodsList = $this->servletFactory->shopServ()->getGoodsListByMyStore($keywords, $categories);
         return renderPaginateResponse($storeGoodsList);
     }
 
