@@ -148,7 +148,7 @@ class UsersServlet
      */
     public function updateUserInfoByID(int $userID,array $updateData)
     {
-        return $this->usersModel::update($updateData, ['userID' => $userID, 'status' => 1]);
+        return $this->usersModel::update($updateData, ['id' => $userID, 'status' => 1]);
     }
 
     /*
