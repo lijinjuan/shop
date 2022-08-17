@@ -20,10 +20,15 @@ class ComposerStaticIniteec8f4a51479aee6cfe2dd06fd086a7a
         't' => 
         array (
             'think\\trace\\' => 12,
+            'think\\facade\\' => 13,
             'think\\app\\' => 10,
             'think\\annotation\\' => 17,
             'think\\' => 6,
             'thans\\jwt\\' => 10,
+        ),
+        'h' => 
+        array (
+            'hardphp\\snowflake\\' => 18,
         ),
         'a' => 
         array (
@@ -59,6 +64,10 @@ class ComposerStaticIniteec8f4a51479aee6cfe2dd06fd086a7a
         array (
             0 => __DIR__ . '/..' . '/topthink/think-trace/src',
         ),
+        'think\\facade\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/hardphp/thinkphp-snowflake/src/facade',
+        ),
         'think\\app\\' => 
         array (
             0 => __DIR__ . '/..' . '/topthink/think-multi-app/src',
@@ -72,10 +81,15 @@ class ComposerStaticIniteec8f4a51479aee6cfe2dd06fd086a7a
             0 => __DIR__ . '/..' . '/topthink/framework/src/think',
             1 => __DIR__ . '/..' . '/topthink/think-helper/src',
             2 => __DIR__ . '/..' . '/topthink/think-orm/src',
+            3 => __DIR__ . '/..' . '/topthink/think-factory/src',
         ),
         'thans\\jwt\\' => 
         array (
             0 => __DIR__ . '/..' . '/thans/tp-jwt-auth/src',
+        ),
+        'hardphp\\snowflake\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/hardphp/thinkphp-snowflake/src',
         ),
         'app\\' => 
         array (

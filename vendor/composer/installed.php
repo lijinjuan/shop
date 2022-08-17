@@ -1,15 +1,24 @@
 <?php return array(
     'root' => array(
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => NULL,
+        'reference' => '3a64b6d69981d82e4097168d6a4f41cda527343c',
         'name' => 'topthink/think',
         'dev' => true,
     ),
     'versions' => array(
+        'hardphp/thinkphp-snowflake' => array(
+            'pretty_version' => '0.5.0',
+            'version' => '0.5.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../hardphp/thinkphp-snowflake',
+            'aliases' => array(),
+            'reference' => '8c5b7634c7dd34b5ef40931d5a3abadf76eb6717',
+            'dev_requirement' => false,
+        ),
         'league/flysystem' => array(
             'pretty_version' => '1.1.9',
             'version' => '1.1.9.0',
@@ -155,12 +164,12 @@
             'dev_requirement' => false,
         ),
         'topthink/think' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => NULL,
+            'reference' => '3a64b6d69981d82e4097168d6a4f41cda527343c',
             'dev_requirement' => false,
         ),
         'topthink/think-annotation' => array(
@@ -170,6 +179,15 @@
             'install_path' => __DIR__ . '/../topthink/think-annotation',
             'aliases' => array(),
             'reference' => '8295c0fa5338703da0c29695c563005108b97f4b',
+            'dev_requirement' => false,
+        ),
+        'topthink/think-factory' => array(
+            'pretty_version' => 'v1.0.1',
+            'version' => '1.0.1.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../topthink/think-factory',
+            'aliases' => array(),
+            'reference' => 'b8080a6472aae1cff47ceb8c30feec3c2835364b',
             'dev_requirement' => false,
         ),
         'topthink/think-helper' => array(

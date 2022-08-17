@@ -2,6 +2,7 @@
 
 namespace app\agents\controller\v1;
 
+use think\facade\Snowflake;
 use think\Request;
 
 /**
@@ -17,6 +18,6 @@ class EntryController
      */
     public function userLaunch(Request $request)
     {
-        return __CLASS__ . "/" . __FUNCTION__;
+        return Snowflake::generate();
     }
 }

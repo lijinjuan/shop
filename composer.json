@@ -25,7 +25,8 @@
         "topthink/think-orm": "^2.0",
         "topthink/think-multi-app": "^1.0",
         "topthink/think-annotation": "^2.0",
-        "thans/tp-jwt-auth": "^1.2"
+        "thans/tp-jwt-auth": "^1.2",
+        "hardphp/thinkphp-snowflake": "^0.5.0"
     },
     "require-dev": {
         "symfony/var-dumper": "^4.2",
