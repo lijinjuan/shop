@@ -11,12 +11,10 @@ class OrderDetailServlet
      */
     protected OrdersDetailModel $detailModel;
 
-    /**
-     * @param OrdersDetailModel $detailModel
-     */
-    public function __construct(OrdersDetailModel $detailModel)
+
+    public function __construct()
     {
-        $this->detailModel = $detailModel;
+        $this->detailModel = new OrdersDetailModel();
     }
 
     /**

@@ -2,33 +2,30 @@
 
 namespace app\common\model;
 
-use think\model\Pivot;
+use think\Model;
 
-/**
- * \app\common\model\OrdersDetailModel
- */
-class OrdersDetailModel extends Pivot
+class RechargeModel extends Model
 {
     /**
      * @var string
      */
-    protected $table = "s_orders_detail";
+    protected $table = "s_users_recharge";
 
     /**
      * @var string
      */
     protected $createTime = "createdAt";
 
+
     /**
      * @var string
      */
     protected $updateTime = "updatedAt";
 
+
     /**
      * @var string
      */
     protected $autoWriteTimestamp = "timestamp";
-
-
 
 }

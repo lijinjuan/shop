@@ -10,6 +10,8 @@ use app\api\servlet\GoodsServlet;
 use app\api\servlet\GoodsSkuServlet;
 use app\api\servlet\OrderDetailServlet;
 use app\api\servlet\OrderServlet;
+use app\api\servlet\RechargeConfigServlet;
+use app\api\servlet\RechargeServlet;
 use app\api\servlet\RefundServlet;
 use app\api\servlet\ShopServlet;
 use app\api\servlet\UserAddressServlet;
@@ -97,6 +99,16 @@ interface ServletFactoryInterface
      * @return RefundServlet
      */
     public function refundServ():RefundServlet;
+
+    /**
+     * @return RechargeConfigServlet
+     */
+    public function rechargeConfigServ():RechargeConfigServlet;
+
+    /**
+     * @return RechargeServlet
+     */
+    public function rechargeServ():RechargeServlet;
 
 
 }

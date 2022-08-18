@@ -71,4 +71,13 @@ class UsersModel extends Model
         return $this->hasMany(UsersShoppingCartModel::class,'userID','id');
     }
 
+    /**
+     * @return \think\model\relation\HasMany
+     */
+    public function withdrawal()
+    {
+        return $this->hasMany(UsersAmountModel::class,'userID','id');
+
+    }
+
 }

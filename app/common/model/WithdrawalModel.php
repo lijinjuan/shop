@@ -2,17 +2,12 @@
 
 namespace app\common\model;
 
-use think\model\Pivot;
-
-/**
- * \app\common\model\OrdersDetailModel
- */
-class OrdersDetailModel extends Pivot
+class WithdrawalModel
 {
     /**
      * @var string
      */
-    protected $table = "s_orders_detail";
+    protected $table = "s_users_withdrawal";
 
     /**
      * @var string
@@ -24,11 +19,9 @@ class OrdersDetailModel extends Pivot
      */
     protected $updateTime = "updatedAt";
 
+
     /**
      * @var string
      */
     protected $autoWriteTimestamp = "timestamp";
-
-
-
 }

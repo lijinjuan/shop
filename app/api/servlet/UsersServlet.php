@@ -191,4 +191,13 @@ class UsersServlet
 
         return true;
     }
+
+    /**
+     * @param int $id
+     * @return mixed
+     */
+    public function getWithdrawalAmount(int $id)
+    {
+        return app()->get("userProfile")->withdrawal()->where("amountType", $id)->find();
+    }
 }

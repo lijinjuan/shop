@@ -123,4 +123,17 @@ class ServletFactory implements ServletFactoryInterface
         return invoke(RefundServlet::class);
     }
 
+    /**
+     * @return RechargeConfigServlet
+     */
+    public function rechargeConfigServ():RechargeConfigServlet
+    {
+        return invoke(RechargeConfigServlet::class);
+    }
+
+    public function rechargeServ(): RechargeServlet
+    {
+        return invoke(RechargeServlet::class);
+    }
+
 }

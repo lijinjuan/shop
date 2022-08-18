@@ -115,6 +115,17 @@ Route::group(":version", function () {
 
 })->middleware(JwtAuthMiddleware::class)->json()->allowCrossDomain();
 
+//客户充值，提现
+Route::group(":version", function () {
+    //充值配置
+    Route::get("recharge-config-list", ":version.RechargeConfig/getRechargeConfig");
+    //获取单个
+    Route::get("get-recharge-config/:id", ":version.RechargeConfig/getConfigByID");
+    //用户充值
+    Route::post("add-recharge", ":version.Recharge/addRecharge");
+
+})->middleware(JwtAuthMiddleware::class)->json()->allowCrossDomain();
+
 Route::group(":version", function () {
     // test token
     Route::post("test/token", ":version.Entry/testToken")->middleware(JwtAuthMiddleware::class);
