@@ -36,7 +36,19 @@ class RechargeServlet
      */
     public function rechargeList(int $status,int $pageSize)
     {
-        return $this->rechargeModel->where('userID',app()->get('userProfile')->id)->where('status',$status)->field(['id','rechargeType','rechargeMoney','createdAt'])->order('createdAt','desc')->paginate($pageSize);
+        return $this->rechargeModel->where('userID',app()->get('userProfile')->id)->where('status',$status)->field(['id','rechargeType','rechargeMoney','createdAt'])->append(['rechargeName'])->order('createdAt','desc')->paginate($pageSize);
+    }
+
+    /**
+     * @param int $id
+     * @return RechargeModel|array|mixed|\think\Model|null
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function rechargeDetail(int $id)
+    {
+        return $this->rechargeModel->where('id',$id)->field(['id','orderNo','rechargeMoney','createdAt','status','rechargeVoucher'])->append(['rechargeName','orderStatus'])->find();
     }
 
 

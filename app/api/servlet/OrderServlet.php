@@ -70,6 +70,7 @@ class OrderServlet
         return $model->with(['goodsDetail'])->order('createdAt', 'desc')->field(['id','orderNo','goodsTotalPrice','goodsNum','orderStatus','createdAt'])->hidden(['goodsDetail.createdAt','goodsDetail.updatedAt','goodsDetail.userID','goodsDetail.skuID','goodsDetail.skuName'])->select();
     }
 
+
     /**
      * @return array
      * @throws \think\db\exception\DbException

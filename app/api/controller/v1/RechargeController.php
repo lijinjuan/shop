@@ -43,4 +43,13 @@ class RechargeController
 
     }
 
+    /**
+     * @param int $id
+     * @return \think\response\Json
+     */
+    public function rechargeDetail(int $id)
+    {
+        return $this->rechargeRepositories->rechargeDetail($id);
+    }
+
 }

@@ -32,4 +32,15 @@ class RechargeRepositories extends AbstractRepositories
     {
         return renderPaginateResponse($this->servletFactory->rechargeServ()->rechargeList($status, $pageSize));
     }
+
+
+    /**
+     * @param int $id
+     * @return \think\response\Json
+     * @throws \think\db\exception\DbException
+     */
+    public function rechargeDetail(int $id)
+    {
+        return renderResponse($this->servletFactory->rechargeServ()->rechargeDetail($id));
+    }
 }

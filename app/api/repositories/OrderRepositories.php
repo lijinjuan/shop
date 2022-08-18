@@ -318,12 +318,18 @@ class OrderRepositories extends AbstractRepositories
      */
     public function orderRefund(array $refundData)
     {
-        //这块有问题
-        $detail = $this->servletFactory->orderDetailServ()->getDetailByID($refundData['orderID']);
+        $detail = $this->servletFactory->orderDetailServ()->getDetailByID((int)$refundData['orderID']);
         if (empty($detail)) {
             throw new ParameterException(['errMessage' => '订单不存在...']);
         }
         $refundData['userID'] = app()->get('userProfile')->id;
+        $refundData['orderSn'] = makeOrderNo();
+        $refundData['goodsName'] = $detail->goodsName;
+        $refundData['goodsPrice'] = $detail->goodsPrice;
+        $refundData['goodsCover'] = $detail->skuImage;
+        $refundData['goodsNum'] = $detail->goodsNum;
+        $refundData['goodsTotalPrice'] = sprintf('%.2f',round($detail->goodsPrice * $detail->goodsNum,2));
+        $refundData['goodsSku'] = $detail->skuName;
         $this->servletFactory->refundServ()->addRefund(array_filter($refundData));
         return renderResponse();
     }
@@ -411,6 +417,17 @@ class OrderRepositories extends AbstractRepositories
         return renderResponse($this->servletFactory->refundConfigServ()->getConfigByID(2));
     }
 
+    /**
+     * @param int $type
+     * @return \think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function refundList(int $type)
+    {
+        return renderResponse($this->servletFactory->refundServ()->refundList($type));
+    }
 
 
 }

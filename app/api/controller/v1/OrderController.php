@@ -62,6 +62,18 @@ class OrderController
     }
 
     /**
+     * @param int $type
+     * @return \think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function refundOrderList(int $type)
+    {
+        return $this->orderRepositories->refundList($type);
+    }
+
+    /**
      * @return \think\response\Json
      * @throws \think\db\exception\DbException
      */

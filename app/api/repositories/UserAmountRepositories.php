@@ -13,10 +13,10 @@ class UserAmountRepositories extends AbstractRepositories
      */
     public function addUserAmount(array $data)
     {
-        $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
         if (!password_verify($data['password'],app()->get("userProfile")->payPassword)){
                 throw new ParameterException(['errMessage'=>'安全密码错误...']);
         }
+        $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
         $data['userID'] = app()->get("userProfile")->id;
         $data['moneyMinLimit'] = 100;
         $data['moneyMaxLimit'] = 99999;
