@@ -52,8 +52,14 @@ class OrdersModel extends Model
         return $this->hasMany(OrdersDetailModel::class, 'orderNo', 'orderNo');
     }
 
-
-
+    /**
+     * user
+     * @return \think\model\relation\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(UsersModel::class, "userID", "id");
+    }
 
 
 }

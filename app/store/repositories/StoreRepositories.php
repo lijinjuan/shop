@@ -90,7 +90,10 @@ class StoreRepositories extends AbstractRepositories
         return renderPaginateResponse($storeList);
     }
 
-
+    /**
+     * getStoreTreeList
+     * @return \think\response\Json
+     */
     public function getStoreTreeList()
     {
         $storeID = app()->get("storeProfile")->id;

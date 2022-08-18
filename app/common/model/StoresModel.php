@@ -63,4 +63,22 @@ class StoresModel extends Model
         return (int)end($parentArr);
     }
 
+    /**
+     * storeAccount
+     * @return \think\model\relation\HasMany
+     */
+    public function storeAccount()
+    {
+        return $this->hasMany(StoreAccountModel::class, "storeID", "id");
+    }
+
+    /**
+     * orders
+     * @return \think\model\relation\HasMany
+     */
+    public function orders()
+    {
+        return $this->hasMany(OrdersModel::class, "storeID", "id");
+    }
+
 }
