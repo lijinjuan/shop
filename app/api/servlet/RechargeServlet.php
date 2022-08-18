@@ -28,5 +28,16 @@ class RechargeServlet
         return $this->rechargeModel::create($data);
     }
 
+    /**
+     * @param int $status
+     * @param int $pageSize
+     * @return \think\Paginator
+     * @throws \think\db\exception\DbException
+     */
+    public function rechargeList(int $status,int $pageSize)
+    {
+        return $this->rechargeModel->where('userID',app()->get('userProfile')->id)->where('status',$status)->field(['id','rechargeType','rechargeMoney','createdAt'])->order('createdAt','desc')->paginate($pageSize);
+    }
+
 
 }

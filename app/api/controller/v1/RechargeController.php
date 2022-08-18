@@ -30,4 +30,17 @@ class RechargeController
         return $this->rechargeRepositories->addRecharge($rechargeData);
     }
 
+    /**
+     * @param int $status
+     * @param Request $request
+     * @return \think\response\Json
+     * @throws \think\db\exception\DbException
+     */
+    public function rechargeList(Request $request,int $status = 0)
+    {
+        $pageSize = $request->post('pageSize',20);
+        return $this->rechargeRepositories->rechargeList($status,$pageSize);
+
+    }
+
 }

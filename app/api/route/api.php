@@ -123,6 +123,8 @@ Route::group(":version", function () {
     Route::get("get-recharge-config/:id", ":version.RechargeConfig/getConfigByID");
     //用户充值
     Route::post("add-recharge", ":version.Recharge/addRecharge");
+    //用户充值订单
+    Route::post("recharge-list/[:status]", ":version.Recharge/rechargeList");
     //用户绑定提现方式
     Route::post("binding-withdrawal-amount",":version.UserAmount/addAmount");
     //获取提现账户
