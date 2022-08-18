@@ -7,4 +7,5 @@ return [
     'think\exception\Handle' => ExceptionHandle::class,
     \app\api\servlet\contract\ServletFactoryInterface::class => \app\api\servlet\ServletFactory::class,
     \app\agents\servlet\contract\ServletFactoryInterface::class => \app\agents\servlet\ServletFactory::class,
+    \app\common\service\InviteServiceInterface::class => \app\common\service\InviteCodeService::class,
 ];

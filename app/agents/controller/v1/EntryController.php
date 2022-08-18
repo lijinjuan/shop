@@ -4,6 +4,7 @@ namespace app\agents\controller\v1;
 
 
 use app\agents\repositories\AgentsRepositories;
+use app\common\service\InviteServiceInterface;
 use app\lib\exception\ParameterException;
 use think\captcha\facade\Captcha;
 use think\Request;

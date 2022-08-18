@@ -39,4 +39,15 @@ class AgentsRepositories extends AbstractRepositories
         return $input == $origin;
         //return password_verify($input, $origin);
     }
+
+    /**
+     * createAgents
+     * @param array $agentProfile
+     * @return \think\response\Json
+     */
+    public function createAgents(array $agentProfile)
+    {
+        $this->servletFactory->agentsServ()->createAgents($agentProfile);
+        return renderResponse();
+    }
 }

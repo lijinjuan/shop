@@ -24,9 +24,15 @@ class AgentController
         $this->agentsRepositories = $agentsRepositories;
     }
 
+    /**
+     * createAgents
+     * @param \think\Request $request
+     * @return \think\response\Json
+     */
     public function createAgents(Request $request)
     {
-        
+        $agentProfile = $request->only(["agentAccount", "agentName", "agentPassword"]);
+        return $this->agentsRepositories->createAgents($agentProfile);
     }
 
 }

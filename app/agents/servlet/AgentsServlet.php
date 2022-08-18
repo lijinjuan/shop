@@ -40,4 +40,18 @@ class AgentsServlet
 
         return $user;
     }
+
+    /**
+     * createAgents
+     * @param array $agentProfile
+     * @return \app\common\model\AgentsModel|\think\Model
+     */
+    public function createAgents(array $agentProfile)
+    {
+        try {
+            return $this->agentsModel::create($agentProfile);
+        } catch (\Throwable) {
+            throw new ParameterException(["errMessage" => "创建代理商失败..."]);
+        }
+    }
 }
