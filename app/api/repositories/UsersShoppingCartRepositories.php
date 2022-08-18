@@ -43,7 +43,7 @@ class UsersShoppingCartRepositories extends AbstractRepositories
         $shoppingCart = $userProfile->shoppingCart()->order('createdAt', 'desc')->with([
             'goods' => fn($goods) => $goods->field(['id', 'goodsName', 'goodsCover', 'status']),
             'sku' => fn($goodsSku) => $goodsSku->field(['id', 'skuName', 'sku', 'skuImg', 'skuDiscountPrice', 'skuStock']),
-        ])->field(['id', 'goodsID', 'skuID', 'goodsNum'])->select();
+        ])->field(['id', 'goodsID', 'skuID', 'goodsNum','storeID'])->select();
         return renderResponse($shoppingCart);
 
     }

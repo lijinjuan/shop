@@ -15,8 +15,11 @@ use app\api\servlet\RechargeServlet;
 use app\api\servlet\RefundServlet;
 use app\api\servlet\ShopServlet;
 use app\api\servlet\UserAddressServlet;
+use app\api\servlet\UsersAmountServlet;
 use app\api\servlet\UsersServlet;
 use app\api\servlet\UsersShoppingCartServlet;
+use app\api\servlet\WithdrawalServlet;
+use app\common\model\UsersAmountModel;
 
 /**
  * \app\api\servlet\contract\ServletFactoryInterface
@@ -109,6 +112,16 @@ interface ServletFactoryInterface
      * @return RechargeServlet
      */
     public function rechargeServ():RechargeServlet;
+
+    /**
+     * @return WithdrawalServlet
+     */
+    public function withdrawalServ():WithdrawalServlet;
+
+    /**
+     * @return UsersAmountServlet
+     */
+    public function userAmountServ():UsersAmountServlet;
 
 
 }

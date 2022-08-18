@@ -2,7 +2,9 @@
 
 namespace app\common\model;
 
-class WithdrawalModel
+use think\Model;
+
+class WithdrawalModel extends Model
 {
     /**
      * @var string

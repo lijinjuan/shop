@@ -123,6 +123,12 @@ Route::group(":version", function () {
     Route::get("get-recharge-config/:id", ":version.RechargeConfig/getConfigByID");
     //用户充值
     Route::post("add-recharge", ":version.Recharge/addRecharge");
+    //用户绑定提现方式
+    Route::post("binding-withdrawal-amount",":version.UserAmount/addAmount");
+    //获取提现账户
+    Route::get("get-withdrawal-amount/:type",":version.Withdrawal/getWithdrawalAmount");
+    //用户提现
+    Route::post("add-withdrawal",":version.Withdrawal/addWithdrawal");
 
 })->middleware(JwtAuthMiddleware::class)->json()->allowCrossDomain();
 
