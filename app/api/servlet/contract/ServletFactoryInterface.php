@@ -12,6 +12,7 @@ use app\api\servlet\OrderDetailServlet;
 use app\api\servlet\OrderServlet;
 use app\api\servlet\RechargeConfigServlet;
 use app\api\servlet\RechargeServlet;
+use app\api\servlet\RefundConfigServlet;
 use app\api\servlet\RefundServlet;
 use app\api\servlet\ShopServlet;
 use app\api\servlet\UserAddressServlet;
@@ -122,6 +123,11 @@ interface ServletFactoryInterface
      * @return UsersAmountServlet
      */
     public function userAmountServ():UsersAmountServlet;
+
+    /**
+     * @return RefundConfigServlet
+     */
+    public function refundConfigServ():RefundConfigServlet;
 
 
 }

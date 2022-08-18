@@ -155,4 +155,11 @@ class ServletFactory implements ServletFactoryInterface
         return invoke(WithdrawalServlet::class);
     }
 
+    /**
+     * @return RefundConfigServlet
+     */
+    public function refundConfigServ(): RefundConfigServlet
+    {
+        return invoke(RefundConfigServlet::class);
+    }
 }

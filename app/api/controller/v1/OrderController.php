@@ -114,6 +114,42 @@ class OrderController
     }
 
 
+    /**
+     * @param Request $request
+     * @return \think\response\Json
+     * @throws \app\lib\exception\ParameterException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function editOrderStatus(Request $request)
+    {
+        $orderSn = $request->post('orderSn');
+        return $this->orderRepositories->editOrderStatusByOrderSn($orderSn);
+    }
+
+    /**
+     * @param Request $request
+     * @return \think\response\Json
+     * @throws \app\lib\exception\ParameterException
+     */
+    public function delOrder(Request $request)
+    {
+        $orderSn = $request->delete('orderSn');
+        return $this->orderRepositories->delOrderByOrderSn($orderSn);
+    }
+
+    /**
+     * @return \think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function getRefundReason()
+    {
+        return $this->orderRepositories->getRefundReason();
+    }
+
 
 
 }

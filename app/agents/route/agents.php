@@ -13,7 +13,11 @@ Route::post(":version/launch", ":version.Entry/userLaunch");
 
 // 代理商后台操作的apis
 Route::group(":version", function () {
-    // 获取首页轮播图的接口
-    Route::get("banner/:bannerID", ":version.Banner/getBannerByID");
+    //新增代理商
+    Route::post("add-agent", ":version.Agent/createAgents");
+    //代理商列表
+    Route::post("agent-list",":version.Agent/agentList");
+    //代理商层级列表
+    Route::post("agent-tree-list",":version.Agent/agentTree-list");
 
 })->middleware(JwtAuthMiddleware::class);

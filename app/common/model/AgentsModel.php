@@ -36,6 +36,7 @@ class AgentsModel extends Model
      */
     public static function onBeforeInsert(Model $model): mixed
     {
-        $model->setAttr("inviteCode", "");
+        $model->setAttr("inviteCode", "1234");
+        return true;
     }
 }

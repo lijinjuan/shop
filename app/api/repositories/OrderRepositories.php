@@ -283,6 +283,7 @@ class OrderRepositories extends AbstractRepositories
             5 => [6, 7],
             6 => 6,
             7 => 7,
+            8 => 5,
             default => [0, 1, 2, 3]
         };
         return renderResponse($this->servletFactory->orderServ()->orderList($status));
@@ -319,8 +320,8 @@ class OrderRepositories extends AbstractRepositories
     {
         //这块有问题
         $detail = $this->servletFactory->orderDetailServ()->getDetailByID($refundData['orderID']);
-        if (empty($detail)){
-            throw new ParameterException(['errMessage'=>'订单不存在...']);
+        if (empty($detail)) {
+            throw new ParameterException(['errMessage' => '订单不存在...']);
         }
         $refundData['userID'] = app()->get('userProfile')->id;
         $this->servletFactory->refundServ()->addRefund(array_filter($refundData));
@@ -350,6 +351,66 @@ class OrderRepositories extends AbstractRepositories
     {
         return renderResponse($this->servletFactory->orderServ()->storeOrderCount());
     }
+
+    /**
+     * @param string $orderSn
+     * @return \think\response\Json
+     * @throws ParameterException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function editOrderStatusByOrderSn(string $orderSn)
+    {
+        $order = $this->servletFactory->orderServ()->getOrderDetailByID($orderSn);
+        if (!$order) {
+            throw new ParameterException(['errMessage' => '订单不存在...']);
+        }
+        if ($order->orderStatus != 3) {
+            throw new ParameterException(['errMessage' => '订单已收货请不要重复收货...']);
+        }
+        Db::transaction(function () use ($order, $orderSn) {
+            $order::update(['orderStatus' => 4],['orderNo' => $orderSn]);
+            $order->goodsDetail()->update(['status' => 4]);
+        });
+        return renderResponse();
+    }
+
+    /**
+     * @param string $orderSn
+     * @return \think\response\Json
+     * @throws ParameterException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function delOrderByOrderSn(string $orderSn)
+    {
+        $order = $this->servletFactory->orderServ()->getOrderDetailByID($orderSn);
+        if (!$order) {
+            throw new ParameterException(['errMessage' => '订单不存在...']);
+        }
+        if ($order->orderStatus != 5) {
+            throw new ParameterException(['errMessage' => '当前状态不能删除订单...']);
+        }
+        Db::transaction(function () use ($order, $orderSn) {
+            $order::update(['orderStatus' => -1],['orderNo' => $orderSn]);
+            $order->goodsDetail()->update(['status' => -1]);
+        });
+        return renderResponse();
+    }
+
+    /**
+     * @return \think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function getRefundReason()
+    {
+        return renderResponse($this->servletFactory->refundConfigServ()->getConfigByID(2));
+    }
+
 
 
 }

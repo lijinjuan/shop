@@ -107,6 +107,12 @@ Route::group(":version", function () {
     Route::get("order-count", ":version.Order/orderCount");
     //申请退款
     Route::post('order-refund',":version.Order/orderRefund");
+    //获取退款原因
+    Route::get('order-refund-reason',":version.Order/getRefundReason");
+    //确认收获
+    Route::post('order-confirm',":version.Order/editOrderStatus");
+    //删除订单
+    Route::delete('order-delete',":version.Order/delOrder");
     //店铺订单列表
     Route::get('store-order-list/:type',":version.Order/storeOrderList");
     //店铺订单统计信息
