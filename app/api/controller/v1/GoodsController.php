@@ -26,11 +26,13 @@ class GoodsController
 
     /**
      * getPlatformGoods
+     * @param \think\Request $request
      * @return \think\response\Json
      */
-    public function getPlatformGoods()
+    public function getPlatformGoods(Request $request)
     {
-        return $this->goodsRepositories->getPlatformGoodsList();
+        $keywords = $request->param("keywords", "");
+        return $this->goodsRepositories->getPlatformGoodsList($keywords);
     }
 
     /**
@@ -70,7 +72,7 @@ class GoodsController
     public function getGoodsListByCategoryID(int $categoryID, Request $request)
     {
         $keywords = (string)$request->param("keywords", "");
-        return $this->goodsRepositories->getGoodsListByCategoryID($categoryID,$keywords);
+        return $this->goodsRepositories->getGoodsListByCategoryID($categoryID, $keywords);
     }
 
     /**

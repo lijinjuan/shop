@@ -73,18 +73,27 @@ class ShopServlet
 
     /**
      * getGoodsListByMyStore
-     * @return \think\Paginator
+     * @param string $keywords
+     * @param array $categories
+     * @return mixed
      */
-    public function getGoodsListByMyStore()
+    public function getGoodsListByMyStore(string $keywords, array $categories)
     {
-        /**
-         * @var StoresModel $storeModel
-         */
         $storeModel = app()->get("userProfile")->store;
+        $order = request()->only(["goodsDiscountPrice", "goodsSalesAmount", "commission"]);
+        $order["goodsDiscountPrice"] ??= "asc";
+        $order["goodsSalesAmount"] ??= "asc";
+        $order["commission"] ??= "asc";
 
-        return $storeModel->goods()->where("s_goods.status", 1)
+        $goodsList = $storeModel->goods()->where("s_goods.status", 1)
             ->field(["s_goods.id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "commission", "goodsSalesAmount", "s_goods.createdAt"])
-            ->hidden(["pivot", "updatedAt", "deletedAt", "brandID", "goodsContent", "goodsStock", "isRank", "isNew", "isItem"])->paginate((int)request()->param("pageSize"));
+            ->whereLike("s_goods.goodsName", "%$keywords%")
+            ->hidden(["pivot", "updatedAt", "deletedAt", "brandID", "goodsContent", "goodsStock", "isRank", "isNew", "isItem"]);
+
+        if (request()->param("categoryID", 0) > 0)
+            $goodsList->whereIn("s_goods.categoryID", $categories);
+
+        return $goodsList->order($order)->paginate((int)request()->param("pageSize"));
     }
 
     /**

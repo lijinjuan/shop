@@ -57,9 +57,10 @@ class ShopController
      * getGoodsListByMyStore
      * @return \think\response\Json
      */
-    public function getGoodsListByMyStore()
+    public function getGoodsListByMyStore(Request $request)
     {
-        return $this->shopRepositories->getGoodsListByMyStore();
+        $keywords = (string)$request->param("keywords", "");
+        return $this->shopRepositories->getGoodsListByMyStore( $keywords);
     }
 
     /**
