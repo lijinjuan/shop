@@ -39,4 +39,33 @@ class AgentsModel extends Model
         $model->setAttr("inviteCode", "1234");
         return true;
     }
+
+    /**
+     * @param $value
+     * @param $data
+     * @return string
+     */
+    public function getStatusNameAttr($value,$data)
+    {
+        $status = [
+            1=>'正常',
+            2=>'冻结'
+        ];
+        return $status[$data['status']];
+    }
+
+    /**
+     * @param $value
+     * @param $data
+     * @return int
+     */
+    public function getParentIDAttr($value, $data)
+    {
+        if ($data["agentParentID"] == ",")
+            return 0;
+
+        $agentParentID = trim($data["agentParentID"], ",");
+        $parentArr = explode(",", $agentParentID);
+        return (int)end($parentArr);
+    }
 }

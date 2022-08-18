@@ -27,16 +27,7 @@ class UserAmountController
 
     public function addAmount(Request $request)
     {
-//        "amountType":1,
-//"bank":"交通银行",
-//"subbranch":"郑州高新区支行",
-//"bankAmountName":"张三",
-//"bankCard":"1222567899000778",
-//"password":"123456"
-//        "amountType":2,
-//        "walletAddress":"1234567890",
-//        "password":"1234",
-        //1->银行卡 2->TRC20 3->ERC20
+
         $amountType = $request->post('amountType');
         //支行
         $subbranch = $request->post('subbranch');

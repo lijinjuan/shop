@@ -36,8 +36,8 @@ class AgentsRepositories extends AbstractRepositories
      */
     protected function isEqualByPassword(string $origin, string $input): bool
     {
-        return $input == $origin;
-        //return password_verify($input, $origin);
+        //return $input == $origin;
+        return password_verify($input, $origin);
     }
 
     /**
@@ -47,6 +47,13 @@ class AgentsRepositories extends AbstractRepositories
      */
     public function createAgents(array $agentProfile)
     {
+        $model = $this->servletFactory->agentsServ()->getAgentsProfileByFields(['id'=>app()->get("agentProfile")->id]);
+        $agentProfile['agentPassword'] = password_hash($agentProfile['agentPassword'],PASSWORD_DEFAULT);
+        if ($model->agentParentID == 0){
+            $agentProfile['agentParentID'] = ','.app()->get("agentProfile")->id.',';
+        }else{
+            $agentProfile['agentParentID'] = $model->agentParentID.app()->get("agentProfile")->id.',';
+        }
         $this->servletFactory->agentsServ()->createAgents($agentProfile);
         return renderResponse();
     }
@@ -55,13 +62,21 @@ class AgentsRepositories extends AbstractRepositories
      * @return \think\response\Json
      * @throws \think\db\exception\DbException
      */
-    public function agentList(int $pageSize)
+    public function agentList(int $pageSize,string $keywords)
     {
-        return renderPaginateResponse($this->servletFactory->agentsServ()->agentList($pageSize));
+        return renderPaginateResponse($this->servletFactory->agentsServ()->agentList($pageSize,$keywords));
     }
 
-    public function treeAgentList(int $pageSize)
+    /**
+     * @param $keywords
+     * @return \think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function treeAgentList($keywords)
     {
-        //return $this->servletFactory->agentsServ()->refundList
+        $agentList = $this->servletFactory->agentsServ()->getAgentTreeList(app()->get("agentProfile")->id,$keywords);
+        return renderResponse(assertTreeDatum($agentList));
     }
 }

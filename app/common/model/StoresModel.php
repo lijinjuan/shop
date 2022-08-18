@@ -29,6 +29,16 @@ class StoresModel extends Model
      */
     protected $autoWriteTimestamp = "timestamp";
 
+    public function getStatusNameAttr($value,$data)
+    {
+        $status = [
+            0=>'待审核',
+            1=>'审核通过',
+            2=>'审核失败',
+            3=>'冻结'
+        ];
+        return $status[$data['status']];
+    }
     /**
      * goods
      * @return \think\model\relation\BelongsToMany

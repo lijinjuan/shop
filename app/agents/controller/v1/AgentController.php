@@ -43,14 +43,22 @@ class AgentController
     public function agentList(Request $request)
     {
         $pageSize = $request->post('pageSize',20);
-        return $this->agentsRepositories->agentList($pageSize);
+        $keywords = $request->post('keywords');
+        return $this->agentsRepositories->agentList($pageSize,$keywords);
 
     }
 
+
+    /**
+     * @param Request $request
+     * @return \think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
     public function agentTreeList(Request $request)
     {
-        $pageSize = $request->post('pageSize',20);
-        //return $this->agentsRepositories->
-
+        $keywords = $request->post('keywords');
+        return $this->agentsRepositories->treeAgentList($keywords);
     }
 }

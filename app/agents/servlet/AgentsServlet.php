@@ -50,8 +50,7 @@ class AgentsServlet
     {
         try {
             return $this->agentsModel::create($agentProfile);
-        } catch (\Throwable $exception) {
-            var_dump($exception->getMessage());
+        } catch (\Throwable) {
             throw new ParameterException(["errMessage" => "创建代理商失败..."]);
         }
     }
@@ -61,23 +60,30 @@ class AgentsServlet
      * @return \think\Paginator
      * @throws \think\db\exception\DbException
      */
-    public function agentList(int $pageSize)
+    public function agentList(int $pageSize, string $keywords)
     {
-       return  $this->agentsModel->where('agentParentID','like','%,'.app()->get("agentProfile")->id.',%')->order('createdAt','desc')->paginate($pageSize);
+        $select = ['id', 'agentAccount', 'agentName', 'loginIP', 'lastLoginAt', 'loginNum', 'status', 'createdAt'];
+        $model = $this->agentsModel->where('agentParentID', 'like', '%,' . app()->get("agentProfile")->id . ',%');
+        if ($keywords) {
+            $model->where('agentAccount', 'like', '%' . $keywords . '%');
+        }
+        return $model->field($select)->append(['statusName'])->order('createdAt', 'desc')->paginate($pageSize);
     }
 
     /**
-     * getStoreTreeList
-     * @param int $storeID
+     * @param int $agentID
+     * @param string $keywords
      * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
-    public function getAgentTreeList(int $storeID)
+    public function getAgentTreeList(int $agentID, string $keywords)
     {
-        return $this->agentsModel->whereLike("parentAgentID", "%,$storeID,%")
-            ->field(["id", "storeName", "mobile", "storeDesc", "status", "storeRemark", "userID", "parentStoreID", "createdAt"])
-            ->with(["user" => function ($query) {
-                $query->field(["id", "userName"]);
-            }])
-            ->append(["parentID"])->select()->toArray();
+        $model = $this->agentsModel->whereLike("agentParentID", "%,$agentID,%");
+        if ($keywords) {
+            $model->whereLike('agentAccount', '%' . $keywords . '%');
+        }
+        return $model->field(["id", "agentAccount", "agentName", "agentParentID", "loginIP", "lastLoginAt", "loginNum", "status", "createdAt"])->append(["parentID", "statusName"])->select()->toArray();
     }
 }
