@@ -318,10 +318,10 @@ class OrderRepositories extends AbstractRepositories
     public function orderRefund(array $refundData)
     {
         //这块有问题
-//        $detail = $this->servletFactory->orderDetailServ()->getDetailByID($refundData['orderID']);
-//        if (!empty($detail)){
-//            throw new ParameterException(['errMessage'=>'订单不存在...']);
-//        }
+        $detail = $this->servletFactory->orderDetailServ()->getDetailByID($refundData['orderID']);
+        if (empty($detail)){
+            throw new ParameterException(['errMessage'=>'订单不存在...']);
+        }
         $refundData['userID'] = app()->get('userProfile')->id;
         $this->servletFactory->refundServ()->addRefund(array_filter($refundData));
         return renderResponse();

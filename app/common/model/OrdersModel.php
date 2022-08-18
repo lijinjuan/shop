@@ -35,14 +35,6 @@ class OrdersModel extends Model
      */
     protected $autoWriteTimestamp = "timestamp";
 
-    protected function getForeignKey(string $name): string
-    {
-        if (strpos($name, '\\')) {
-            $name = class_basename($name);
-        }
-
-        return Str::snake($name) . '_orderNo';
-    }
 
     /**
      * @return \think\model\relation\BelongsToMany
