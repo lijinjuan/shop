@@ -19,6 +19,9 @@ Route::group(":version", function () {
     Route::post("store-list", ":version.Store/getStoreList");
     // 获取店铺下级树形列表的接口
     Route::post("store-tree-list", ":version.Store/getStoreTreeList");
-
+    // 查看店铺的订单列表的接口
+    Route::post("store-order-list", ":version.Order/getOrderListByStore");
+    // 订单列表中支付操作的接口
+    Route::post("store-order-pay", ":version.Order/order2PayByStore");
 
 })->middleware(JwtAuthMiddleware::class);

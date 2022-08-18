@@ -27,7 +27,8 @@
         "topthink/think-annotation": "^2.0",
         "thans/tp-jwt-auth": "^1.2",
         "hardphp/thinkphp-snowflake": "^0.5.0",
-        "topthink/think-captcha": "^3.0"
+        "topthink/think-captcha": "^3.0",
+      "ext-bcmath": "*"
     },
     "require-dev": {
         "symfony/var-dumper": "^4.2",
