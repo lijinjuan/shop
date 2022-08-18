@@ -14,6 +14,7 @@ class ComposerStaticIniteec8f4a51479aee6cfe2dd06fd086a7a
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         'cc25fa796cd7d2989f16cf9daf45371d' => __DIR__ . '/..' . '/thans/tp-jwt-auth/src/helper.php',
+        '1cfd2761b63b0a29ed23657ea394cb2d' => __DIR__ . '/..' . '/topthink/think-captcha/src/helper.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -21,6 +22,7 @@ class ComposerStaticIniteec8f4a51479aee6cfe2dd06fd086a7a
         array (
             'think\\trace\\' => 12,
             'think\\facade\\' => 13,
+            'think\\captcha\\' => 14,
             'think\\app\\' => 10,
             'think\\annotation\\' => 17,
             'think\\' => 6,
@@ -68,6 +70,10 @@ class ComposerStaticIniteec8f4a51479aee6cfe2dd06fd086a7a
         array (
             0 => __DIR__ . '/..' . '/hardphp/thinkphp-snowflake/src/facade',
         ),
+        'think\\captcha\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/topthink/think-captcha/src',
+        ),
         'think\\app\\' => 
         array (
             0 => __DIR__ . '/..' . '/topthink/think-multi-app/src',
@@ -79,9 +85,9 @@ class ComposerStaticIniteec8f4a51479aee6cfe2dd06fd086a7a
         'think\\' => 
         array (
             0 => __DIR__ . '/..' . '/topthink/framework/src/think',
-            1 => __DIR__ . '/..' . '/topthink/think-helper/src',
-            2 => __DIR__ . '/..' . '/topthink/think-orm/src',
-            3 => __DIR__ . '/..' . '/topthink/think-factory/src',
+            1 => __DIR__ . '/..' . '/topthink/think-factory/src',
+            2 => __DIR__ . '/..' . '/topthink/think-helper/src',
+            3 => __DIR__ . '/..' . '/topthink/think-orm/src',
         ),
         'thans\\jwt\\' => 
         array (

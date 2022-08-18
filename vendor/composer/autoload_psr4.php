@@ -8,9 +8,10 @@ $baseDir = dirname($vendorDir);
 return array(
     'think\\trace\\' => array($vendorDir . '/topthink/think-trace/src'),
     'think\\facade\\' => array($vendorDir . '/hardphp/thinkphp-snowflake/src/facade'),
+    'think\\captcha\\' => array($vendorDir . '/topthink/think-captcha/src'),
     'think\\app\\' => array($vendorDir . '/topthink/think-multi-app/src'),
     'think\\annotation\\' => array($vendorDir . '/topthink/think-annotation/src'),
-    'think\\' => array($vendorDir . '/topthink/framework/src/think', $vendorDir . '/topthink/think-helper/src', $vendorDir . '/topthink/think-orm/src', $vendorDir . '/topthink/think-factory/src'),
+    'think\\' => array($vendorDir . '/topthink/framework/src/think', $vendorDir . '/topthink/think-factory/src', $vendorDir . '/topthink/think-helper/src', $vendorDir . '/topthink/think-orm/src'),
     'thans\\jwt\\' => array($vendorDir . '/thans/tp-jwt-auth/src'),
     'hardphp\\snowflake\\' => array($vendorDir . '/hardphp/thinkphp-snowflake/src'),
     'app\\' => array($baseDir . '/app'),

@@ -9,7 +9,6 @@ use app\agents\servlet\contract\ServletFactoryInterface;
  */
 abstract class AbstractRepositories
 {
-
     /**
      * @var \app\agents\servlet\contract\ServletFactoryInterface
      */

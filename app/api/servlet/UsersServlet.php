@@ -161,10 +161,11 @@ class UsersServlet
     {
         return app()->get("userProfile")->save([
             "password" => password_hash($loginPassword, PASSWORD_DEFAULT),
-            "payPassword" => $payPassword,
+            "payPassword" => password_hash($payPassword, PASSWORD_DEFAULT),
         ]);
     }
 
+    // 发货
     /**
      * getUserAddressByAddressID
      * @param int $userAddressID

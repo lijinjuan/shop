@@ -65,7 +65,7 @@ class GoodsServlet
 
         if (request()->param("categoryID", 0) > 0)
             $goodsList->whereIn("categoryID", $categories);
-        
+
         return $goodsList->order($order)->paginate((int)request()->param("pageSize", 20));
     }
 
