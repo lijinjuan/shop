@@ -23,5 +23,15 @@ Route::group(":version", function () {
     Route::post("store-order-list", ":version.Order/getOrderListByStore");
     // 订单列表中支付操作的接口
     Route::post("store-order-pay", ":version.Order/order2PayByStore");
+    // 店铺帐变日志的接口
+    Route::post("store-account-list", ":version.Store/getStoreAccountList");
+    // 店铺中商品列表的接口
+    Route::post("store-goods-list", ":version.Store/getStoreGoodsList");
+    // 店铺中商品下架的接口
+    Route::post("goods-take-down/:goodsID", ":version.Store/takeDownStoreGoods");
+    // 获取平台商品列表的接口
+    Route::post("goods-list", ":version.Goods/getPlatformGoodsList");
+    // 平台中商品上架的接口
+    Route::post("goods-on-sale/:goodsID", ":version.Goods/onSaleGoods2Store");
 
 })->middleware(JwtAuthMiddleware::class);

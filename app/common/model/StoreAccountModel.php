@@ -13,7 +13,7 @@ class StoreAccountModel extends Model
     /**
      * @var string
      */
-    protected $table = "s_store_account";
+    protected $table = "s_stores_account";
 
     /**
      * @var string

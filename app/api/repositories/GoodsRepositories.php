@@ -36,7 +36,7 @@ class GoodsRepositories extends AbstractRepositories
 
         $platformGoodsList = $this->servletFactory->goodsServ()->getPlatformGoodsList($keywords, $categories);
         $myStoreGoodsID = $this->servletFactory->shopServ()->getGoodsIDsByMyStore();
-        $platformGoodsList->each(fn($item) => $item["status"] = in_array($item["id"], $myStoreGoodsID));
+        $platformGoodsList->each(fn($item) => $item["status"] = (int)in_array($item["id"], $myStoreGoodsID));
 
         return renderPaginateResponse($platformGoodsList);
     }

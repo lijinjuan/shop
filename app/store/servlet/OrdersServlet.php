@@ -52,32 +52,30 @@ class OrdersServlet
          * @var \app\common\model\StoresModel $storeModel
          */
         $storeModel = app()->get("storeProfile");
-        $orderModel = $storeModel->orders()->where("orderNo", $orderNo)->where("status", 1)->find();
+        $orderModel = $storeModel->orders()->where("orderNo", $orderNo)->where("orderStatus", 1)->find();
 
         if (is_null($orderModel))
             throw new ParameterException(["errMessage" => "订单不存在或状态异常..."]);
 
         return Db::transaction(function () use ($storeModel, $orderModel) {
             // 减去订单金额
-            $payAmount = (float)bcsub($orderModel->goodsTotalPrice, $orderModel->orderCommission, 2);
+            $payAmount = max((float)bcsub($orderModel->goodsTotalPrice, $orderModel->orderCommission, 2), 0);
+
             $preBalance = $storeModel->user->balance;
             if ($preBalance < $payAmount)
                 throw new ParameterException(["errMessage" => "店铺余额不足，请充值..."]);
 
             $storeModel->user->balance = bcsub($storeModel->user->balance, $payAmount, 2);
             $storeModel->user->save();
-
             // 更新订单状态
-            $orderModel->status = 2;
+            $orderModel->orderStatus = 2;
             $orderModel->storePayAt = date("Y-m-d H:i:s");
             $orderModel->updatedAt = date("Y-m-d H:i:s");
             $orderModel->save();
-
             // 订单详情更新状态
             $orderModel->goodsDetail()->where("orderNo", $orderModel->orderNo)->update(["status" => 2, "updatedAt" => date("Y-m-d H:i:s")]);
-
             // 添加账变记录
-            $storeModel->storeAccount()->save(["balance" => $preBalance, "changeBalance" => $payAmount, "action" => 2, "type" => 5, "title" => "商家支付订单"]);
+            $storeModel->storeAccount()->save(["userID" => $storeModel->userID, "balance" => $preBalance, "changeBalance" => $payAmount, "action" => 2, "type" => 5, "title" => "商家支付订单"]);
 
             return true;
         });

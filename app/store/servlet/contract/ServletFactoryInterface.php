@@ -3,6 +3,7 @@
 namespace app\store\servlet\contract;
 
 
+use app\store\servlet\GoodsServlet;
 use app\store\servlet\OrdersServlet;
 use app\store\servlet\StoreServlet;
 use app\store\servlet\UsersServlet;
@@ -30,4 +31,10 @@ interface ServletFactoryInterface
      * @return \app\store\servlet\OrdersServlet
      */
     public function orderServ(): OrdersServlet;
+
+    /**
+     * goodsServ
+     * @return \app\store\servlet\GoodsServlet
+     */
+    public function goodsServ(): GoodsServlet;
 }

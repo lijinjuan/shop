@@ -54,8 +54,41 @@ class StoreController
         return $this->storeRepositories->getStoreList();
     }
 
+    /**
+     * getStoreTreeList
+     * @return \think\response\Json
+     */
     public function getStoreTreeList()
     {
         return $this->storeRepositories->getStoreTreeList();
+    }
+
+    /**
+     * getStoreAccountList
+     * @param \think\Request $request
+     */
+    public function getStoreAccountList(Request $request)
+    {
+        return $this->storeRepositories->getStoreAccountList($request);
+    }
+
+    /**
+     * getStoreGoodsList
+     * @param \think\Request $request
+     * @return \think\response\Json
+     */
+    public function getStoreGoodsList(Request $request)
+    {
+        return $this->storeRepositories->getStoreGoodsList($request);
+    }
+
+    /**
+     * takeDownStoreGoods
+     * @param int $goodsID
+     * @return \think\response\Json
+     */
+    public function takeDownStoreGoods(int $goodsID)
+    {
+        return $this->storeRepositories->takeDownStoreGoodsByGoodsID($goodsID);
     }
 }

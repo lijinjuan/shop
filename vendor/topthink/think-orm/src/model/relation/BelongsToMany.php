@@ -588,7 +588,7 @@ class BelongsToMany extends Relation
             $this->detach($detach);
             $changes['detached'] = $detach;
         }
-
+        
         foreach ($records as $id => $attributes) {
             if (!in_array($id, $current)) {
                 $this->attach($id, $attributes);

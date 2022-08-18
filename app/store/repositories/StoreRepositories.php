@@ -4,6 +4,7 @@ namespace app\store\repositories;
 
 use app\lib\exception\ParameterException;
 use thans\jwt\facade\JWTAuth;
+use think\Request;
 
 /**
  * \app\store\repositories\StoreRepositories
@@ -100,5 +101,52 @@ class StoreRepositories extends AbstractRepositories
         $storeList = $this->servletFactory->storeServ()->getStoreTreeList($storeID);
 
         return renderResponse(assertTreeDatum($storeList));
+    }
+
+    /**
+     * getStoreAccountList
+     * @param \think\Request $request
+     * @return \think\response\Json
+     */
+    public function getStoreAccountList(Request $request)
+    {
+        /**
+         * @var \app\common\model\StoresModel $storeModel
+         */
+        $storeModel = app()->get("storeProfile");
+
+        $accountList = $storeModel->storeAccount()->order("createdAt", "desc")->paginate((int)$request->param("pageSize", 20));
+
+        return renderPaginateResponse($accountList);
+    }
+
+    /**
+     * getStoreGoodsList
+     * @param \think\Request $request
+     * @return \think\response\Json
+     */
+    public function getStoreGoodsList(Request $request)
+    {
+        /**
+         * @var \app\common\model\StoresModel $storeModel
+         */
+        $storeModel = app()->get("storeProfile");
+        $goodsList = $storeModel->goods()->visible(["s_goods.id", "goodsName", "goodsCover", "goodsPrice", "goodsDiscountPrice", "goodsStock", "goodsSalesAmount", "commission", "s_goods.createdAt"])
+            ->order("goodsSalesAmount", "desc")
+            ->hidden(["pivot"])
+            ->paginate((int)$request->param("pageSize", 20));
+
+        return renderPaginateResponse($goodsList);
+    }
+
+    /**
+     * takeDownStoreGoodsByGoodsID
+     * @param int $goodsID
+     * @return \think\response\Json
+     */
+    public function takeDownStoreGoodsByGoodsID(int $goodsID)
+    {
+        app()->get("storeProfile")->goods()->detach($goodsID);
+        return renderResponse();
     }
 }
