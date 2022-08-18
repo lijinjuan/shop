@@ -41,7 +41,7 @@ if (!function_exists("assertTreeDatum")) {
         $treeDatum = [];
         foreach ($items as $k => $item) {
             if (isset($items[$item['parentID']])) {
-                $items[$item['parentID']]['categories'][] = &$items[$k];
+                $items[$item['parentID']]['storeList'][] = &$items[$k];
             } else {
                 $treeDatum[] = &$items[$k];
             }

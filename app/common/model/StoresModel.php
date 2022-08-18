@@ -38,4 +38,29 @@ class StoresModel extends Model
         return $this->belongsToMany(GoodsModel::class, GoodsStoreModel::class, "goodsID", "storesID");
     }
 
+    /**
+     * user
+     * @return \think\model\relation\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(UsersModel::class, "userID", "id");
+    }
+
+    /**
+     * getParentIDAttr
+     * @param $value
+     * @param $data
+     * @return int
+     */
+    public function getParentIDAttr($value, $data)
+    {
+        if ($data["parentStoreID"] == ",")
+            return 0;
+
+        $parentStoreID = trim($data["parentStoreID"], ",");
+        $parentArr = explode(",", $parentStoreID);
+        return (int)end($parentArr);
+    }
+
 }

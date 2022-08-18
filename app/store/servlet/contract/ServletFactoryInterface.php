@@ -3,10 +3,24 @@
 namespace app\store\servlet\contract;
 
 
+use app\store\servlet\StoreServlet;
+use app\store\servlet\UsersServlet;
+
 /**
  * \app\store\servlet\contract\ServletFactoryInterface
  */
 interface ServletFactoryInterface
 {
 
+    /**
+     * storeServ
+     * @return \app\store\servlet\StoreServlet
+     */
+    public function storeServ(): StoreServlet;
+
+    /**
+     * userServ
+     * @return \app\store\servlet\UsersServlet
+     */
+    public function userServ(): UsersServlet;
 }

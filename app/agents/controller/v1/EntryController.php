@@ -51,6 +51,7 @@ class EntryController
         }
 
         $agentProfile = $request->only(["agentAccount", "agentPassword"]);
+
         return $this->agentsRepositories->userLaunch2Agents($agentProfile);
     }
 }

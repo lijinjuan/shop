@@ -7,17 +7,17 @@ namespace app\common\service;
  */
 interface InviteServiceInterface
 {
-    /**
-     * enCode
-     * @param int $user_id
-     * @return string
-     */
-    public function enCode(int $user_id): string ;
 
     /**
-     * deCode
-     * @param $code
-     * @return int
+     * agentInviteCode
+     * @return string
      */
-    public function deCode($code): int;
+    public function agentInviteCode(): string;
+
+    /**
+     * storeInviteCode
+     * @return string
+     */
+    public function storeInviteCode(): string;
+
 }
