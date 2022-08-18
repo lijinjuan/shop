@@ -50,4 +50,18 @@ class AgentsRepositories extends AbstractRepositories
         $this->servletFactory->agentsServ()->createAgents($agentProfile);
         return renderResponse();
     }
+
+    /**
+     * @return \think\response\Json
+     * @throws \think\db\exception\DbException
+     */
+    public function agentList(int $pageSize)
+    {
+        return renderPaginateResponse($this->servletFactory->agentsServ()->agentList($pageSize));
+    }
+
+    public function treeAgentList(int $pageSize)
+    {
+        //return $this->servletFactory->agentsServ()->refundList
+    }
 }

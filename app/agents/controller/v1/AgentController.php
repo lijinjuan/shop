@@ -35,10 +35,22 @@ class AgentController
         return $this->agentsRepositories->createAgents($agentProfile);
     }
 
-    public function agentsList(Request $request)
+    /**
+     * @param Request $request
+     * @return \think\response\Json
+     * @throws \think\db\exception\DbException
+     */
+    public function agentList(Request $request)
     {
-        $request->ip();
+        $pageSize = $request->post('pageSize',20);
+        return $this->agentsRepositories->agentList($pageSize);
 
     }
 
+    public function agentTreeList(Request $request)
+    {
+        $pageSize = $request->post('pageSize',20);
+        //return $this->agentsRepositories->
+
+    }
 }

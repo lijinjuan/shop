@@ -101,6 +101,8 @@ Route::group(":version", function () {
     Route::post("payment-order", ":version.Order/payment");
     //普通用户订单列表
     Route::get("order-list/:type", ":version.Order/orderList");
+    //用户退款订单列表
+    Route::get("refund-order-list/:type", ":version.Order/refundOrderList");
     //订单详情
     Route::get("order-detail/:orderNo", ":version.Order/orderDetail");
     //普通用户订单统计数据
@@ -129,6 +131,8 @@ Route::group(":version", function () {
     Route::get("get-recharge-config/:id", ":version.RechargeConfig/getConfigByID");
     //用户充值
     Route::post("add-recharge", ":version.Recharge/addRecharge");
+    //充值详情页
+    Route::post("recharge-detail/:id", ":version.Recharge/rechargeDetail");
     //用户充值订单
     Route::post("recharge-list/[:status]", ":version.Recharge/rechargeList");
     //用户绑定提现方式

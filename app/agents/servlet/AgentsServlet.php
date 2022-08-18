@@ -56,8 +56,28 @@ class AgentsServlet
         }
     }
 
-    public function agentList()
+    /**
+     * @param int $pageSize
+     * @return \think\Paginator
+     * @throws \think\db\exception\DbException
+     */
+    public function agentList(int $pageSize)
     {
-        $this->agentsModel->where('agentParentID','like','%,'.app()->get("agentProfile")->id.',%')->select();
+       return  $this->agentsModel->where('agentParentID','like','%,'.app()->get("agentProfile")->id.',%')->order('createdAt','desc')->paginate($pageSize);
+    }
+
+    /**
+     * getStoreTreeList
+     * @param int $storeID
+     * @return array
+     */
+    public function getAgentTreeList(int $storeID)
+    {
+        return $this->agentsModel->whereLike("parentAgentID", "%,$storeID,%")
+            ->field(["id", "storeName", "mobile", "storeDesc", "status", "storeRemark", "userID", "parentStoreID", "createdAt"])
+            ->with(["user" => function ($query) {
+                $query->field(["id", "userName"]);
+            }])
+            ->append(["parentID"])->select()->toArray();
     }
 }
