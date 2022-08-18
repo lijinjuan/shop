@@ -80,10 +80,11 @@ class OrderServlet
         $noDelivery = $this->ordersModel->where('userID', app()->get('userProfile')->id)->whereIn('orderStatus', [1, 2])->count();
         $noReceived = $this->ordersModel->where('userID', app()->get('userProfile')->id)->where('orderStatus', 3)->count();
         $received = $this->ordersModel->where('userID', app()->get('userProfile')->id)->where('orderStatus', 4)->count();
+        $finished = $this->ordersModel->where('userID', app()->get('userProfile')->id)->where('orderStatus', 5)->count();
         $refund = $this->ordersModel->where('userID', app()->get('userProfile')->id)->whereIn('orderStatus', [6, 7])->count();
         $totalOrder = $this->ordersModel->where('userID',app()->get('userProfile')->id)->where('orderStatus','>=',0)->count();
         $totalOrderPrice = sprintf('%.2f',round($this->ordersModel->where('userID',app()->get('userProfile')->id)->where('orderStatus','>=',0)->sum('goodsTotalPrice'),2));
-        return compact('noPay', 'noDelivery', 'noReceived', 'received', 'refund','totalOrder','totalOrderPrice');
+        return compact('noPay', 'noDelivery', 'noReceived', 'received', 'finished','refund','totalOrder','totalOrderPrice');
     }
 
     /**

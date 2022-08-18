@@ -50,8 +50,14 @@ class AgentsServlet
     {
         try {
             return $this->agentsModel::create($agentProfile);
-        } catch (\Throwable) {
+        } catch (\Throwable $exception) {
+            var_dump($exception->getMessage());
             throw new ParameterException(["errMessage" => "创建代理商失败..."]);
         }
+    }
+
+    public function agentList()
+    {
+        $this->agentsModel->where('agentParentID','like','%,'.app()->get("agentProfile")->id.',%')->select();
     }
 }

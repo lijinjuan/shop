@@ -35,4 +35,10 @@ class AgentController
         return $this->agentsRepositories->createAgents($agentProfile);
     }
 
+    public function agentsList(Request $request)
+    {
+        $request->ip();
+
+    }
+
 }
