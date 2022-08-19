@@ -65,9 +65,6 @@ class ShopServlet
      */
     public function apply2CreateStore(array $shopInfo)
     {
-        if (isset($shopInfo["inviteCode"])) {
-            $parentStores = $this->getShopByInviteCode($shopInfo["inviteCode"]);
-        }
         return app()->get("userProfile")->store()->save($shopInfo);
     }
 
@@ -136,12 +133,15 @@ class ShopServlet
     /**
      * getShopByInviteCode
      * @param string $inviteCode
-     * @return \app\common\model\StoresModel|array|mixed|\think\Model|null
-     *
+     * @return array
      */
     public function getShopByInviteCode(string $inviteCode)
     {
-        return $this->storesModel->where("status", 1)->where("inviteCode", $inviteCode)->find();
+        $shopInfo = $this->storesModel->where("status", 1)->where("inviteCode", $inviteCode)->find();
+
+        $agentsID = $shopInfo->agentID;
+        $parentsID = $shopInfo->parentStoreID . $shopInfo->id . ",";
+        return compact("agentsID", "parentsID");
     }
 
 }

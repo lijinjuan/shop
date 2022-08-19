@@ -126,7 +126,7 @@ class ServletFactory implements ServletFactoryInterface
     /**
      * @return RechargeConfigServlet
      */
-    public function rechargeConfigServ():RechargeConfigServlet
+    public function rechargeConfigServ(): RechargeConfigServlet
     {
         return invoke(RechargeConfigServlet::class);
     }
@@ -161,5 +161,14 @@ class ServletFactory implements ServletFactoryInterface
     public function refundConfigServ(): RefundConfigServlet
     {
         return invoke(RefundConfigServlet::class);
+    }
+
+    /**
+     * agentServ
+     * @return \app\api\servlet\AgentsServlet
+     */
+    public function agentServ(): AgentsServlet
+    {
+        return invoke(AgentsServlet::class);
     }
 }

@@ -32,6 +32,6 @@ class InviteCodeService implements InviteServiceInterface
      */
     public function storeInviteCode(): string
     {
-        return "M" . $this->enCode(7);
+        return "M" . $this->enCode(6);
     }
 }

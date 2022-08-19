@@ -2,6 +2,8 @@
 
 namespace app\api\repositories;
 
+use app\common\service\InviteServiceInterface;
+
 /**
  * \app\api\repositories\ShopRepositories
  */
@@ -35,7 +37,29 @@ class ShopRepositories extends AbstractRepositories
      */
     public function apply2OpenStore(array $shopInfo)
     {
-        // 判断inviteCode 是否存在
+        // 默认一级分类
+        $upperInfo = ["agentsID" => ",", "parentsID" => ","];
+
+        // 上级的邀请码
+        $input2InviteCode = $shopInfo["inviteCode"] ?? "";
+        // 获取上级
+        if ($input2InviteCode != "") {
+            // 邀请码类型
+            $mType = substr($input2InviteCode, 0, 1);
+            // 获取邀请码的类型的上级信息
+            $upperInfo = match ($mType) {
+                "A" => $this->servletFactory->agentServ()->getAgentsInfoByInviteCode($input2InviteCode),
+                "M" => $this->servletFactory->shopServ()->getShopByInviteCode($input2InviteCode),
+                default => ["agentsID" => ",", "parentsID" => ","]
+            };
+        }
+
+        // 更新当前申请的店铺
+        $shopInfo["inviteCode"] = app()->get(InviteServiceInterface::class)->storeInviteCode();
+        $shopInfo["agentID"] = $upperInfo["agentsID"];
+        $shopInfo["parentStoreID"] = $upperInfo["parentsID"];
+
+        // 创建店铺
         $this->servletFactory->shopServ()->apply2CreateStore($shopInfo);
         return renderResponse();
     }
