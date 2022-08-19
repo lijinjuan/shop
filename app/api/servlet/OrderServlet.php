@@ -67,7 +67,7 @@ class OrderServlet
         } else {
             $model->whereIn('orderStatus', $status);
         }
-        return $model->with(['goodsDetail'])->order('createdAt', 'desc')->field(['id','orderNo','goodsTotalPrice','goodsNum','orderStatus','createdAt'])->hidden(['goodsDetail.createdAt','goodsDetail.updatedAt','goodsDetail.userID','goodsDetail.skuID','goodsDetail.skuName'])->select();
+        return $model->with(['goodsDetail'])->order('createdAt', 'desc')->field(['id', 'orderNo', 'goodsTotalPrice', 'goodsNum', 'orderStatus', 'createdAt'])->hidden(['goodsDetail.createdAt', 'goodsDetail.updatedAt', 'goodsDetail.userID', 'goodsDetail.skuID', 'goodsDetail.skuName'])->select();
     }
 
 
@@ -83,9 +83,9 @@ class OrderServlet
         $received = $this->ordersModel->where('userID', app()->get('userProfile')->id)->where('orderStatus', 4)->count();
         $finished = $this->ordersModel->where('userID', app()->get('userProfile')->id)->where('orderStatus', 5)->count();
         $refund = $this->ordersModel->where('userID', app()->get('userProfile')->id)->whereIn('orderStatus', [6, 7])->count();
-        $totalOrder = $this->ordersModel->where('userID',app()->get('userProfile')->id)->where('orderStatus','>=',0)->count();
-        $totalOrderPrice = sprintf('%.2f',round($this->ordersModel->where('userID',app()->get('userProfile')->id)->where('orderStatus','>=',0)->sum('goodsTotalPrice'),2));
-        return compact('noPay', 'noDelivery', 'noReceived', 'received', 'finished','refund','totalOrder','totalOrderPrice');
+        $totalOrder = $this->ordersModel->where('userID', app()->get('userProfile')->id)->where('orderStatus', '>=', 0)->count();
+        $totalOrderPrice = sprintf('%.2f', round($this->ordersModel->where('userID', app()->get('userProfile')->id)->where('orderStatus', '>=', 0)->sum('goodsTotalPrice'), 2));
+        return compact('noPay', 'noDelivery', 'noReceived', 'received', 'finished', 'refund', 'totalOrder', 'totalOrderPrice');
     }
 
     /**
@@ -98,11 +98,11 @@ class OrderServlet
      */
     public function orderDetail(string $orderNo): mixed
     {
-        $orderModel = $this->ordersModel->where('orderNo',$orderNo)->where('userID',app()->get('userProfile')->id)->find();
-        if (!$orderModel){
-            throw new ParameterException(['errMessage'=>'订单不存在...']);
+        $orderModel = $this->ordersModel->where('orderNo', $orderNo)->where('userID', app()->get('userProfile')->id)->find();
+        if (!$orderModel) {
+            throw new ParameterException(['errMessage' => '订单不存在...']);
         }
-        return $orderModel->where('orderNo',$orderNo)->with(['goodsDetail'])->field(['id','orderNo','orderStatus','goodsNum','createdAt'])->hidden(['goodsDetail.createdAt','goodsDetail.updatedAt','goodsDetail.userID','goodsDetail.storeID','goodsDetail.skuID','goodsDetail.skuName'])->find();
+        return $orderModel->where('orderNo', $orderNo)->with(['goodsDetail'])->field(['id', 'orderNo', 'orderStatus', 'goodsNum', 'createdAt'])->hidden(['goodsDetail.createdAt', 'goodsDetail.updatedAt', 'goodsDetail.userID', 'goodsDetail.storeID', 'goodsDetail.skuID', 'goodsDetail.skuName'])->find();
     }
 
     /**
@@ -114,8 +114,8 @@ class OrderServlet
      */
     public function storeOrderList(int $status)
     {
-        $model = $this->ordersModel->where('storeID', app()->get('userProfile')->store?->id)->where('orderStatus',$status);
-        return $model->with(['goodsDetail'])->order('createdAt', 'desc')->field(['id','orderNo','goodsTotalPrice','goodsNum','orderStatus','orderCommission','createdAt'])->hidden(['goodsDetail.createdAt','goodsDetail.updatedAt','goodsDetail.userID','goodsDetail.skuID','goodsDetail.skuName'])->select();
+        $model = $this->ordersModel->where('storeID', app()->get('userProfile')->store?->id)->where('orderStatus', $status);
+        return $model->with(['goodsDetail'])->order('createdAt', 'desc')->field(['id', 'orderNo', 'goodsTotalPrice', 'goodsNum', 'orderStatus', 'orderCommission', 'createdAt'])->hidden(['goodsDetail.createdAt', 'goodsDetail.updatedAt', 'goodsDetail.userID', 'goodsDetail.skuID', 'goodsDetail.skuName'])->select();
     }
 
     /**
@@ -131,15 +131,12 @@ class OrderServlet
         $noReceived = $this->ordersModel->where('storeID', $storeID)->where('orderStatus', 3)->count();
         $received = $this->ordersModel->where('storeID', $storeID)->where('orderStatus', 4)->count();
         $refund = $this->ordersModel->where('storeID', $storeID)->whereIn('orderStatus', [6, 7])->count();
-        $totalOrder = $this->ordersModel->where('storeID',$storeID)->where('orderStatus','>=',0)->count();
-        $totalOrderPrice = sprintf('%.2f',round($this->ordersModel->where('storeID',$storeID)->where('orderStatus','>=',0)->sum('goodsTotalPrice'),2));
-        return compact('noUserPay', 'noStorePay','noDelivery', 'noReceived', 'received', 'refund','totalOrder','totalOrderPrice');
+        $finished = $this->ordersModel->where('storeID', $storeID)->where('orderStatus', 5)->count();
+        $totalOrder = $this->ordersModel->where('storeID', $storeID)->where('orderStatus', '>=', 0)->count();
+        $totalOrderPrice = sprintf('%.2f', round($this->ordersModel->where('storeID', $storeID)->where('orderStatus', '>=', 0)->sum('goodsTotalPrice'), 2));
+        return compact('noUserPay', 'noStorePay', 'noDelivery', 'noReceived', 'received', 'refund', 'finished', 'totalOrder', 'totalOrderPrice');
 
     }
-
-
-
-
 
 
 }

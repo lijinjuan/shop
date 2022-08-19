@@ -3,6 +3,8 @@
 namespace app\common\model;
 
 use think\Model;
+use think\model\relation\HasOne;
+use think\session\Store;
 
 class RechargeModel extends Model
 {
@@ -43,6 +45,14 @@ class RechargeModel extends Model
         ];
         return $status[$data['status']]??'审核中';
 
+    }
+
+    /**
+     * @return HasOne
+     */
+    public function store()
+    {
+        return $this->hasOne(StoresModel::class,'id','storeID');
     }
 
 }
