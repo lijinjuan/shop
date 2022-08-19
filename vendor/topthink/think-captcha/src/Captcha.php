@@ -129,6 +129,10 @@ class Captcha
             'key' => $hash,
         ]);
 
+        $this->session->set('captchaValue', [
+            'value' => $bag,
+        ]);
+
         return [
             'value' => $bag,
             'key'   => $hash,
