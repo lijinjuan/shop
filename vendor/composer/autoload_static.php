@@ -52,6 +52,10 @@ class ComposerStaticIniteec8f4a51479aee6cfe2dd06fd086a7a
             'Psr\\Container\\' => 14,
             'Psr\\Cache\\' => 10,
         ),
+        'O' => 
+        array (
+            'OSS\\' => 4,
+        ),
         'L' => 
         array (
             'League\\MimeTypeDetection\\' => 25,
@@ -140,6 +144,10 @@ class ComposerStaticIniteec8f4a51479aee6cfe2dd06fd086a7a
         'Psr\\Cache\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/cache/src',
+        ),
+        'OSS\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/aliyuncs/oss-sdk-php/src/OSS',
         ),
         'League\\MimeTypeDetection\\' => 
         array (
