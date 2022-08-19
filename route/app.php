@@ -21,3 +21,5 @@ Route::get('hello/:name', function (string $name): string {
 Route::miss(function () {
     return 404;
 });
+
+Route::post('upload','commom/service/uploadFile');

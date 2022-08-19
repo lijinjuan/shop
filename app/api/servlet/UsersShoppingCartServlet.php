@@ -85,4 +85,21 @@ class UsersShoppingCartServlet
     {
         return $this->usersShoppingCartModel->where('userID', $userID)->whereIn('id', array_unique($cartIDs))->delete();
     }
+
+    /**
+     * @param int $userID
+     * @param array $data
+     * @return bool
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function clearChoppingCart(int $userID,array $data)
+    {
+        foreach ($data as $item){
+            $cart = $this->usersShoppingCartModel->where('goodsID',$item['goodsID'])->where('skuID',$item['skuID'])->where('userID',$userID)->field(['id'])->find();
+            $cart->delete();
+        }
+        return true;
+    }
 }

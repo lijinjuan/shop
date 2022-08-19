@@ -225,6 +225,9 @@ class OrderRepositories extends AbstractRepositories
         }
         Db::transaction(function () use ($orderSn, $order) {
             $this->servletFactory->userServ()->updateUserInfoByID(app()->get('userProfile')->id, ['balance' => bcsub(app()->get('userProfile')->balance - $order->goodsTotalPrice, 2)]);
+            //清空购物车数据
+            $cartData = $order->goodsDetail()->where('orderNo', $order->orderNo)->field(['id', 'goodsID', 'skuID'])->select()->toArray();
+            $this->servletFactory->usersShoppingCartServ()->clearChoppingCart(app()->get('userProfile')->id, $cartData);
             $commission = $this->servletFactory->commissionServ()->getCommissionByType(2);
             $goodsCommission = json_decode($commission->content, true);
             $goodsCommission = $goodsCommission['goodsCommission'];
@@ -328,7 +331,7 @@ class OrderRepositories extends AbstractRepositories
         $refundData['goodsPrice'] = $detail->goodsPrice;
         $refundData['goodsCover'] = $detail->skuImage;
         $refundData['goodsNum'] = $detail->goodsNum;
-        $refundData['goodsTotalPrice'] = sprintf('%.2f',round($detail->goodsPrice * $detail->goodsNum,2));
+        $refundData['goodsTotalPrice'] = sprintf('%.2f', round($detail->goodsPrice * $detail->goodsNum, 2));
         $refundData['goodsSku'] = $detail->skuName;
         $this->servletFactory->refundServ()->addRefund(array_filter($refundData));
         return renderResponse();
@@ -376,7 +379,7 @@ class OrderRepositories extends AbstractRepositories
             throw new ParameterException(['errMessage' => '订单已收货请不要重复收货...']);
         }
         Db::transaction(function () use ($order, $orderSn) {
-            $order::update(['orderStatus' => 4],['orderNo' => $orderSn]);
+            $order::update(['orderStatus' => 4], ['orderNo' => $orderSn]);
             $order->goodsDetail()->update(['status' => 4]);
         });
         return renderResponse();
@@ -400,7 +403,7 @@ class OrderRepositories extends AbstractRepositories
             throw new ParameterException(['errMessage' => '当前状态不能删除订单...']);
         }
         Db::transaction(function () use ($order, $orderSn) {
-            $order::update(['orderStatus' => -1],['orderNo' => $orderSn]);
+            $order::update(['orderStatus' => -1], ['orderNo' => $orderSn]);
             $order->goodsDetail()->update(['status' => -1]);
         });
         return renderResponse();

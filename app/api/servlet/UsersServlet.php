@@ -124,13 +124,14 @@ class UsersServlet
     }
 
     /**
-     * getUserShoppingCount
-     * @return mixed
+     * @return float|int
      */
     public function getUserShoppingCount()
     {
-        return app()->get("userProfile")?->shoppingCart()->count();
+        $cart =  app()->get("userProfile")?->shoppingCart->toArray();
+        return array_sum(array_column($cart,'goodsNum'));
     }
+
 
     /**
      * @param int $addressID
