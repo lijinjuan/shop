@@ -130,7 +130,8 @@ class StoreController
     public function rechargeList(Request $request)
     {
         $pageSize = $request->post('pageSize',20);
-        return $this->storeRepositories->rechargeList($pageSize);
+        $keywords = $request->post('keywords');
+        return $this->storeRepositories->rechargeList($pageSize,$keywords);
 
     }
 
@@ -142,7 +143,12 @@ class StoreController
     public function withdrawList(Request $request)
     {
         $pageSize = $request->post('pageSize',20);
-        return $this->storeRepositories->withdrawList($pageSize);
+        //1->银行卡 2->ERC20 3->TRC20
+        $type = $request->post('type');
+        $keywords = $request->post('keywords');
+        //1->待审核 2->提现成功 3->提现失败
+        $status = $request->post('status');
+        return $this->storeRepositories->withdrawList($pageSize,compact('type','keywords','status'));
 
     }
 

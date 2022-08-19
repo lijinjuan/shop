@@ -27,7 +27,24 @@ class OrderServlet
      */
     public function orderList(int $pageSize, array $conditions)
     {
-        return $this->ordersModel->where('agentID', 'like', '%,' . app()->get("agentProfile")->id . ',%')->with(['goodsDetail'])->paginate($pageSize);
+        $model = $this->ordersModel->where('agentID', 'like', '%,' . app()->get("agentProfile")->id . ',%');
+        if (isset($conditions['status'])) {
+            $model->where('orderStatus', $conditions['status']);
+        }
+        if (!empty($conditions['orderNo'])) {
+            $model->where('orderNo', $conditions['orderNo']);
+        }
+        if (!empty($conditions['received'])) {
+            $model->where('receiver', $conditions['received']);
+        }
+        if (!empty($conditions['startTime'])) {
+            $model->where('createdAt', '>=', $conditions['startTime']);
+        }
+        if (!empty($conditions['endTime'])) {
+            $model->where('createdAt', '<=', $conditions['endTime']);
+        }
+
+        return $model->with(['goodsDetail'])->paginate($pageSize);
     }
 
     /**

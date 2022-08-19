@@ -51,7 +51,7 @@ class EntryController
         }
 
         $agentProfile = $request->only(["agentAccount", "agentPassword"]);
-
-        return $this->agentsRepositories->userLaunch2Agents($agentProfile);
+        $localIP = $request->ip();
+        return $this->agentsRepositories->userLaunch2Agents($agentProfile,$localIP);
     }
 }

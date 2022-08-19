@@ -123,9 +123,9 @@ class StoreRepositories extends AbstractRepositories
      * @return \think\response\Json
      * @throws \think\db\exception\DbException
      */
-    public function rechargeList(int $pageSize)
+    public function rechargeList(int $pageSize,string $keywords)
     {
-        return renderPaginateResponse($this->servletFactory->rechargeServ()->rechargeList($pageSize));
+        return renderPaginateResponse($this->servletFactory->rechargeServ()->rechargeList($pageSize,$keywords));
     }
 
     /**
@@ -133,9 +133,9 @@ class StoreRepositories extends AbstractRepositories
      * @return \think\response\Json
      * @throws \think\db\exception\DbException
      */
-    public function withdrawList(int $pageSize)
+    public function withdrawList(int $pageSize,array $conditions)
     {
-        return renderPaginateResponse($this->servletFactory->withdrawalServ()->withdralList($pageSize));
+        return renderPaginateResponse($this->servletFactory->withdrawalServ()->withdralList($pageSize,$conditions));
 
     }
 }
