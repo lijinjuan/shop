@@ -37,5 +37,22 @@ class GoodsModel extends Model
         return $this->hasMany(GoodsSkuModel::class, 'goodsID', 'id')->field(['id', 'goodsID', 'skuName', 'sku', 'skuImg', 'skuStock', 'saleAmount', 'skuDiscountPrice', 'skuPrice', 'createdAt']);
     }
 
+    /**
+     * category
+     * @return \think\model\relation\BelongsTo
+     */
+    public function category()
+    {
+        return $this->belongsTo(CategoryModel::class, "categoryID", "id");
+    }
+
+    /**
+     * brands
+     * @return \think\model\relation\BelongsTo
+     */
+    public function brands()
+    {
+        return $this->belongsTo(BrandsModel::class, "brandID", "id");
+    }
 
 }
