@@ -23,6 +23,6 @@ class GoodsRepositories extends AbstractRepositories
 
     public function createGoods(Request $request)
     {
-
+        return renderResponse();
     }
 }

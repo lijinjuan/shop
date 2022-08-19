@@ -6,7 +6,7 @@ use app\agents\middleware\JwtAuthMiddleware;
 use think\facade\Route;
 
 // 获取图片的验证码的接口
-Route::post(":version/create/captcha", ":version.Entry/createCaptcha")->allowCrossDomain();
+Route::get(":version/create/captcha", ":version.Entry/createCaptcha")->allowCrossDomain();
 // 代理商登录的接口
 Route::post(":version/launch", ":version.Entry/userLaunch")->allowCrossDomain();
 
@@ -46,7 +46,6 @@ Route::group(":version", function () {
 Route::group(":version", function () {
     //订单列表
     Route::post("agent-order-list", ":version.Order/orderList");
-
     //发货
     Route::post("agent-order-ship",":version.Order/orderShip");
 

@@ -11,9 +11,9 @@ Route::post(":version/launch", ":version.Entry/admin2Launch");
 Route::group(":version", function () {
     // 获取商品列表的接口
     Route::post("goods-list",":version.Goods/getGoodsListByPaginate");
-    //新增代理商
+    // 新增代理商的接口
     Route::post("add-goods", ":version.Goods/createGoods");
+    // 获取商品分类的接口
+    Route::post("category-list/", ":version.Goods/createGoods");
 
-    //代理商层级列表
-    Route::post("agent-tree-list",":version.Agent/agentTreeList");
 });
