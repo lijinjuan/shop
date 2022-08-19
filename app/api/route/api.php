@@ -148,13 +148,6 @@ Route::group(":version", function () {
 
 })->middleware(JwtAuthMiddleware::class)->json()->allowCrossDomain();
 
-Route::group(":version", function () {
-    // test token
-    Route::post("test/token", ":version.Entry/testToken")->middleware(JwtAuthMiddleware::class);
-
-    // banner api
-})->json();
-
 
 
 

@@ -29,4 +29,5 @@ return array(
     'League\\Flysystem\\Cached\\' => array($vendorDir . '/league/flysystem-cached-adapter/src'),
     'League\\Flysystem\\' => array($vendorDir . '/league/flysystem/src'),
     'Lcobucci\\JWT\\' => array($vendorDir . '/qeq66/jwt/src'),
+    'AlphaSnow\\OSS\\AppServer\\' => array($vendorDir . '/alphasnow/aliyun-oss-appserver/src'),
 );

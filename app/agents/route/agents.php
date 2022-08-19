@@ -6,9 +6,9 @@ use app\agents\middleware\JwtAuthMiddleware;
 use think\facade\Route;
 
 // 获取图片的验证码的接口
-Route::post(":version/create/captcha", ":version.Entry/createCaptcha");
+Route::post(":version/create/captcha", ":version.Entry/createCaptcha")->allowCrossDomain();
 // 代理商登录的接口
-Route::post(":version/launch", ":version.Entry/userLaunch");
+Route::post(":version/launch", ":version.Entry/userLaunch")->allowCrossDomain();
 
 // 代理商后台操作的apis
 Route::group(":version", function () {
@@ -19,7 +19,7 @@ Route::group(":version", function () {
     //代理商层级列表
     Route::post("agent-tree-list",":version.Agent/agentTreeList");
 
-})->middleware(JwtAuthMiddleware::class);
+})->middleware(JwtAuthMiddleware::class)->allowCrossDomain();
 
 //店铺相关接口
 Route::group(":version", function () {
@@ -40,7 +40,7 @@ Route::group(":version", function () {
     //获取店铺统计数据
     Route::get("agent-store-statistics/:id",":version.Store/storeStatistics");
 
-})->middleware(JwtAuthMiddleware::class);
+})->middleware(JwtAuthMiddleware::class)->allowCrossDomain();
 
 //订单相关数据
 Route::group(":version", function () {
@@ -50,7 +50,7 @@ Route::group(":version", function () {
     //发货
     Route::post("agent-order-ship",":version.Order/orderShip");
 
-})->middleware(JwtAuthMiddleware::class);
+})->middleware(JwtAuthMiddleware::class)->allowCrossDomain();
 
 //会员记录相关列表
 Route::group(":version", function () {
@@ -60,4 +60,4 @@ Route::group(":version", function () {
     Route::post("agent-withdraw-list",":version.Store/withdrawList");
 
 
-})->middleware(JwtAuthMiddleware::class);
+})->middleware(JwtAuthMiddleware::class)->allowCrossDomain();

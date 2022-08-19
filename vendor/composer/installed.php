@@ -5,11 +5,20 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '7e9ed90d2175a5e6d0c5e609e5ce19ba336021a8',
+        'reference' => '006fe8a294857d7cd2c77b1ff47c64aba655ea96',
         'name' => 'topthink/think',
         'dev' => true,
     ),
     'versions' => array(
+        'alphasnow/aliyun-oss-appserver' => array(
+            'pretty_version' => '1.0.0',
+            'version' => '1.0.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../alphasnow/aliyun-oss-appserver',
+            'aliases' => array(),
+            'reference' => '193c3ef9da878b14469e2c7e7b8236bc68a992c3',
+            'dev_requirement' => false,
+        ),
         'hardphp/thinkphp-snowflake' => array(
             'pretty_version' => '0.5.0',
             'version' => '0.5.0.0',
@@ -169,7 +178,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '7e9ed90d2175a5e6d0c5e609e5ce19ba336021a8',
+            'reference' => '006fe8a294857d7cd2c77b1ff47c64aba655ea96',
             'dev_requirement' => false,
         ),
         'topthink/think-annotation' => array(

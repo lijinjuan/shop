@@ -59,6 +59,10 @@ class ComposerStaticIniteec8f4a51479aee6cfe2dd06fd086a7a
             'League\\Flysystem\\' => 17,
             'Lcobucci\\JWT\\' => 13,
         ),
+        'A' => 
+        array (
+            'AlphaSnow\\OSS\\AppServer\\' => 24,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
@@ -156,6 +160,10 @@ class ComposerStaticIniteec8f4a51479aee6cfe2dd06fd086a7a
         'Lcobucci\\JWT\\' => 
         array (
             0 => __DIR__ . '/..' . '/qeq66/jwt/src',
+        ),
+        'AlphaSnow\\OSS\\AppServer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/alphasnow/aliyun-oss-appserver/src',
         ),
     );
 

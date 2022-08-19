@@ -1,6 +1,79 @@
 {
     "packages": [
         {
+            "name": "alphasnow/aliyun-oss-appserver",
+            "version": "1.0.0",
+            "version_normalized": "1.0.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/alphasnow/aliyun-oss-appserver.git",
+                "reference": "193c3ef9da878b14469e2c7e7b8236bc68a992c3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/alphasnow/aliyun-oss-appserver/zipball/193c3ef9da878b14469e2c7e7b8236bc68a992c3",
+                "reference": "193c3ef9da878b14469e2c7e7b8236bc68a992c3",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "ext-openssl": "*",
+                "php": "^7.2.5|^8.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.4",
+                "mockery/mockery": "^1.3",
+                "orchestra/testbench": "^4.18",
+                "phpstan/phpstan": "^1.8",
+                "phpunit/phpunit": "^8.5.23"
+            },
+            "time": "2022-08-02T06:21:33+00:00",
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "AlphaSnow\\OSS\\AppServer\\Laravel\\ServiceProvider"
+                    ]
+                }
+            },
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "AlphaSnow\\OSS\\AppServer\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "alphasnow",
+                    "email": "wind91@foxmail.com"
+                }
+            ],
+            "description": "upload data to OSS through web applications",
+            "homepage": "https://alphasnow.github.io/aliyun-oss-appserver/",
+            "keywords": [
+                "aliyun",
+                "appserver",
+                "laravel",
+                "oss"
+            ],
+            "support": {
+                "issues": "https://github.com/alphasnow/aliyun-oss-appserver/issues",
+                "source": "https://github.com/alphasnow/aliyun-oss-appserver"
+            },
+            "install-path": "../alphasnow/aliyun-oss-appserver"
+        },
+        {
             "name": "hardphp/thinkphp-snowflake",
             "version": "0.5.0",
             "version_normalized": "0.5.0.0",
