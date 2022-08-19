@@ -43,9 +43,9 @@ class EntryController
     {
         $verifyCode = trim($request->param("verifyCode"));
 
-        if (!captcha_check($verifyCode)) {
-            throw new ParameterException(["errMessage" => "验证码不正确..."]);
-        }
+//        if (!captcha_check($verifyCode)) {
+//            throw new ParameterException(["errMessage" => "验证码不正确..."]);
+//        }
 
         $userProfile = $request->only(["email", "password"]);
 
