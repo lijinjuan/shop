@@ -49,10 +49,10 @@ class AgentsRepositories extends AbstractRepositories
      */
     public function createAgents(array $agentProfile)
     {
-        $model = $this->servletFactory->agentsServ()->getAgentsProfileByFields(['id' => app()->get("agentProfile")->id]);
+        $agentModel = $this->servletFactory->agentsServ()->getAgentsProfileByFields(['id' => app()->get("agentProfile")->id]);
         $agentProfile['agentPassword'] = password_hash($agentProfile['agentPassword'], PASSWORD_DEFAULT);
         $agentProfile["inviteCode"] = app()->get(InviteServiceInterface::class)->agentInviteCode();
-        $agentProfile['agentParentID'] = $model->agentParentID . app()->get("agentProfile")->id . ',';
+        $agentProfile['agentParentID'] = $agentModel->agentParentID . app()->get("agentProfile")->id . ',';
         $this->servletFactory->agentsServ()->createAgents($agentProfile);
         return renderResponse();
     }

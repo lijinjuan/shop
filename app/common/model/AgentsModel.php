@@ -28,7 +28,7 @@ class AgentsModel extends Model
      * @var bool
      */
     protected $autoWriteTimestamp = "timestamp";
-    
+
     /**
      * @param $value
      * @param $data
