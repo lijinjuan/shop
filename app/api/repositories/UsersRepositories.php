@@ -89,4 +89,14 @@ class UsersRepositories extends AbstractRepositories
         $this->servletFactory->userServ()->alterUserPassword($loginPassword, $payPassword);
         return renderResponse();
     }
+
+    /**
+     * getUserBaseInfo
+     * @return \think\response\Json
+     */
+    public function getUserBaseInfo()
+    {
+        $userModel = app()->get("userProfile");
+        return renderResponse($userModel->hidden(["password", "createdAt", "updatedAt", "deletedAt"]));
+    }
 }

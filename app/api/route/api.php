@@ -65,6 +65,10 @@ Route::group(":version", function () {
 
 // 客户端店铺接口
 Route::group(":version", function () {
+    // 获取用户的基本信息的接口
+    Route::get("user-base-info", ":version.Entry/getUserBaseInfo");
+    // 修改用户的基本信息的接口
+    Route::post("alter-user-info", ":version.Entry/editUserInfo");
     // 获取店铺基本信息的接口
     Route::get("shop-base-info", ":version.Shop/getStoreByBasicInfo");
     // 获取店铺统计信息的接口

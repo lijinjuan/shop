@@ -61,4 +61,33 @@ class EntryController
         $emailCode = $request->param("emailCode");
         return $this->usersRepositories->alterUserPassword($loginPassword, $payPassword, $emailCode);
     }
+
+    /**
+     * getUserBaseInfo
+     * @return \think\response\Json
+     */
+    public function getUserBaseInfo()
+    {
+        return $this->usersRepositories->getUserBaseInfo();
+    }
+
+    /**
+     * editUserInfo
+     * @param \think\Request $request
+     * @return \think\response\Json
+     */
+    public function editUserInfo(Request $request)
+    {
+        $userName = $request->param("userName", "");
+        $userAvatar = $request->param("userAvatar", "");
+        /**
+         * @var $userModel \app\common\model\UsersModel
+         */
+        $userModel = app()->get("userProfile");
+        $userModel->userName = $userName;
+        $userModel->userAvatar = $userAvatar;
+        $userModel->save();
+
+        return renderResponse();
+    }
 }
