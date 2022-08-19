@@ -12,7 +12,7 @@ Route::post(":version/launch", ":version.Entry/storeLaunch")->allowCrossDomain()
 // 店铺后台的基本接口
 Route::group(":version", function () {
     // 获取店铺的基本信息的接口
-    Route::get("store-base-info", ":version.Store/getStoreBaseInfo");
+    Route::post("store-base-info", ":version.Store/getStoreBaseInfo");
     // 保存店铺的基本信息的接口
     Route::post("edit-store-base-info", ":version.Store/editStoreBaseInfo");
     // 获取店铺列表的接口
