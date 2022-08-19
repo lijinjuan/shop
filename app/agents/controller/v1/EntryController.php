@@ -44,7 +44,9 @@ class EntryController
      */
     public function userLaunch(Request $request)
     {
-        var_dump(session("captchaValue"));
+        $value = session("captchaValue");
+        return renderResponse($value);
+        
         $verifyCode = (string)$request->param("verifyCode", "");
 
         if (!captcha_check($verifyCode)) {
