@@ -7,6 +7,7 @@ use app\agents\repositories\AgentsRepositories;
 use app\common\service\InviteServiceInterface;
 use app\lib\exception\ParameterException;
 use think\captcha\facade\Captcha;
+use think\facade\Cookie;
 use think\Request;
 
 /**
@@ -46,9 +47,9 @@ class EntryController
     {
         $verifyCode = (string)$request->param("verifyCode", "");
 
-//        if (!captcha_check($verifyCode)) {
-//            throw new ParameterException(["errMessage" => "验证码错误或者失效..."]);
-//        }
+        if (!captcha_check($verifyCode)) {
+            throw new ParameterException(["errMessage" => "验证码错误或者失效..."]);
+        }
 
         $agentProfile = $request->only(["agentAccount", "agentPassword"]);
         $localIP = $request->ip();
