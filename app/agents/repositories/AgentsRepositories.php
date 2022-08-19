@@ -27,7 +27,8 @@ class AgentsRepositories extends AbstractRepositories
         //增加登录IP，登录次数，最后一次登录时间
         $agentModel->where('id', $agentModel->id)->save(['loginIP' => $localIP, 'lastLoginAt' => date('Y-m-d H:i:s'), 'loginNum' => ++$agentModel->loginNum]);
         $accessToken = JWTAuth::builder(["agentID" => (int)$agentModel->getAttr("id")]);
-        return renderResponse(compact("accessToken"));
+        $agentProfile = $agentModel;
+        return renderResponse(compact("accessToken", "agentProfile"));
     }
 
     /**
