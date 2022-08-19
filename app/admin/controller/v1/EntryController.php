@@ -3,7 +3,6 @@
 namespace app\admin\controller\v1;
 
 use app\admin\repositories\AdminsRepositories;
-use app\admin\repositories\UsersRepositories;
 use app\lib\exception\ParameterException;
 use think\captcha\facade\Captcha;
 use think\Request;
@@ -36,11 +35,11 @@ class EntryController
     }
 
     /**
-     * userLaunch
+     * admin2Launch
      * @param \think\Request $request
      * @return \think\response\Json
      */
-    public function userLaunch(Request $request)
+    public function admin2Launch(Request $request)
     {
         $verifyCode = (string)$request->param("verifyCode", "");
 
