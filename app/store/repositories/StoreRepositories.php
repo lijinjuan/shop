@@ -25,14 +25,24 @@ class StoreRepositories extends AbstractRepositories
             throw new ParameterException(["errMessage" => "用户名或者密码错误..."]);
         }
 
-        $store = $userModel->store()->where("status", 1)->find();
+        $storeModel = $userModel->store()->where("status", 1)->find();
 
-        if (is_null($store)) {
+        if (is_null($storeModel)) {
             throw new ParameterException(["errMessage" => "店铺功能暂未通过..."]);
         }
 
-        $accessToken = JWTAuth::builder(["storeID" => $store->id]);
-        return renderResponse(compact("accessToken"));
+        $accessToken = JWTAuth::builder(["storeID" => $storeModel->id]);
+        $storeProfile = [
+            "storeName" => $storeModel->storeName,
+            "email" => $storeModel->user->email,
+            "logo" => $storeModel->user->storeLogo,
+            "inviteCode" => $storeModel->inviteCode,
+            "mobile" => $storeModel->mobile,
+            "cardID" => $storeModel->cardID,
+            "remark" => $storeModel->storeRemark,
+        ];
+
+        return renderResponse(compact("accessToken", "storeProfile"));
     }
 
     /**
