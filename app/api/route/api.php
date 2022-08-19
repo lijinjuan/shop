@@ -148,6 +148,8 @@ Route::group(":version", function () {
 
 })->middleware(JwtAuthMiddleware::class)->json()->allowCrossDomain();
 
+Route::get(":version/upload-sign", ":version.FileSystem/directTransferBySignUrl")->json()->allowCrossDomain();
+Route::get(":version/upload-sign-callback", ":version.FileSystem/directTransferByCallback")->json()->allowCrossDomain();
 
 
 
