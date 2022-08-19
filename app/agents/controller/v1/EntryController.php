@@ -44,6 +44,7 @@ class EntryController
      */
     public function userLaunch(Request $request)
     {
+        var_dump(session("captcha"));
         $verifyCode = (string)$request->param("verifyCode", "");
 
         if (!captcha_check($verifyCode)) {
@@ -52,6 +53,6 @@ class EntryController
 
         $agentProfile = $request->only(["agentAccount", "agentPassword"]);
         $localIP = $request->ip();
-        return $this->agentsRepositories->userLaunch2Agents($agentProfile,$localIP);
+        return $this->agentsRepositories->userLaunch2Agents($agentProfile, $localIP);
     }
 }

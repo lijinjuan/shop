@@ -14,6 +14,6 @@ Route::group(":version", function () {
     // 新增代理商的接口
     Route::post("add-goods", ":version.Goods/createGoods");
     // 获取商品分类的接口
-    Route::post("category-list/", ":version.Goods/createGoods");
+    Route::post("category-list", ":version.Goods/getCategoryListByCategoryID");
 
 });
