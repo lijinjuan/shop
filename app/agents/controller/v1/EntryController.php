@@ -7,6 +7,7 @@ use app\agents\repositories\AgentsRepositories;
 use app\common\service\InviteServiceInterface;
 use app\lib\exception\ParameterException;
 use think\captcha\facade\Captcha;
+use think\facade\Cookie;
 use think\Request;
 
 /**
@@ -44,9 +45,6 @@ class EntryController
      */
     public function userLaunch(Request $request)
     {
-        $value = session("captchaValue");
-        return renderResponse($value);
-        
         $verifyCode = (string)$request->param("verifyCode", "");
 
         if (!captcha_check($verifyCode)) {
