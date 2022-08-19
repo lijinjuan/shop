@@ -36,7 +36,7 @@ class StoreRepositories extends AbstractRepositories
         $storeProfile = [
             "storeName" => $storeModel->storeName,
             "email" => $storeModel->user->email,
-            "logo" => $storeModel->user->storeLogo,
+            "logo" => $storeModel->storeLogo,
             "inviteCode" => $storeModel->inviteCode,
             "mobile" => $storeModel->mobile,
             "cardID" => $storeModel->cardID,
@@ -68,7 +68,7 @@ class StoreRepositories extends AbstractRepositories
         $storeBaseInfo = [
             "storeName" => $storeModel->storeName,
             "email" => $storeModel->user->email,
-            "logo" => $storeModel->user->storeLogo,
+            "logo" => $storeModel->storeLogo,
             "inviteCode" => $storeModel->inviteCode,
             "mobile" => $storeModel->mobile,
             "cardID" => $storeModel->cardID,

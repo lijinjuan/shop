@@ -47,7 +47,12 @@ class StoreServlet
      */
     public function getStoreList(int $storeID)
     {
-        return $this->storesModel->whereLike("parentStoreID", "%,$storeID,%")->where("status", 1)->append(["parentID"])->paginate((int)request()->param("pageSize"));
+        return $this->storesModel->whereLike("parentStoreID", "%,$storeID,%")
+            ->field(["id", "storeName", "mobile", "storeDesc", "status", "storeRemark", "userID", "parentStoreID", "createdAt"])
+            ->with(["user" => function ($query) {
+                $query->field(["id", "userName"]);
+            }])
+            ->where("status", 1)->append(["parentID"])->paginate((int)request()->param("pageSize"));
     }
 
     /**

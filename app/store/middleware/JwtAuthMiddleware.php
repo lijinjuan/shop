@@ -46,7 +46,7 @@ class JwtAuthMiddleware extends BaseMiddleware
             }
         } catch (TokenBlacklistGracePeriodException) {
             goto GRACE_PERIOD_EXCEPTION;
-        } catch (\Throwable $exception) {
+        } catch (\Throwable) {
             throw new TokenInvalidException();
         }
 
