@@ -7,5 +7,5 @@ namespace app\admin\repositories;
  */
 class UsersRepositories extends AbstractRepositories
 {
-
+    
 }
