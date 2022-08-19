@@ -3,6 +3,7 @@
 namespace app\api\controller\v1;
 
 use app\api\repositories\ShopRepositories;
+use app\common\service\InviteServiceInterface;
 use think\Request;
 
 /**

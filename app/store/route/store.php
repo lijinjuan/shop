@@ -4,10 +4,10 @@ use app\store\middleware\JwtAuthMiddleware;
 use think\facade\Route;
 
 //  获取图片的验证码的接口
-Route::post(":version/create/captcha", ":version.Entry/createCaptcha");
+Route::post(":version/create/captcha", ":version.Entry/createCaptcha")->allowCrossDomain();
 
 //  店铺登录的接口
-Route::post(":version/launch", ":version.Entry/storeLaunch");
+Route::post(":version/launch", ":version.Entry/storeLaunch")->allowCrossDomain();
 
 // 店铺后台的基本接口
 Route::group(":version", function () {
@@ -34,4 +34,4 @@ Route::group(":version", function () {
     // 平台中商品上架的接口
     Route::post("goods-on-sale/:goodsID", ":version.Goods/onSaleGoods2Store");
 
-})->middleware(JwtAuthMiddleware::class);
+})->middleware(JwtAuthMiddleware::class)->allowCrossDomain();

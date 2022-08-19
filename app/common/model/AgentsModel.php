@@ -30,17 +30,6 @@ class AgentsModel extends Model
     protected $autoWriteTimestamp = "timestamp";
 
     /**
-     * onBeforeInsert
-     * @param \think\Model $model
-     * @return mixed
-     */
-    public static function onBeforeInsert(Model $model): mixed
-    {
-        $model->setAttr("inviteCode", "1234");
-        return true;
-    }
-
-    /**
      * @param $value
      * @param $data
      * @return string

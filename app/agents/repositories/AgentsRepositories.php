@@ -2,6 +2,7 @@
 
 namespace app\agents\repositories;
 
+use app\common\service\InviteServiceInterface;
 use app\lib\exception\ParameterException;
 use thans\jwt\facade\JWTAuth;
 
@@ -48,13 +49,10 @@ class AgentsRepositories extends AbstractRepositories
      */
     public function createAgents(array $agentProfile)
     {
-        $model = $this->servletFactory->agentsServ()->getAgentsProfileByFields(['id' => app()->get("agentProfile")->id]);
+        $agentModel = $this->servletFactory->agentsServ()->getAgentsProfileByFields(['id' => app()->get("agentProfile")->id]);
         $agentProfile['agentPassword'] = password_hash($agentProfile['agentPassword'], PASSWORD_DEFAULT);
-        if ($model->agentParentID == ',') {
-            $agentProfile['agentParentID'] = app()->get("agentProfile")->id . ',';
-        } else {
-            $agentProfile['agentParentID'] = $model->agentParentID . app()->get("agentProfile")->id . ',';
-        }
+        $agentProfile["inviteCode"] = app()->get(InviteServiceInterface::class)->agentInviteCode();
+        $agentProfile['agentParentID'] = $agentModel->agentParentID . app()->get("agentProfile")->id . ',';
         $this->servletFactory->agentsServ()->createAgents($agentProfile);
         return renderResponse();
     }

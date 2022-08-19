@@ -1,0 +1,60 @@
+{
+    "name": "alphasnow/aliyun-oss-appserver",
+    "description": "upload data to OSS through web applications",
+    "keywords": ["aliyun", "oss", "appserver", "laravel"],
+    "license": "MIT",
+    "homepage": "https://alphasnow.github.io/aliyun-oss-appserver/",
+    "support": {
+        "issues": "https://github.com/alphasnow/aliyun-oss-appserver/issues",
+        "source": "https://github.com/alphasnow/aliyun-oss-appserver"
+    },
+    "authors": [
+        {
+            "name": "alphasnow",
+            "email": "wind91@foxmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.2.5|^8.0",
+        "ext-json": "*",
+        "ext-curl": "*",
+        "ext-openssl": "*"
+    },
+    "require-dev": {
+        "mockery/mockery": "^1.3",
+        "phpunit/phpunit": "^8.5.23",
+        "friendsofphp/php-cs-fixer": "^3.4",
+        "phpstan/phpstan": "^1.8",
+        "orchestra/testbench": "^4.18"
+    },
+    "autoload": {
+        "psr-4": {
+            "AlphaSnow\\OSS\\AppServer\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "AlphaSnow\\OSS\\AppServer\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "AlphaSnow\\OSS\\AppServer\\Laravel\\ServiceProvider"
+            ]
+        }
+    },
+    "scripts": {
+        "phpstan": "vendor/bin/phpstan analyse",
+        "check-style": "vendor/bin/php-cs-fixer fix --using-cache=no --diff --config=.php-cs-fixer.php --dry-run --ansi",
+        "fix-style": "vendor/bin/php-cs-fixer fix --using-cache=no --config=.php-cs-fixer.php --ansi",
+        "test": "vendor/bin/phpunit --colors=always --testdox",
+        "test-report": "vendor/bin/phpunit --coverage-html=reports/"
+    },
+    "scripts-descriptions": {
+        "phpstan": "Run static analysis",
+        "check-style": "Run style checks (only dry run - no fixing!).",
+        "fix-style": "Run style checks and fix violations.",
+        "test": "Run all tests."
+    }
+}

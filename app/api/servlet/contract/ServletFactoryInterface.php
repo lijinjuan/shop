@@ -2,6 +2,7 @@
 
 namespace app\api\servlet\contract;
 
+use app\api\servlet\AgentsServlet;
 use app\api\servlet\BannersServlet;
 use app\api\servlet\BrandsServlet;
 use app\api\servlet\CategoryServlet;
@@ -128,6 +129,12 @@ interface ServletFactoryInterface
      * @return RefundConfigServlet
      */
     public function refundConfigServ():RefundConfigServlet;
+
+    /**
+     * agentServ
+     * @return \app\api\servlet\AgentsServlet
+     */
+    public function agentServ(): AgentsServlet;
 
 
 }

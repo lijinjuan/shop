@@ -6,19 +6,19 @@
     'aliases' => 
     array (
     ),
-    'reference' => '1ffb8f9d80cf9cbdd2a152b1fe0c40157716c67c',
+    'reference' => 'f909077be2acc12872817b2b6f76e3a5e031e2ad',
     'name' => 'topthink/think',
   ),
   'versions' => 
   array (
-    'aliyuncs/oss-sdk-php' => 
+    'alphasnow/aliyun-oss-appserver' => 
     array (
-      'pretty_version' => 'v2.6.0',
-      'version' => '2.6.0.0',
+      'pretty_version' => '1.0.0',
+      'version' => '1.0.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '572d0f8e099e8630ae7139ed3fdedb926c7a760f',
+      'reference' => '193c3ef9da878b14469e2c7e7b8236bc68a992c3',
     ),
     'hardphp/thinkphp-snowflake' => 
     array (
@@ -180,7 +180,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '1ffb8f9d80cf9cbdd2a152b1fe0c40157716c67c',
+      'reference' => 'f909077be2acc12872817b2b6f76e3a5e031e2ad',
     ),
     'topthink/think-annotation' => 
     array (

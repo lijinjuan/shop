@@ -4,14 +4,14 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticIniteec8f4a51479aee6cfe2dd06fd086a7a
+class ComposerStaticInitde63d43b82a97db0a5ae0edd539cc6db
 {
     public static $files = array (
         '9b552a3cc426e3287cc811caefa3cf53' => __DIR__ . '/..' . '/topthink/think-helper/src/helper.php',
         '35fab96057f1bf5e7aba31a8a6d5fdde' => __DIR__ . '/..' . '/topthink/think-orm/stubs/load_stubs.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
-        '25072dd6e2470089de65ae7bf11d3109' => __DIR__ . '/..' . '/symfony/polyfill-php72/bootstrap.php',
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
+        '25072dd6e2470089de65ae7bf11d3109' => __DIR__ . '/..' . '/symfony/polyfill-php72/bootstrap.php',
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         'cc25fa796cd7d2989f16cf9daf45371d' => __DIR__ . '/..' . '/thans/tp-jwt-auth/src/helper.php',
         '1cfd2761b63b0a29ed23657ea394cb2d' => __DIR__ . '/..' . '/topthink/think-captcha/src/helper.php',
@@ -52,16 +52,16 @@ class ComposerStaticIniteec8f4a51479aee6cfe2dd06fd086a7a
             'Psr\\Container\\' => 14,
             'Psr\\Cache\\' => 10,
         ),
-        'O' => 
-        array (
-            'OSS\\' => 4,
-        ),
         'L' => 
         array (
             'League\\MimeTypeDetection\\' => 25,
             'League\\Flysystem\\Cached\\' => 24,
             'League\\Flysystem\\' => 17,
             'Lcobucci\\JWT\\' => 13,
+        ),
+        'A' => 
+        array (
+            'AlphaSnow\\OSS\\AppServer\\' => 24,
         ),
     );
 
@@ -88,10 +88,10 @@ class ComposerStaticIniteec8f4a51479aee6cfe2dd06fd086a7a
         ),
         'think\\' => 
         array (
-            0 => __DIR__ . '/..' . '/topthink/framework/src/think',
-            1 => __DIR__ . '/..' . '/topthink/think-factory/src',
-            2 => __DIR__ . '/..' . '/topthink/think-helper/src',
-            3 => __DIR__ . '/..' . '/topthink/think-orm/src',
+            0 => __DIR__ . '/..' . '/topthink/think-helper/src',
+            1 => __DIR__ . '/..' . '/topthink/think-orm/src',
+            2 => __DIR__ . '/..' . '/topthink/think-factory/src',
+            3 => __DIR__ . '/..' . '/topthink/framework/src/think',
         ),
         'thans\\jwt\\' => 
         array (
@@ -145,10 +145,6 @@ class ComposerStaticIniteec8f4a51479aee6cfe2dd06fd086a7a
         array (
             0 => __DIR__ . '/..' . '/psr/cache/src',
         ),
-        'OSS\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/aliyuncs/oss-sdk-php/src/OSS',
-        ),
         'League\\MimeTypeDetection\\' => 
         array (
             0 => __DIR__ . '/..' . '/league/mime-type-detection/src',
@@ -164,6 +160,10 @@ class ComposerStaticIniteec8f4a51479aee6cfe2dd06fd086a7a
         'Lcobucci\\JWT\\' => 
         array (
             0 => __DIR__ . '/..' . '/qeq66/jwt/src',
+        ),
+        'AlphaSnow\\OSS\\AppServer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/alphasnow/aliyun-oss-appserver/src',
         ),
     );
 
@@ -183,10 +183,10 @@ class ComposerStaticIniteec8f4a51479aee6cfe2dd06fd086a7a
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticIniteec8f4a51479aee6cfe2dd06fd086a7a::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticIniteec8f4a51479aee6cfe2dd06fd086a7a::$prefixDirsPsr4;
-            $loader->fallbackDirsPsr0 = ComposerStaticIniteec8f4a51479aee6cfe2dd06fd086a7a::$fallbackDirsPsr0;
-            $loader->classMap = ComposerStaticIniteec8f4a51479aee6cfe2dd06fd086a7a::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitde63d43b82a97db0a5ae0edd539cc6db::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitde63d43b82a97db0a5ae0edd539cc6db::$prefixDirsPsr4;
+            $loader->fallbackDirsPsr0 = ComposerStaticInitde63d43b82a97db0a5ae0edd539cc6db::$fallbackDirsPsr0;
+            $loader->classMap = ComposerStaticInitde63d43b82a97db0a5ae0edd539cc6db::$classMap;
 
         }, null, ClassLoader::class);
     }
