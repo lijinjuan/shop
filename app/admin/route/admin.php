@@ -68,4 +68,53 @@ Route::group(":version", function () {
     Route::post("stop-store/:id",":version.User/stopStore");
     //用户解冻
     Route::post("start-store/:id",":version.User/startStore");
+    //会员充值列表
+    Route::post("recharge-list",":version.User/rechargeList");
+    //展示会员提交审核信息
+    Route::get("get-recharge-info/:id",":version.User/getCheckRechargeInfo");
+    //会员充值审核
+    Route::post("check-recharge/:id",":version.User/checkRecharge");
+    //查看审核
+    Route::get("show-check-recharge/:id",":version.User/showCheckRecharge");
+
+    //提现列表
+    Route::post("withdrawal-list",":version.User/withdrawalList");
+    //展示会员提现审核信息
+    Route::get("get-withdrawal-info/:id",":version.User/getCheckWithdrawalInfo");
+    //会员提现审核
+    Route::post("check-withdrawal/:id",":version.User/checkWithdrawal");
+
+
+});
+
+//总后台分销管理
+Route::group(":version", function () {
+    //添加代理商佣金配置
+    Route::post("add-commission-config",":version.Commission/addCommission");
+    //代理商佣金配置
+    Route::get("get-commission-config/:type",":version.Commission/getCommissionByType");
+});
+
+//总后台信息配置
+Route::group(":version", function () {
+    //添加banner
+    Route::post("add-banner",":version.ConfigInfo/addBanner");
+    //编辑banner
+    Route::put("edit-banner/:id", ":version.ConfigInfo/editBanner");
+    //删除banner
+    Route::delete("delete-agent/:id",":version.ConfigInfo/deleteBanner");
+    //banner列表
+    Route::post("banner-list",":version.ConfigInfo/bannerList");
+
+    //添加充值渠道
+    Route::post("add-recharge-config",":version.ConfigInfo/addRechargeConfig");
+    //编辑充值渠道
+    Route::put("edit-recharge-config/:id", ":version.ConfigInfo/editRechargeConfig");
+    //删除充值渠道
+    Route::delete("delete-recharge-config/:id",":version.ConfigInfo/deleteRechargeConfig");
+    //充值渠道列表
+    Route::post("recharge-config-list",":version.ConfigInfo/RechargeConfigList");
+
+
+
 });

@@ -57,10 +57,10 @@ class UserController
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function editUserTrue2false(int $id,Request $request)
+    public function editUserTrue2false(int $id, Request $request)
     {
         $isRealPeople = $request->post('isRealPeople');
-        return $this->usersRepositories->modifyUserInfo($id,['isRealPeople'=>$isRealPeople]);
+        return $this->usersRepositories->modifyUserInfo($id, ['isRealPeople' => $isRealPeople]);
 
     }
 
@@ -73,10 +73,10 @@ class UserController
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function editUserRemark(int $id,Request $request)
+    public function editUserRemark(int $id, Request $request)
     {
         $remark = $request->post('remark');
-        return $this->usersRepositories->modifyUserInfo($id,['remark'=>$remark]);
+        return $this->usersRepositories->modifyUserInfo($id, ['remark' => $remark]);
     }
 
     /**
@@ -88,10 +88,10 @@ class UserController
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function editVirtualVisitors(int $id,Request $request)
+    public function editVirtualVisitors(int $id, Request $request)
     {
         $visitors = $request->post('visitors');
-        return $this->usersRepositories->modifyUserInfo($id,['increaseUV'=>$visitors]);
+        return $this->usersRepositories->modifyUserInfo($id, ['increaseUV' => $visitors]);
     }
 
     /**
@@ -102,8 +102,8 @@ class UserController
      */
     public function checkStore(int $id, Request $request)
     {
-        $checkData = $request->post(['status','remark','reason']);
-        return $this->usersRepositories->checkStore($id,$checkData);
+        $checkData = $request->post(['status', 'remark', 'reason']);
+        return $this->usersRepositories->checkStore($id, $checkData);
     }
 
     /**
@@ -150,5 +150,92 @@ class UserController
     {
         return $this->usersRepositories->startStore($id);
     }
+
+    /**
+     * @param Request $request
+     * @return \think\response\Json
+     */
+    public function rechargeList(Request $request)
+    {
+        $keywords = $request->post('keywords', '');
+        $pageSize = $request->post('pageSize', 20);
+        return $this->usersRepositories->rechargeList($keywords, $pageSize);
+
+    }
+
+    /**
+     * @param int $id
+     * @return \think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function getCheckRechargeInfo(int $id)
+    {
+        return $this->usersRepositories->getRechargeInfoByID($id);
+    }
+
+    /**
+     * @param int $id
+     * @param Request $request
+     * @return \think\response\Json
+     * @throws \app\lib\exception\ParameterException
+     */
+    public function checkRecharge(int $id, Request $request)
+    {
+        $status = $request->post('status');
+        $refuseReason = $request->post('reason', '');
+        return $this->usersRepositories->checkRecharge($id, compact('status', 'refuseReason'));
+
+    }
+
+    /**
+     * @param int $id
+     * @return \app\common\model\RechargeModel|array|mixed|\think\Model|null
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function showCheckRecharge(int $id)
+    {
+        return $this->usersRepositories->getRechargeInfoByID($id);
+    }
+
+    /**
+     * @param Request $request
+     * @return \think\response\Json
+     * @throws \think\db\exception\DbException
+     */
+    public function withdrawalList(Request $request)
+    {
+        $pageSize = $request->post('pageSize',20);
+        return $this->usersRepositories->withdrawalList($pageSize);
+    }
+
+    /**
+     * @param int $id
+     * @return \think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function getCheckWithdrawalInfo(int $id)
+    {
+        return $this->usersRepositories->getCheckWithdrawalInfo($id);
+    }
+
+    /**
+     * @param int $id
+     * @param Request $request
+     * @return \think\response\Json
+     * @throws \app\lib\exception\ParameterException
+     */
+    public function checkWithdrawal(int $id,Request $request)
+    {
+        $status = $request->post('status');
+        $refuseReason = $request->post('reason');
+        return $this->usersRepositories->checkWithdrawalByID($id,compact('status','refuseReason'));
+    }
+
 
 }

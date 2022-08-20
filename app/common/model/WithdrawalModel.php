@@ -48,7 +48,13 @@ class WithdrawalModel extends Model
     }
 
 
-
+    /**
+     * @return HasOne
+     */
+    public function user()
+    {
+        return $this->hasOne(UsersModel::class,'id','userID');
+    }
     /**
      * @return HasOne
      */

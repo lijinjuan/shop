@@ -5,8 +5,11 @@ namespace app\admin\servlet\contract;
 
 use app\admin\servlet\AdminsServlet;
 use app\admin\servlet\AgentsServlet;
+use app\admin\servlet\BannerServlet;
 use app\admin\servlet\CategoryServlet;
+use app\admin\servlet\CommissionServlet;
 use app\admin\servlet\GoodsServlet;
+use app\admin\servlet\RechargeConfigServlet;
 use app\admin\servlet\RechargeServet;
 use app\admin\servlet\RefundConfigServlet;
 use app\admin\servlet\StoreAccountServlet;
@@ -72,4 +75,19 @@ interface ServletFactoryInterface
      * @return WithdrawalServlet
      */
     public function withdrawalServ():WithdrawalServlet;
+
+    /**
+     * @return CommissionServlet
+     */
+    public function commissionServ():CommissionServlet;
+
+    /**
+     * @return BannerServlet
+     */
+    public function bannerServ():BannerServlet;
+
+    /**
+     * @return RechargeConfigServlet
+     */
+    public function rechargeConfigServ():RechargeConfigServlet;
 }

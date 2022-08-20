@@ -92,4 +92,28 @@ class ServletFactory implements ServletFactoryInterface
     {
         return invoke(WithdrawalServlet::class);
     }
+
+    /**
+     * @return BannerServlet
+     */
+    public function bannerServ(): BannerServlet
+    {
+        return invoke(BannerServlet::class);
+    }
+
+    /**
+     * @return CommissionServlet
+     */
+    public function commissionServ(): CommissionServlet
+    {
+        return invoke(CommissionServlet::class);
+    }
+
+    /**
+     * @return RechargeConfigServlet
+     */
+    public function rechargeConfigServ(): RechargeConfigServlet
+    {
+        return invoke(RechargeConfigServlet::class);
+    }
 }

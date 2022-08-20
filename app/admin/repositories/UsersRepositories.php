@@ -166,7 +166,7 @@ class UsersRepositories extends AbstractRepositories
     {
         $store = $this->servletFactory->storeServ()->getStoreInfoByID($id);
         if ($store) {
-            if ($store->status != 3){
+            if ($store->status != 3) {
                 $store::update(['status' => 3], ['id' => $id]);
             }
             return renderResponse();
@@ -187,13 +187,103 @@ class UsersRepositories extends AbstractRepositories
     {
         $store = $this->servletFactory->storeServ()->getStoreInfoByID($id);
         if ($store) {
-            if ($store->status == 2){
+            if ($store->status == 2) {
                 throw new ParameterException(['errMessage' => '审核失败的店铺不能解冻...']);
             }
             $store::update(['status' => 1], ['id' => $id]);
             return renderResponse();
         }
         throw new ParameterException(['errMessage' => '店铺不存在...']);
+
+    }
+
+    /**
+     * @param string $keywords
+     * @param int $pageSize
+     * @return \think\response\Json
+     */
+    public function rechargeList(string $keywords, int $pageSize)
+    {
+        return renderPaginateResponse($this->servletFactory->rechargeServ()->rechargeList($keywords, $pageSize));
+    }
+
+    /**
+     * @param int $id
+     * @return \think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function getRechargeInfoByID(int $id)
+    {
+        $user = $this->servletFactory->userServ()->getUserInfoByID($id);
+        if ($user) {
+            return renderResponse($this->servletFactory->rechargeServ()->getRechargeInfoByID($id));
+        }
+        throw new ParameterException(['errMessage' => '用户不存在...']);
+    }
+
+    public function checkRecharge(int $id, array $data)
+    {
+        $model = $this->servletFactory->rechargeServ()->getRechargeInfoByID($id);
+        if ($model) {
+            //Todo 当前登录用户
+            $data['checkID'] = '';
+            $data['checkName'] = '';
+            $data['checkAt'] = date('Y-m-d H:i:s');
+            $model::update($data, ['id' => $model->id]);
+            return renderResponse();
+        }
+        throw new ParameterException(['errMessage' => '充值记录不存在...']);
+    }
+
+    /**
+     * @param int $id
+     * @return \think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function showCheckRecharge(int $id)
+    {
+        return renderResponse($this->servletFactory->rechargeServ()->getRechargeInfoByID($id));
+    }
+
+    /**
+     * @param int $pageSize
+     * @param array $conditions
+     * @return \think\response\Json
+     * @throws \think\db\exception\DbException
+     */
+    public function withdrawalList(int $pageSize = 20, array $conditions = [])
+    {
+        return renderPaginateResponse($this->servletFactory->withdrawalServ()->withdralList($pageSize, $conditions));
+    }
+
+    /**
+     * @param int $id
+     * @return \think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function getCheckWithdrawalInfo(int $id)
+    {
+        return renderResponse($this->servletFactory->withdrawalServ()->getWithdrawalInfoByID($id));
+    }
+
+    public function checkWithdrawalByID(int $id, array $data)
+    {
+        $model = $this->servletFactory->withdrawalServ()->getOneWithdrawal($id);
+        if ($model) {
+            //Todo 当前登录用户
+            $data['checkID'] = '';
+            $data['checkName'] = '';
+            $data['checkAt'] = date('Y-m-d H:i:s');
+            $model::update($data, ['id' => $model->id]);
+            return renderResponse();
+        }
+        throw new ParameterException(['errMessage' => '提现记录不存在...']);
 
     }
 }
