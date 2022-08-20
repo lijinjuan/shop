@@ -70,6 +70,7 @@ class AgentController
     public function agentStatistics()
     {
 
+        //return $this->agentRepositories->
     }
 
 

@@ -68,4 +68,8 @@ class AgentRepositories extends AbstractRepositories
         $this->servletFactory->agentServ()->updateAgentByID($id,$data);
         return renderResponse();
     }
+    public function agentStatistics()
+    {
+        return renderResponse($this->servletFactory->agentServ()->agentStatistics());
+    }
 }

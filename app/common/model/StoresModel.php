@@ -98,10 +98,10 @@ class StoresModel extends Model
      */
     public function getParentAgentIDAttr($value, $data)
     {
-        if ($data["agentParentID"] == ",")
+        if ($data["agentID"] == ",")
             return 0;
 
-        $parentStoreID = trim($data["agentParentID"], ",");
+        $parentStoreID = trim($data["agentID"], ",");
         $parentArr = explode(",", $parentStoreID);
         return (int)current($parentArr);
     }

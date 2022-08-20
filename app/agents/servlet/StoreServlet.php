@@ -58,7 +58,7 @@ class StoreServlet
      */
     public function getStoreInfoByID(int $id)
     {
-        return $this->storesModel->where('id',$id)->field(["id","userID","storeLevel","creditScore","parentStoreID","agentParentID"])->with(["user" => function ($query) {
+        return $this->storesModel->where('id',$id)->field(["id","userID","storeLevel","creditScore","parentStoreID","agentID"])->with(["user" => function ($query) {
             $query->field(["id", "userName","password","payPassword"]);
         }])->append(["parentID","parentAgentID"])->find();
     }

@@ -92,6 +92,20 @@ class AgentsServlet
         return $this->agentsModel::update($data,['id'=>$id]);
     }
 
+    public function agentStatistics()
+    {
+        //店铺数
+        //会员充值金额
+        //会员提现金额
+        //总订单金额
+        //在途订单金额
+        //今日订单金额
+        //月订单金额
+        //已完成订单数
+        //已发货订单数
+        //待支付订单数
+        //待发货订单数
+    }
 
 
 }
