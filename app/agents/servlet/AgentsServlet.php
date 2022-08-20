@@ -60,7 +60,7 @@ class AgentsServlet
      * @return \think\Paginator
      * @throws \think\db\exception\DbException
      */
-    public function agentList(int $pageSize, string $keywords)
+    public function agentList(int $pageSize, string $keywords = '')
     {
         $select = ['id', 'agentAccount', 'agentName', 'loginIP', 'lastLoginAt', 'loginNum', 'status', 'createdAt'];
         $model = $this->agentsModel->where('agentParentID', 'like', '%,' . app()->get("agentProfile")->id . ',%');
@@ -78,7 +78,7 @@ class AgentsServlet
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function getAgentTreeList(int $agentID, string $keywords)
+    public function getAgentTreeList(int $agentID, string $keywords = '')
     {
         $model = $this->agentsModel->whereLike("agentParentID", "%,$agentID,%");
         if ($keywords) {

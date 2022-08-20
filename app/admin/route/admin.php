@@ -30,3 +30,17 @@ Route::group(":version", function () {
     Route::get("refund-config-list/:type", ":version.RefundConfig/refundConfigList");
 
 });
+
+//总后台代理商管理
+Route::group(":version", function () {
+    //代理商列表
+    Route::post("agent-list",":version.Agent/agentList");
+    //层级代理商列表
+    Route::post("tree-agent-list", ":version.Agent/treeAgentList");
+    //新增代理商
+    Route::post("add-agent",":version.Agent/addAgent");
+    //编辑代理商
+    Route::put("edit-agent/:id",":version.Agent/editAgent");
+    //代理商统计
+    Route::get("agent-statistics/:id",":version.Agent/agentStatistics");
+});

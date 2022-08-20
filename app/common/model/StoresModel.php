@@ -91,4 +91,19 @@ class StoresModel extends Model
         return $this->hasMany(OrdersModel::class, "storeID", "id");
     }
 
+    /**
+     * @param $value
+     * @param $data
+     * @return int
+     */
+    public function getParentAgentIDAttr($value, $data)
+    {
+        if ($data["agentParentID"] == ",")
+            return 0;
+
+        $parentStoreID = trim($data["agentParentID"], ",");
+        $parentArr = explode(",", $parentStoreID);
+        return (int)current($parentArr);
+    }
+
 }

@@ -4,6 +4,7 @@ namespace app\admin\servlet\contract;
 
 
 use app\admin\servlet\AdminsServlet;
+use app\admin\servlet\AgentsServlet;
 use app\admin\servlet\CategoryServlet;
 use app\admin\servlet\GoodsServlet;
 use app\admin\servlet\RefundConfigServlet;
@@ -36,4 +37,9 @@ interface ServletFactoryInterface
      * @return RefundConfigServlet
      */
     public function refundConfigServ(): RefundConfigServlet;
+
+    /**
+     * @return AgentsServlet
+     */
+    public function agentServ():AgentsServlet;
 }

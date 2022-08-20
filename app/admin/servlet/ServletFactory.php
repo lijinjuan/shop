@@ -44,4 +44,12 @@ class ServletFactory implements ServletFactoryInterface
     {
         return invoke(RefundConfigServlet::class);
     }
+
+    /**
+     * @return AgentsServlet
+     */
+    public function agentServ(): AgentsServlet
+    {
+        return invoke(AgentsServlet::class);
+    }
 }
