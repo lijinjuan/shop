@@ -47,6 +47,8 @@ class WithdrawalModel extends Model
         return $withdrawalType[$data['withdrawalType']];
     }
 
+
+
     /**
      * @return HasOne
      */

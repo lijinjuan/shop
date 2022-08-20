@@ -17,3 +17,16 @@ Route::group(":version", function () {
     Route::post("category-list", ":version.Goods/getCategoryListByCategoryID");
 
 });
+
+//总后台退款配置
+Route::group(":version", function () {
+    //新增退款配置
+    Route::post("add-refund-config",":version.RefundConfig/addRefundConfig");
+    // 编辑退款配置
+    Route::put("edit-refund-config/:id", ":version.RefundConfig/editRefundConfig");
+    // 删除退款配置
+    Route::delete("delete-refund-config/:id", ":version.RefundConfig/delRefundConfig");
+    //退款配置列表
+    Route::get("refund-config-list/:type", ":version.RefundConfig/refundConfigList");
+
+});

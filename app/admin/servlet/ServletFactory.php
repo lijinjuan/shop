@@ -36,4 +36,12 @@ class ServletFactory implements ServletFactoryInterface
     {
         return invoke(CategoryServlet::class);
     }
+
+    /**
+     * @return RefundConfigServlet
+     */
+    public function refundConfigServ(): RefundConfigServlet
+    {
+        return invoke(RefundConfigServlet::class);
+    }
 }

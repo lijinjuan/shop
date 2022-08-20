@@ -30,4 +30,9 @@ class StoreAccountModel extends Model
      * @var string
      */
     protected $autoWriteTimestamp = "timestamp";
+
+    protected function getMonthTimeAttr($value, $data)
+    {
+        return date('Y-m',strtotime($data['createdAt']));
+    }
 }
