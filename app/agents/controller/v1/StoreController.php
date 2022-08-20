@@ -109,7 +109,6 @@ class StoreController
     {
         $id = $request->post('id');
         $checkData = $request->post(['status','remark','reason']);
-        $id = $request->post('id');
         return $this->storeRepositories->checkStore($id,$checkData);
     }
 

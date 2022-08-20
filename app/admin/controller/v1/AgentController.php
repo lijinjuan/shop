@@ -67,10 +67,13 @@ class AgentController
 
     }
 
-    public function agentStatistics()
+    /**
+     * @param int $id
+     * @return \think\response\Json
+     */
+    public function agentStatistics(int $id)
     {
-
-        //return $this->agentRepositories->
+        return $this->agentRepositories->agentStatistics($id);
     }
 
 

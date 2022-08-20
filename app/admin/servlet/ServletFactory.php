@@ -52,4 +52,44 @@ class ServletFactory implements ServletFactoryInterface
     {
         return invoke(AgentsServlet::class);
     }
+
+    /**
+     * @return UsersServlet
+     */
+    public function userServ(): UsersServlet
+    {
+        return invoke(UsersServlet::class);
+    }
+
+    /**
+     * @return StoreServlet
+     */
+    public function storeServ(): StoreServlet
+    {
+        return invoke(StoreServlet::class);
+    }
+
+    /**
+     * @return StoreAccountServlet
+     */
+    public function storeAccountServ(): StoreAccountServlet
+    {
+        return invoke(StoreAccountServlet::class);
+    }
+
+    /**
+     * @return RechargeServet
+     */
+    public function rechargeServ(): RechargeServet
+    {
+        return invoke(RechargeServet::class);
+    }
+
+    /**
+     * @return WithdrawalServlet
+     */
+    public function withdrawalServ(): WithdrawalServlet
+    {
+        return invoke(WithdrawalServlet::class);
+    }
 }

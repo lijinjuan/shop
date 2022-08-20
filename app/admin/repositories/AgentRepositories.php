@@ -68,8 +68,12 @@ class AgentRepositories extends AbstractRepositories
         $this->servletFactory->agentServ()->updateAgentByID($id,$data);
         return renderResponse();
     }
-    public function agentStatistics()
+
+    /**
+     * @return \think\response\Json
+     */
+    public function agentStatistics(int $id)
     {
-        return renderResponse($this->servletFactory->agentServ()->agentStatistics());
+        return renderResponse($this->servletFactory->agentServ()->agentStatistics($id));
     }
 }

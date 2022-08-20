@@ -7,7 +7,12 @@ use app\admin\servlet\AdminsServlet;
 use app\admin\servlet\AgentsServlet;
 use app\admin\servlet\CategoryServlet;
 use app\admin\servlet\GoodsServlet;
+use app\admin\servlet\RechargeServet;
 use app\admin\servlet\RefundConfigServlet;
+use app\admin\servlet\StoreAccountServlet;
+use app\admin\servlet\StoreServlet;
+use app\admin\servlet\UsersServlet;
+use app\admin\servlet\WithdrawalServlet;
 
 /**
  * \app\admin\servlet\contract\ServletFactoryInterface
@@ -42,4 +47,29 @@ interface ServletFactoryInterface
      * @return AgentsServlet
      */
     public function agentServ():AgentsServlet;
+
+    /**
+     * @return UsersServlet
+     */
+    public function userServ():UsersServlet;
+
+    /**
+     * @return StoreServlet
+     */
+    public function storeServ():StoreServlet;
+
+    /**
+     * @return StoreAccountServlet
+     */
+    public function storeAccountServ():StoreAccountServlet;
+
+    /**
+     * @return RechargeServet
+     */
+    public function rechargeServ():RechargeServet;
+
+    /**
+     * @return WithdrawalServlet
+     */
+    public function withdrawalServ():WithdrawalServlet;
 }

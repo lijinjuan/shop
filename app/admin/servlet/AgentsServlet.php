@@ -28,7 +28,7 @@ class AgentsServlet
     public function agentList(int $pageSize, string $keywords = '')
     {
         $select = ['id', 'agentAccount', 'agentName', 'loginIP', 'lastLoginAt', 'loginNum', 'status', 'createdAt'];
-        $model = $this->agentsModel->where('id','>',0);
+        $model = $this->agentsModel->where('id', '>', 0);
         if ($keywords) {
             $model->where('agentAccount', 'like', '%' . $keywords . '%');
         }
@@ -44,7 +44,7 @@ class AgentsServlet
      */
     public function getAgentTreeList(string $keywords = '')
     {
-        $model = $this->agentsModel->where('id','>',0);
+        $model = $this->agentsModel->where('id', '>', 0);
         if ($keywords) {
             $model->whereLike('agentAccount', '%' . $keywords . '%');
         }
@@ -87,12 +87,16 @@ class AgentsServlet
      * @param array $data
      * @return AgentsModel
      */
-    public function updateAgentByID(int $id,array $data)
+    public function updateAgentByID(int $id, array $data)
     {
-        return $this->agentsModel::update($data,['id'=>$id]);
+        return $this->agentsModel::update($data, ['id' => $id]);
     }
 
-    public function agentStatistics()
+    /**
+     * @param $id
+     * @return int[]
+     */
+    public function agentStatistics($id)
     {
         //店铺数
         //会员充值金额
@@ -105,6 +109,20 @@ class AgentsServlet
         //已发货订单数
         //待支付订单数
         //待发货订单数
+        return [
+            'storeCount' => 0,
+            'rechargeCount' => 0,
+            'withdrawalCount' => 0,
+            'orderCount' => 0,
+            'receivedCount' => 0,
+            'todayOrderCount' => 0,
+            'monthOrderCount' => 0,
+            'finishedOrderCount' => 0,
+            'noReceivedOrderCount' => 0,
+            'noPayOrderCount' => 0,
+            'noShipOrderCount' => 0
+        ];
+
     }
 
 

@@ -1,5 +1,6 @@
 <?php
 
+use app\admin\middleware\JwtAuthMiddleware;
 use think\facade\Route;
 
 // 获取图片的验证码的接口
@@ -43,4 +44,28 @@ Route::group(":version", function () {
     Route::put("edit-agent/:id",":version.Agent/editAgent");
     //代理商统计
     Route::get("agent-statistics/:id",":version.Agent/agentStatistics");
+});
+
+//总后台会员管理
+Route::group(":version", function () {
+    //会员列表
+    Route::post("user-list/:type",":version.User/userList");
+    //修改用户信息
+    Route::post("edit-user-info/:id", ":version.User/editUserInfo");
+    //编辑真假人
+    Route::post("edit-user-true2false/:id", ":version.User/editUserTrue2false");
+    //修改用户备注
+    Route::post("edit-user-remark/:id",":version.User/editUserRemark");
+    //修改虚拟访客
+    Route::post("edit-user-visitors/:id",":version.User/editVirtualVisitors");
+    //店铺审核
+    Route::post("check-store/:id",":version.User/checkStore");
+    //店铺统计
+    Route::get("store-statistics/:id",":version.User/storeStatistics");
+    //资金统计
+    Route::get("store-amountStatistics/:id",":version.User/amountStatistics");
+    //用户冻结
+    Route::post("stop-store/:id",":version.User/stopStore");
+    //用户解冻
+    Route::post("start-store/:id",":version.User/startStore");
 });
