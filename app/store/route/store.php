@@ -15,6 +15,8 @@ Route::group(":version", function () {
     Route::post("store-base-info", ":version.Store/getStoreBaseInfo");
     // 保存店铺的基本信息的接口
     Route::post("edit-store-base-info", ":version.Store/editStoreBaseInfo");
+    // 修改用户密码的接口
+    Route::post("alter-password", ":version.Entry/alterUserPassword");
     // 获取店铺列表的接口
     Route::post("store-list", ":version.Store/getStoreList");
     // 获取店铺下级树形列表的接口

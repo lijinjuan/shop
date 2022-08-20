@@ -51,4 +51,22 @@ class EntryController
 
         return $this->storeRepositories->store2Launch($userProfile);
     }
+
+    /**
+     * alterUserPassword
+     * @param \think\Request $request
+     * @return \think\response\Json
+     */
+    public function alterUserPassword(Request $request)
+    {
+        $loginPassword = $request->param("originPassword");
+        $inputPassword = $request->param("inputPassword");
+        $rePassword = $request->param("rePassword");
+
+        if ($inputPassword != $rePassword) {
+            throw new ParameterException(["errMessage" => "前后两次输入的密码不一致..."]);
+        }
+
+        return $this->storeRepositories->alterUserPassword($loginPassword, $inputPassword);
+    }
 }

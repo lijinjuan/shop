@@ -4,6 +4,7 @@ namespace app\store\servlet;
 
 use app\common\model\StoresModel;
 use app\lib\exception\ParameterException;
+use think\model\Collection;
 
 /**
  * \app\store\servlet\StoreServlet

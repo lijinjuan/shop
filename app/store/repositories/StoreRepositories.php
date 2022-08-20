@@ -142,11 +142,10 @@ class StoreRepositories extends AbstractRepositories
          * @var \app\common\model\StoresModel $storeModel
          */
         $storeModel = app()->get("storeProfile");
-        $goodsList = $storeModel->goods()->visible(["s_goods.id", "goodsName", "goodsCover", "goodsPrice", "goodsDiscountPrice", "goodsStock", "goodsSalesAmount", "commission", "s_goods.createdAt"])
+        $goodsList = $storeModel->goods()->visible(["id", "goodsName", "goodsCover", "goodsPrice", "goodsDiscountPrice", "goodsStock", "goodsSalesAmount", "commission", "createdAt"])
             ->order("goodsSalesAmount", "desc")
             ->hidden(["pivot"])
             ->paginate((int)$request->param("pageSize", 20));
-
         return renderPaginateResponse($goodsList);
     }
 
@@ -158,6 +157,31 @@ class StoreRepositories extends AbstractRepositories
     public function takeDownStoreGoodsByGoodsID(int $goodsID)
     {
         app()->get("storeProfile")->goods()->detach($goodsID);
+        return renderResponse();
+    }
+
+    /**
+     * alterUserPassword
+     * @param string $loginPassword
+     * @param string $inputPassword
+     * @return \think\response\Json
+     */
+    public function alterUserPassword(string $loginPassword, string $inputPassword)
+    {
+        /**
+         * @var \app\common\model\StoresModel $storeModel
+         */
+        $storeModel = app()->get("storeProfile");
+
+        // 原密码
+        $originPassword = $storeModel->user->password;
+
+        if (!password_verify($loginPassword, $originPassword)) {
+            throw new ParameterException(["errMessage" => "输入的原密码不正确..."]);
+        }
+
+        $storeModel->user->password = password_hash($inputPassword, PASSWORD_DEFAULT);
+        $storeModel->user->save();
         return renderResponse();
     }
 }
