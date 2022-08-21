@@ -33,4 +33,22 @@ class UsersAmountServlet
         return $this->amountModel->where('amountType',$typeID)->where('userID',app()->get("userProfile")->id)->find();
     }
 
+
+    /**
+     * @param int $type
+     * @return UsersAmountModel[]|array|\think\Collection
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function withdrawalList(int $type)
+    {
+        $id = app()->get('userProfile')->id;
+        $model = $this->amountModel->where('userID',$id);
+        if ($type){
+            $model->where('type',$type);
+        }
+        return $model->field(['id','title','changeBalance','action'])->select();
+    }
+
 }

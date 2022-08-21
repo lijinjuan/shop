@@ -36,4 +36,84 @@ class ServletFactory implements ServletFactoryInterface
     {
         return invoke(CategoryServlet::class);
     }
+
+    /**
+     * @return RefundConfigServlet
+     */
+    public function refundConfigServ(): RefundConfigServlet
+    {
+        return invoke(RefundConfigServlet::class);
+    }
+
+    /**
+     * @return AgentsServlet
+     */
+    public function agentServ(): AgentsServlet
+    {
+        return invoke(AgentsServlet::class);
+    }
+
+    /**
+     * @return UsersServlet
+     */
+    public function userServ(): UsersServlet
+    {
+        return invoke(UsersServlet::class);
+    }
+
+    /**
+     * @return StoreServlet
+     */
+    public function storeServ(): StoreServlet
+    {
+        return invoke(StoreServlet::class);
+    }
+
+    /**
+     * @return StoreAccountServlet
+     */
+    public function storeAccountServ(): StoreAccountServlet
+    {
+        return invoke(StoreAccountServlet::class);
+    }
+
+    /**
+     * @return RechargeServet
+     */
+    public function rechargeServ(): RechargeServet
+    {
+        return invoke(RechargeServet::class);
+    }
+
+    /**
+     * @return WithdrawalServlet
+     */
+    public function withdrawalServ(): WithdrawalServlet
+    {
+        return invoke(WithdrawalServlet::class);
+    }
+
+    /**
+     * @return BannerServlet
+     */
+    public function bannerServ(): BannerServlet
+    {
+        return invoke(BannerServlet::class);
+    }
+
+    /**
+     * @return CommissionServlet
+     */
+    public function commissionServ(): CommissionServlet
+    {
+        return invoke(CommissionServlet::class);
+    }
+
+    /**
+     * @return RechargeConfigServlet
+     */
+    public function rechargeConfigServ(): RechargeConfigServlet
+    {
+        return invoke(RechargeConfigServlet::class);
+    }
 }

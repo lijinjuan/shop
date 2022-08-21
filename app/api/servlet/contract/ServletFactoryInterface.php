@@ -16,6 +16,7 @@ use app\api\servlet\RechargeServlet;
 use app\api\servlet\RefundConfigServlet;
 use app\api\servlet\RefundServlet;
 use app\api\servlet\ShopServlet;
+use app\api\servlet\StoreAccountServlet;
 use app\api\servlet\UserAddressServlet;
 use app\api\servlet\UsersAmountServlet;
 use app\api\servlet\UsersServlet;
@@ -135,6 +136,11 @@ interface ServletFactoryInterface
      * @return \app\api\servlet\AgentsServlet
      */
     public function agentServ(): AgentsServlet;
+
+    /**
+     * @return StoreAccountServlet
+     */
+    public function storeAccountServ():StoreAccountServlet;
 
 
 }

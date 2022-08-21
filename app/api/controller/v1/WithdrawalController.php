@@ -44,4 +44,13 @@ class WithdrawalController
         return $this->withdrawalRepositories->getWithdrawalInfoByID($type);
     }
 
+    /**
+     * @param int $type
+     * @return \think\response\Json
+     */
+    public function withdrawalList(int $type = 0,Request $request)
+    {
+        return $this->withdrawalRepositories->withdrawalList($type);
+    }
+
 }

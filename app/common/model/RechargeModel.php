@@ -31,28 +31,41 @@ class RechargeModel extends Model
     protected $autoWriteTimestamp = "timestamp";
 
 
-    protected function getRechargeNameAttr()
-    {
-        return 'USDT';
-    }
-
-    protected function getOrderStatusAttr($value,$data)
+    protected function getRechargeNameAttr($value, $data)
     {
         $status = [
-            0=>'审核中',
-            1=>'审核成功',
-            2=>'审核失败',
+            1 => 'USDT-ERC20',
+            2 => 'USDT-TRC20',
+            3 => 'USDT-OMINI'
         ];
-        return $status[$data['status']]??'审核中';
+        return $status[$data['rechargeType']] ?? 'USDT';
+    }
+
+    protected function getOrderStatusAttr($value, $data)
+    {
+        $status = [
+            0 => '审核中',
+            1 => '审核成功',
+            2 => '审核失败',
+        ];
+        return $status[$data['status']] ?? '审核中';
 
     }
+
 
     /**
      * @return HasOne
      */
     public function store()
     {
-        return $this->hasOne(StoresModel::class,'id','storeID');
+        return $this->hasOne(StoresModel::class, 'id', 'storeID');
     }
 
+    /**
+     * @return HasOne
+     */
+   public function user()
+   {
+       return $this->hasOne(UsersModel::class,'id','userID');
+   }
 }

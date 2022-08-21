@@ -81,7 +81,7 @@ class StoreRepositories extends AbstractRepositories
         if (!$store) {
             throw new ParameterException(['errMessage' => '店铺不存在...']);
         }
-        if ($store->parentID != app()->get("agentProfile")->id ){
+        if ($store->parentAgentID != app()->get("agentProfile")->id ){
             throw new ParameterException(['errMessage' => '当前账户无权审核店铺请更换账号...']);
         }
         $updata = [

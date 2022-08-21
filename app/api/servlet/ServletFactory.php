@@ -171,4 +171,12 @@ class ServletFactory implements ServletFactoryInterface
     {
         return invoke(AgentsServlet::class);
     }
+
+    /**
+     * @return StoreAccountServlet
+     */
+    public function storeAccountServ(): StoreAccountServlet
+    {
+        return invoke(StoreAccountServlet::class);
+    }
 }

@@ -47,6 +47,14 @@ class WithdrawalModel extends Model
         return $withdrawalType[$data['withdrawalType']];
     }
 
+
+    /**
+     * @return HasOne
+     */
+    public function user()
+    {
+        return $this->hasOne(UsersModel::class,'id','userID');
+    }
     /**
      * @return HasOne
      */

@@ -145,6 +145,9 @@ Route::group(":version", function () {
     Route::get("get-withdrawal-amount/:type",":version.Withdrawal/getWithdrawalAmount");
     //用户提现
     Route::post("add-withdrawal",":version.Withdrawal/addWithdrawal");
+    //提现列表
+    Route::post("withdrawal-list/[:type]",":version.Withdrawal/withdrawalList");
+
 
 })->middleware(JwtAuthMiddleware::class)->json()->allowCrossDomain();
 
