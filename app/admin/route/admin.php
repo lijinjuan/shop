@@ -97,12 +97,17 @@ Route::group(":version", function () {
 
 //总后台信息配置
 Route::group(":version", function () {
+
     //添加banner
     Route::post("add-banner",":version.ConfigInfo/addBanner");
+    //获取轮播图类型
+    Route::get("get-banner-type",":version.ConfigInfo/getBannerType");
     //编辑banner
     Route::put("edit-banner/:id", ":version.ConfigInfo/editBanner");
+    //banner详情
+    Route::get("get-banner-info/:id", ":version.ConfigInfo/getBannerInfo");
     //删除banner
-    Route::delete("delete-agent/:id",":version.ConfigInfo/deleteBanner");
+    Route::delete("delete-banner/:id",":version.ConfigInfo/deleteBanner");
     //banner列表
     Route::post("banner-list",":version.ConfigInfo/bannerList");
 
@@ -112,6 +117,8 @@ Route::group(":version", function () {
     Route::put("edit-recharge-config/:id", ":version.ConfigInfo/editRechargeConfig");
     //删除充值渠道
     Route::delete("delete-recharge-config/:id",":version.ConfigInfo/deleteRechargeConfig");
+    //单个充值渠道信息
+    Route::get("get-recharge-config/:id",":version.ConfigInfo/getRechargeInfoByID");
     //充值渠道列表
     Route::post("recharge-config-list",":version.ConfigInfo/RechargeConfigList");
 

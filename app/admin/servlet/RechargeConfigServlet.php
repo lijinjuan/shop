@@ -35,7 +35,19 @@ class RechargeConfigServlet
      */
    public function rechargeConfigList(int $pageSize = 20)
    {
-       return $this->rechargeConfigModel->where('id','>',0)->paginate($pageSize);
+       return $this->rechargeConfigModel->where('id','>',0)->order('createdAt','desc')->paginate($pageSize);
+   }
+
+    /**
+     * @param int $id
+     * @return RechargeConfigModel|array|mixed|\think\Model|null
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+   public function getRechargeInfoByID(int $id)
+   {
+       return $this->rechargeConfigModel->where('id',$id)->find();
    }
 
 

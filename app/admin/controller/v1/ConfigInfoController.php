@@ -21,53 +21,141 @@ class ConfigInfoController
     }
 
     /**
+     * @return \think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function getBannerType()
+    {
+        return $this->configInfoRepositories->getBannerType();
+    }
+
+    /**
      * @param Request $request
-     * @return void
+     * @return \think\response\Json
+     * @throws \app\lib\exception\ParameterException
      */
     public function addBanner(Request $request)
     {
+        //type 1->首页轮播图 2->首页广告位 3->精品推荐
+        $data = $request->only(['bannerName', 'type', 'imgUrl', 'link', 'sort']);
+        return $this->configInfoRepositories->addBanner($data);
+    }
+
+    /**
+     * @param int $id
+     * @param Request $request
+     * @return \think\response\Json
+     * @throws \app\lib\exception\ParameterException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function editBanner(int $id, Request $request)
+    {
+        $data = $request->only(['type', 'imgUrl', 'link', 'sort']);
+        return $this->configInfoRepositories->editBanner($id, $data);
+    }
+
+    /**
+     * @param int $id
+     * @return \think\response\Json
+     * @throws \app\lib\exception\ParameterException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function deleteBanner(int $id)
+    {
+        return $this->configInfoRepositories->delBanner($id);
+    }
+
+    /**
+     * @param int $id
+     * @return \think\response\Json
+     * @throws \app\lib\exception\ParameterException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function getBannerInfo(int $id)
+    {
+        return $this->configInfoRepositories->getBannerInfoByID($id);
+    }
+
+    /**
+     * @param Request $request
+     * @return \think\response\Json
+     * @throws \think\db\exception\DbException
+     */
+    public function bannerList(Request $request)
+    {
+        $pageSize = $request->post('pageSize', 20);
+        return $this->configInfoRepositories->bannerList($pageSize);
 
     }
 
-    public function editBanner()
+    /**
+     * @param Request $request
+     * @return \think\response\Json
+     */
+    public function addRechargeConfig(Request $request)
     {
-
+        $data = $request->only(['rechargeName', 'QRCode', 'walletAddress']);
+        return $this->configInfoRepositories->addRechargeConfig($data);
     }
 
-    public function deleteBanner()
+    /**
+     * @param int $id
+     * @param Request $request
+     * @return \think\response\Json
+     * @throws \app\lib\exception\ParameterException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function editRechargeConfig(int $id, Request $request)
     {
-
+        $data = $request->only(['rechargeName', 'QRCode', 'walletAddress']);
+        return $this->configInfoRepositories->editRechargeConfig($id, $data);
     }
 
-    public function bannerList()
+    /**
+     * @param int $id
+     * @return \think\response\Json
+     * @throws \app\lib\exception\ParameterException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function deleteRechargeConfig(int $id)
     {
-
+        return $this->configInfoRepositories->delRechargeConfig($id);
     }
 
-    public function addRechargeConfig()
+    /**
+     * @param Request $request
+     * @return \think\response\Json
+     * @throws \think\db\exception\DbException
+     */
+    public function rechargeConfigList(Request $request)
     {
-
+        $pageSize = $request->post('pageSize');
+        return $this->configInfoRepositories->rechargeConfigList($pageSize);
     }
 
-    public function editRechargeConfig()
+    /**
+     * @param int $id
+     * @return \think\response\Json
+     * @throws \app\lib\exception\ParameterException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function getRechargeInfoByID(int $id)
     {
-
-    }
-
-    public function deleteRechargeConfig()
-    {
-
-    }
-
-    public function rechargeConfigList()
-    {
-
-    }
-
-    public function getRechargeInfoByID()
-    {
-
-
+        return $this->configInfoRepositories->getRechargeConfigByID($id);
 
     }
 

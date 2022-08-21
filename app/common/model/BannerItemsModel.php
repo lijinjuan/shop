@@ -42,4 +42,12 @@ class BannerItemsModel extends Model
     {
         return $this->belongsTo(ImagesModel::class, "imgID", 'id');
     }
+
+    /**
+     * @return \think\model\relation\HasOne
+     */
+    public function banner()
+    {
+        return $this->hasOne(BannersModel::class,'id','bannerID');
+    }
 }

@@ -5,10 +5,12 @@ namespace app\admin\servlet\contract;
 
 use app\admin\servlet\AdminsServlet;
 use app\admin\servlet\AgentsServlet;
+use app\admin\servlet\BannerItemsServlet;
 use app\admin\servlet\BannerServlet;
 use app\admin\servlet\CategoryServlet;
 use app\admin\servlet\CommissionServlet;
 use app\admin\servlet\GoodsServlet;
+use app\admin\servlet\ImagesServlet;
 use app\admin\servlet\RechargeConfigServlet;
 use app\admin\servlet\RechargeServet;
 use app\admin\servlet\RefundConfigServlet;
@@ -90,4 +92,14 @@ interface ServletFactoryInterface
      * @return RechargeConfigServlet
      */
     public function rechargeConfigServ():RechargeConfigServlet;
+
+    /**
+     * @return ImagesServlet
+     */
+    public function imageServ():ImagesServlet;
+
+    /**
+     * @return BannerItemsServlet
+     */
+    public function bannerItemServ():BannerItemsServlet;
 }

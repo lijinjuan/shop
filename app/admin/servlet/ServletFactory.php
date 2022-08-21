@@ -116,4 +116,20 @@ class ServletFactory implements ServletFactoryInterface
     {
         return invoke(RechargeConfigServlet::class);
     }
+
+    /**
+     * @return ImagesServlet
+     */
+    public function imageServ(): ImagesServlet
+    {
+        return invoke(ImagesServlet::class);
+    }
+
+    /**
+     * @return BannerItemsServlet
+     */
+    public function bannerItemServ(): BannerItemsServlet
+    {
+        return invoke(BannerItemsServlet::class);
+    }
 }
