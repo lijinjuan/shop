@@ -25,6 +25,7 @@ class BannerServlet
      */
     public function addBanner(array $data)
     {
+        //先添加图片表再写入banner
         return $this->bannersModel::create($data);
     }
 
@@ -36,6 +37,29 @@ class BannerServlet
     public function bannerList(int $pageSize = 20)
     {
         return $this->bannersModel->where('id','>',0)->paginate($pageSize);
+    }
+
+    /**
+     * @return BannersModel[]|array|\think\Collection
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function getBannerType()
+    {
+        return $this->bannersModel->where('id','>',0)->hidden(['updatedAt','deletedAt'])->select();
+    }
+
+    /**
+     * @param int $id
+     * @return BannersModel|array|mixed|\think\Model|null
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function getBannerTypeByID(int $id)
+    {
+        return $this->bannersModel->where('id',$id)->find();
     }
 
 

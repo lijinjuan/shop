@@ -5,11 +5,13 @@ namespace app\admin\servlet\contract;
 
 use app\admin\servlet\AdminsServlet;
 use app\admin\servlet\AgentsServlet;
+use app\admin\servlet\BannerItemsServlet;
 use app\admin\servlet\BannerServlet;
 use app\admin\servlet\BrandsServlet;
 use app\admin\servlet\CategoryServlet;
 use app\admin\servlet\CommissionServlet;
 use app\admin\servlet\GoodsServlet;
+use app\admin\servlet\ImagesServlet;
 use app\admin\servlet\RechargeConfigServlet;
 use app\admin\servlet\RechargeServet;
 use app\admin\servlet\RefundConfigServlet;
@@ -50,51 +52,62 @@ interface ServletFactoryInterface
     /**
      * @return AgentsServlet
      */
-    public function agentServ():AgentsServlet;
+    public function agentServ(): AgentsServlet;
 
     /**
      * @return UsersServlet
      */
-    public function userServ():UsersServlet;
+    public function userServ(): UsersServlet;
 
     /**
      * @return StoreServlet
      */
-    public function storeServ():StoreServlet;
+    public function storeServ(): StoreServlet;
 
     /**
      * @return StoreAccountServlet
      */
-    public function storeAccountServ():StoreAccountServlet;
+    public function storeAccountServ(): StoreAccountServlet;
 
     /**
      * @return RechargeServet
      */
-    public function rechargeServ():RechargeServet;
+    public function rechargeServ(): RechargeServet;
 
     /**
      * @return WithdrawalServlet
      */
-    public function withdrawalServ():WithdrawalServlet;
+    public function withdrawalServ(): WithdrawalServlet;
 
     /**
      * @return CommissionServlet
      */
-    public function commissionServ():CommissionServlet;
+    public function commissionServ(): CommissionServlet;
 
     /**
      * @return BannerServlet
      */
-    public function bannerServ():BannerServlet;
+    public function bannerServ(): BannerServlet;
 
     /**
      * @return RechargeConfigServlet
      */
-    public function rechargeConfigServ():RechargeConfigServlet;
+    public function rechargeConfigServ(): RechargeConfigServlet;
 
     /**
      * brandsServ
      * @return \app\admin\servlet\BrandsServlet
      */
     public function brandsServ(): BrandsServlet;
+    
+    /**
+     * imageServ
+     * @return \app\admin\servlet\ImagesServlet
+     */
+    public function imageServ(): ImagesServlet;
+
+    /**
+     * @return BannerItemsServlet
+     */
+    public function bannerItemServ(): BannerItemsServlet;
 }
