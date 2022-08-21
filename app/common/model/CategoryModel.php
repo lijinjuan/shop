@@ -37,4 +37,22 @@ class CategoryModel extends Model
     {
         return $this->belongsTo(ImagesModel::class, "categoryImgID", 'id');
     }
+
+    /**
+     * categories
+     * @return \think\model\relation\HasMany
+     */
+    public function categories()
+    {
+        return $this->hasMany(CategoryModel::class, "parentID", "id");
+    }
+
+    /**
+     * goods
+     * @return \think\model\relation\HasMany
+     */
+    public function goods()
+    {
+        return $this->hasMany(GoodsModel::class, "categoryID", "id");
+    }
 }

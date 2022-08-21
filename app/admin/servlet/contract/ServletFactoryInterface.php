@@ -6,6 +6,7 @@ namespace app\admin\servlet\contract;
 use app\admin\servlet\AdminsServlet;
 use app\admin\servlet\AgentsServlet;
 use app\admin\servlet\BannerServlet;
+use app\admin\servlet\BrandsServlet;
 use app\admin\servlet\CategoryServlet;
 use app\admin\servlet\CommissionServlet;
 use app\admin\servlet\GoodsServlet;
@@ -90,4 +91,10 @@ interface ServletFactoryInterface
      * @return RechargeConfigServlet
      */
     public function rechargeConfigServ():RechargeConfigServlet;
+
+    /**
+     * brandsServ
+     * @return \app\admin\servlet\BrandsServlet
+     */
+    public function brandsServ(): BrandsServlet;
 }

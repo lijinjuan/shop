@@ -34,8 +34,14 @@ class GoodsController
         return $this->goodsRepositories->getGoodsListByPaginate($request);
     }
 
+    /**
+     * createGoods
+     * @param \think\Request $request
+     * @return \think\response\Json
+     */
     public function createGoods(Request $request)
     {
+        $goodsInfo = $request->only(["goodsName", "brandID", "categoryID", "isRank", "isNew", "isItem", "goodsImg", "goodsContent"]);
         return $this->goodsRepositories->createGoods($request);
     }
 

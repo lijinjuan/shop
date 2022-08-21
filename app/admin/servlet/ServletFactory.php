@@ -116,4 +116,13 @@ class ServletFactory implements ServletFactoryInterface
     {
         return invoke(RechargeConfigServlet::class);
     }
+
+    /**
+     * brandsServ
+     * @return \app\admin\servlet\BrandsServlet
+     */
+    public function brandsServ(): BrandsServlet
+    {
+        return invoke(BrandsServlet::class);
+    }
 }

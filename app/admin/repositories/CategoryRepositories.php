@@ -2,6 +2,9 @@
 
 namespace app\admin\repositories;
 
+use app\lib\exception\ParameterException;
+use think\model\Collection;
+
 /**
  * \app\admin\repositories\CategoryRepositories
  */
@@ -17,5 +20,80 @@ class CategoryRepositories extends AbstractRepositories
     {
         $categoryList = $this->servletFactory->categoryServ()->getCategoryList($parentID);
         return renderResponse($categoryList);
+    }
+
+    /**
+     * getCategoryList
+     * @return \think\response\Json
+     */
+    public function getCategoryList()
+    {
+        $categoryList = $this->servletFactory->categoryServ()->getCategoryListByPaginate();
+        return renderPaginateResponse($categoryList);
+    }
+
+    /**
+     * addGoodsCategory
+     * @param array $categoryInfo
+     * @return \think\response\Json
+     */
+    public function addGoodsCategory(array $categoryInfo)
+    {
+        $this->servletFactory->categoryServ()->createNewGoodsCategory($categoryInfo);
+        return renderResponse();
+    }
+
+    /**
+     * getCategoryDetailByCategoryID
+     * @param int $categoryID
+     * @return \think\response\Json
+     */
+    public function getCategoryDetailByCategoryID(int $categoryID)
+    {
+        $categoryDetail = $this->servletFactory->categoryServ()->getCategoryDetailByCategoryID($categoryID);
+        return renderResponse($categoryDetail);
+    }
+
+    /**
+     * editGoodsCategory
+     * @param int $categoryID
+     * @param array $category
+     */
+    public function editGoodsCategory(int $categoryID, array $category)
+    {
+        $categoryDetail = $this->servletFactory->categoryServ()->getCategoryDetailByCategoryID($categoryID);
+
+        if ($categoryDetail->parentID > 0 && ($category["parentID"] == 0)) {
+            throw new ParameterException(["errMessage" => "分类不能从二级变成一级..."]);
+        }
+
+        if ($categoryDetail->parentID == 0) {
+            $category["parentID"] = 0;
+        }
+        $categoryDetail->allowField(["categoryName", "parentID", "categoryImgUrl", "sort", "status"])->save($category);
+
+        return renderResponse();
+    }
+
+    /**
+     * deleteGoodsCategoryByID
+     * @param int $categoryID
+     * @return \think\response\Json
+     */
+    public function deleteGoodsCategoryByID(int $categoryID)
+    {
+        $categoryDetail = $this->servletFactory->categoryServ()->getCategoryDetailByCategoryID($categoryID);
+
+        if ($categoryDetail->parentID > 0 && !$categoryDetail->goods->isEmpty()) {
+            throw new ParameterException(["errMessage" => "该分类下存在商品，不能删除..."]);
+        }
+
+        if (($categoryDetail->parentID == 0) && !$categoryDetail->categories->isEmpty()) {
+            throw new ParameterException(["errMessage" => "该分类下存在子分类，不能删除..."]);
+        }
+
+        $categoryDetail->delete();
+
+        return renderResponse();
     }
 }
