@@ -3,12 +3,16 @@
 namespace app\common\model;
 
 use think\Model;
+use think\model\concern\SoftDelete;
 
 /**
  * \app\common\model\CategoryModel
  */
 class CategoryModel extends Model
 {
+
+    use SoftDelete ;
+
     /**
      * @var string
      */
@@ -23,6 +27,11 @@ class CategoryModel extends Model
      * @var string
      */
     protected $updateTime = "updatedAt";
+
+    /**
+     * @var string
+     */
+    protected $deleteTime = "deletedAt";
 
     /**
      * @var bool
