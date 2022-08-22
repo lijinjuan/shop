@@ -3,6 +3,7 @@
 namespace app\api\servlet;
 
 use app\api\servlet\contract\ServletFactoryInterface;
+use app\common\model\AdminsAccountModel;
 
 /**
  * \app\api\servlet\ServletFactory
@@ -178,5 +179,21 @@ class ServletFactory implements ServletFactoryInterface
     public function storeAccountServ(): StoreAccountServlet
     {
         return invoke(StoreAccountServlet::class);
+    }
+
+    /**
+     * @return AdminAccountServlet
+     */
+    public function adminAccountServ(): AdminAccountServlet
+    {
+        return invoke(AdminAccountServlet::class);
+    }
+
+    /**
+     * @return AdminBalanceServlet
+     */
+    public function adminBalanceServ(): AdminBalanceServlet
+    {
+        return invoke(AdminBalanceServlet::class);
     }
 }

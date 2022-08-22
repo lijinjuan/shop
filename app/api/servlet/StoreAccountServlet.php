@@ -41,4 +41,14 @@ class StoreAccountServlet
         }
         return $fmtData;
     }
+
+    /**
+     * @param array $data
+     * @return StoreAccountModel|\think\Model
+     */
+    public function addAccount(array $data)
+    {
+       return  $this->storeAccountModel::create($data);
+
+    }
 }

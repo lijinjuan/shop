@@ -39,7 +39,7 @@ class AgentRepositories extends AbstractRepositories
     {
         $agentProfile['agentPassword'] = password_hash($agentProfile['agentPassword'], PASSWORD_DEFAULT);
         $agentProfile["inviteCode"] = app()->get(InviteServiceInterface::class)->agentInviteCode();
-        $agentProfile['agentParentID'] =  ',';
+        $agentProfile['agentParentID'] = ',';
         $this->servletFactory->agentServ()->createAgents($agentProfile);
         return renderResponse();
     }
@@ -51,11 +51,12 @@ class AgentRepositories extends AbstractRepositories
      */
     public function getAgentInfoByID(int $id)
     {
-        $agent = $this->servletFactory->agentServ()->getAgentsProfileByFields(['id'=>$id]);
-        if (!$agent){
-            throw new ParameterException(['errMessage'=>'代理商不存在...']);
+        $agent = $this->servletFactory->agentServ()->getAgentsProfileByFields(['id' => $id]);
+        if ($agent) {
+            return renderResponse($agent);
         }
-        return renderResponse($agent);
+        throw new ParameterException(['errMessage' => '代理商不存在...']);
+
     }
 
     /**
@@ -63,9 +64,9 @@ class AgentRepositories extends AbstractRepositories
      * @param array $data
      * @return \think\response\Json
      */
-    public function editAgentByID(int $id,array $data)
+    public function editAgentByID(int $id, array $data)
     {
-        $this->servletFactory->agentServ()->updateAgentByID($id,$data);
+        $this->servletFactory->agentServ()->updateAgentByID($id, $data);
         return renderResponse();
     }
 

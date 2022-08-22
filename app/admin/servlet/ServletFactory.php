@@ -151,4 +151,12 @@ class ServletFactory implements ServletFactoryInterface
     {
         return invoke(GoodsSkuServlet::class);
     }
+
+    /**
+     * @return AdminAccountServlet
+     */
+    public function adminAccountServ(): AdminAccountServlet
+    {
+        return invoke(AdminAccountServlet::class);
+    }
 }

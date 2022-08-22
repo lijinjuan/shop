@@ -62,6 +62,8 @@ Route::group(":version", function () {
     Route::post("add-agent", ":version.Agent/addAgent");
     //编辑代理商
     Route::put("edit-agent/:id", ":version.Agent/editAgent");
+    //代理商详情
+    Route::get("agent-detail/:id", ":version.Agent/getAgentDetailByID");
     //代理商统计
     Route::get("agent-statistics/:id", ":version.Agent/agentStatistics");
 });
