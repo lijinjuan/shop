@@ -11,13 +11,13 @@ class GoodsRepositories extends AbstractRepositories
 {
 
     /**
-     * getGoodsListBYPaginate
-     * @param $request
+     * getGoodsListByPaginate
+     * @param array $condition
      * @return \think\response\Json
      */
-    public function getGoodsListByPaginate($request)
+    public function getGoodsListByPaginate(array $condition)
     {
-        $goodsList = $this->servletFactory->goodsServ()->getGoodsList($request);
+        $goodsList = $this->servletFactory->goodsServ()->getGoodsList($condition);
         return renderPaginateResponse($goodsList);
     }
 

@@ -32,7 +32,8 @@ class GoodsController
      */
     public function getGoodsListByPaginate(Request $request)
     {
-        return $this->goodsRepositories->getGoodsListByPaginate($request);
+        $condition = $request->only(["startAt", 'endAt', "goodsName"]);
+        return $this->goodsRepositories->getGoodsListByPaginate($condition);
     }
 
     /**

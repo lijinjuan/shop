@@ -61,18 +61,27 @@ class GoodsServlet
 
     /**
      * getGoodsList
-     * @param \think\Request $request
+     * @param array $condition
      * @return \think\Paginator
      */
-    public function getGoodsList(Request $request)
+    public function getGoodsList(array $condition)
     {
-        $goodsList = $this->goodsModel->field(["id", "goodsName", "goodsCover", "goodsPrice", "goodsDiscountPrice", "isNew", "brandID", "categoryID", "goodsStock", "goodsSalesAmount", "commission", "status", "createdAt"])
-            ->with([
-                "category" => fn($query) => $query->field("id,categoryName"),
-                "brands" => fn($query) => $query->field("id, brandName"),
-            ])->order("goodsSalesAmount", "desc")->paginate((int)$request->param("pageSize", 20));
+        $goodsList = $this->goodsModel->field(["id", "goodsName", "goodsCover", "goodsPrice", "goodsDiscountPrice", "isNew", "brandID", "categoryID", "goodsStock", "goodsSalesAmount", "status", "createdAt"]);
 
-        return $goodsList;
+        if (isset($condition["startAt"]))
+            $goodsList->where("createdAt", ">=", $condition["startAt"]);
+
+        if (isset($condition["endAt"]))
+            $goodsList->where("createdAt", "<=", $condition["endAt"]);
+
+        if (isset($condition["goodsName"]))
+            $goodsList->whereLike("goodsName", "%" . $condition["goodsName"] . "%");
+
+        return $goodsList->with([
+            "category" => fn($query) => $query->field("id,categoryName"),
+            "brands" => fn($query) => $query->field("id, brandName"),
+        ])->order("goodsSalesAmount", "desc")->paginate((int)request()->param("pageSize", 20));
+
     }
 
     /**
