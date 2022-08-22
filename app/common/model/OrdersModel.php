@@ -61,5 +61,13 @@ class OrdersModel extends Model
         return $this->belongsTo(UsersModel::class, "userID", "id");
     }
 
+    /**
+     * store
+     * @return \think\model\relation\BelongsTo
+     */
+    public function store()
+    {
+        return $this->belongsTo(StoresModel::class, "storeID", "id");
+    }
 
 }

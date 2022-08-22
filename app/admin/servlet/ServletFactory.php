@@ -153,7 +153,17 @@ class ServletFactory implements ServletFactoryInterface
     }
 
     /**
-     * @return AdminAccountServlet
+     * orderServ
+     * @return \app\admin\servlet\OrderServlet
+     */
+    public function orderServ(): OrderServlet
+    {
+        return invoke(OrderServlet::class);
+    }
+
+    /**
+     * adminAccountServ
+     * @return \app\admin\servlet\AdminAccountServlet
      */
     public function adminAccountServ(): AdminAccountServlet
     {

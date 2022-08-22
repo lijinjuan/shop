@@ -14,6 +14,7 @@ use app\admin\servlet\CommissionServlet;
 use app\admin\servlet\GoodsServlet;
 use app\admin\servlet\GoodsSkuServlet;
 use app\admin\servlet\ImagesServlet;
+use app\admin\servlet\OrderServlet;
 use app\admin\servlet\RechargeConfigServlet;
 use app\admin\servlet\RechargeServet;
 use app\admin\servlet\RefundConfigServlet;
@@ -120,7 +121,15 @@ interface ServletFactoryInterface
     public function goodsSkuServ(): GoodsSkuServlet;
 
     /**
-     * @return AdminAccountServlet
+     * orderServ
+     * @return \app\admin\servlet\OrderServlet
      */
-    public function adminAccountServ():AdminAccountServlet;
+    public function orderServ(): OrderServlet;
+
+    /**
+     * adminAccountServ
+     * @return \app\admin\servlet\AdminAccountServlet
+     */
+    public function adminAccountServ(): AdminAccountServlet;
+
 }
