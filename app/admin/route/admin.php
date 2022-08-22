@@ -36,7 +36,18 @@ Route::group(":version", function () {
     // 编辑商品分类的接口
     Route::post("goods-category-edit/:categoryID", ":version.Category/editGoodsCategory");
     // 删除商品分类的接口
-    Route::post("goods-category-del", ":version.Category/deleteGoodsCategory");
+    Route::post("goods-category-del/:categoryID", ":version.Category/deleteGoodsCategory");
+
+    // 获取商品品牌列表的接口
+    Route::post("brand-category-list", ":version.Brands/getBrandsListByPaginate");
+    // 新建品牌的接口
+    Route::post("brand-category-add", ":version.Brands/createBrands");
+    // 获取品牌的详情的接口
+    Route::post("brand-category-details/:brandID", ":version.Brands/getBrandDetailByBrandID");
+    // 编辑品牌的接口
+    Route::post("brand-category-edit/:brandID", ":version.Brands/editBrandsDetailByBrandID");
+    // 删除品牌的接口
+    Route::post("brand-category-del/:brandID", ":version.Brands/deleteBrandsDetailByBrandID");
 });
 
 //总后台退款配置

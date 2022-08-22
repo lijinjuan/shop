@@ -79,6 +79,6 @@ class BrandsRepositories extends AbstractRepositories
 
         $brandDetail->delete();
 
-        return $brandDetail;
+        return renderResponse();
     }
 }
