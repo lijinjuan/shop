@@ -12,17 +12,37 @@ class UsersRepositories extends AbstractRepositories
 
     /**
      * @param int $type
-     * @param $pageSize
+     * @param int $pageSize
+     * @param string $userAccount
+     * @param int $status
      * @return \think\response\Json
      * @throws ParameterException
      * @throws \think\db\exception\DbException
      */
-    public function userList(int $type, $pageSize)
+    public function userList(int $type, int $pageSize, string $userAccount,int $status)
     {
         if (!in_array($type, [1, 2])) {
             throw new ParameterException(['errMessage' => '参数错误...']);
         }
-        return renderPaginateResponse($this->servletFactory->userServ()->userList($type, $pageSize));
+        //1->普通会员 2->店铺
+        if ($type == 1){
+            $list = $this->servletFactory->userServ()->userList($pageSize,$userAccount);
+        }else{
+            $list = $this->servletFactory->storeServ()->storeList($pageSize,$status,$userAccount);
+        }
+        return renderPaginateResponse($list);
+    }
+
+    /**
+     * @param int $id
+     * @return \think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function userDetail(int $id)
+    {
+        return renderResponse($this->servletFactory->userServ()->getUserInfoByID($id));
     }
 
     /**
@@ -37,20 +57,23 @@ class UsersRepositories extends AbstractRepositories
     {
         $userModel = $this->servletFactory->userServ()->getUserInfoByID($id);
         if ($userModel) {
-            if ($data['userName']) {
+            if (!empty($data['userName'])) {
                 $userModel->userName = $data['userName'];
             }
-            if ($data['loginPassword']) {
+            if (!empty($data['loginPassword'])) {
                 $userModel->password = $data['loginPassword'];
             }
-            if ($data['payPassword']) {
+            if (!empty($data['payPassword'])) {
                 $userModel->payPassword = $data['payPassword'];
             }
-            if ($data['isRealPerson']) {
+            if (!empty($data['isRealPerson'])) {
                 $userModel->isRealPerson = $data['isRealPerson'];
             }
-            if ($data['remark']) {
+            if (!empty($data['remark'])) {
                 $userModel->remark = $data['remark'];
+            }
+            if (!empty($data['sort'])) {
+                $userModel->remark = $data['sort'];
             }
             if ($userModel->isStore == 1) {
                 $storeData = [
@@ -232,6 +255,23 @@ class UsersRepositories extends AbstractRepositories
             $data['checkName'] = '';
             $data['checkAt'] = date('Y-m-d H:i:s');
             $model::update($data, ['id' => $model->id]);
+            //充值成功 写入用户账变表
+            if ($data['status'] == 1) {
+                $userInfo = $this->servletFactory->userServ()->getUserInfoByID($model->userID);
+                $currentBalance = $userInfo->balance;
+                $data = [
+                    'title' => '充值',
+                    'storeID' => $model->storeID,
+                    'userID' => $model->userID,
+                    'balance' => $currentBalance + $model->balance,
+                    'changeBalance' => $model->balance,
+                    'action' => 1,
+                    'remark' => '会员充值',
+                    'type' => 1
+                ];
+                $this->servletFactory->storeAccountServ()->addStoreAccount($data);
+            }
+
             return renderResponse();
         }
         throw new ParameterException(['errMessage' => '充值记录不存在...']);
@@ -281,6 +321,19 @@ class UsersRepositories extends AbstractRepositories
             $data['checkName'] = '';
             $data['checkAt'] = date('Y-m-d H:i:s');
             $model::update($data, ['id' => $model->id]);
+            $userInfo = $this->servletFactory->userServ()->getUserInfoByID($model->userID);
+            $currentBalance = $userInfo->balance;
+            $data = [
+                'title' => '提现值',
+                'storeID' => $model->storeID,
+                'userID' => $model->userID,
+                'balance' => $currentBalance - $model->balance,
+                'changeBalance' => $model->balance,
+                'action' => 2,
+                'remark' => '会员提现',
+                'type' => 2
+            ];
+            $this->servletFactory->storeAccountServ()->addStoreAccount($data);
             return renderResponse();
         }
         throw new ParameterException(['errMessage' => '提现记录不存在...']);

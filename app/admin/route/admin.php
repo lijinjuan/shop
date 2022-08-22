@@ -93,6 +93,8 @@ Route::group(":version", function () {
     Route::post("user-list/:type", ":version.User/userList");
     //修改用户信息
     Route::post("edit-user-info/:id", ":version.User/editUserInfo");
+    //用户详情
+    Route::post("user-info/:id", ":version.User/userDetail");
     //编辑真假人
     Route::post("edit-user-true2false/:id", ":version.User/editUserTrue2false");
     //修改用户备注
@@ -163,5 +165,13 @@ Route::group(":version", function () {
     //充值渠道列表
     Route::post("recharge-config-list", ":version.ConfigInfo/RechargeConfigList");
 
+
+
+});
+
+//总后台账变管理
+Route::group(":version", function () {
+    //账变列表
+    Route::post("admin-account-list", ":version.AdminAccount/accountList");
 
 });

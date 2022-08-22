@@ -40,20 +40,20 @@ class StoreServlet
     public function storeStatistics(int $id): array
     {
         //Todo 待完善
-        //访客数
-        //下级店铺数
-        //今日预估佣金
-        //已结算佣金
-        //推广奖励
-        //提现总金额
-        //总订单金额
-        //在途订单金额
-        //今日订单金额
-        //月订单金额
-        //已完成订单数
-        //已发货订单数
-        //待支付订单数
-        //待发货订单数
+        //访客数 totalUV
+        //下级店铺数 childStore
+        //今日预估佣金 todayCommission
+        //已结算佣金 totalCommission
+        //推广奖励 extensionMoney
+        //提现总金额 withdrawal
+        //总订单金额 totalOrderMoney
+        //在途订单金额 noReceivedMoney
+        //今日订单金额 todayOrderMoney
+        //月订单金额 monthOrderMoney
+        //已完成订单数 finishedOrderCount
+        //已发货订单数 shipOrderCount
+        //待支付订单数 noPayOrderCount
+        //待发货订单数 noShipOrderCount
 
 
         $totalUV = $this->storesModel->where('id', $id)->field(['totalUV'])->count();
@@ -75,6 +75,27 @@ class StoreServlet
         return compact('totalUV', 'childStore', 'todayCommission', 'totalCommission', 'extensionMoney', 'withdrawal', 'totalOrderMoney', 'noReceivedMoney', 'todayOrderMoney', 'monthOrderMoney', 'finishedOrderCount', 'shipOrderCount', 'noPayOrderCount', 'noShipOrderCount');
 
 
+    }
+
+    /**
+     * @param int $pageSize
+     * @param int $status
+     * @param string $userAccount
+     * @return \think\Paginator
+     * @throws \think\db\exception\DbException
+     */
+    public function storeList(int $pageSize = 20, int $status = 0, string $userAccount = '')
+    {
+        $model = $this->storesModel->where('id', '>', 0);
+        if (!empty($userAccount)) {
+            $model->with(['user' => function ($query) use ($userAccount) {
+                $query->where('user.email', 'like', '%' . $userAccount . '%');
+            }]);
+        }
+        if ($status) {
+            $model->where('status', $status -1 );
+        }
+        return $model->with(['user'])->paginate($pageSize);
     }
 
 

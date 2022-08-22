@@ -33,5 +33,14 @@ class StoreAccountServlet
         return compact('rechargeSum', 'withdrawalSum', 'commissionSum', 'extensionSum');
     }
 
+    /**
+     * @param array $data
+     * @return StoreAccountModel|\think\Model
+     */
+    public function addStoreAccount(array $data)
+    {
+        return $this->storeAccountModel::create($data);
+    }
+
 
 }
