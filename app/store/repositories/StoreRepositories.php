@@ -133,19 +133,24 @@ class StoreRepositories extends AbstractRepositories
 
     /**
      * getStoreGoodsList
-     * @param \think\Request $request
+     * @param array $condition
      * @return \think\response\Json
      */
-    public function getStoreGoodsList(Request $request)
+    public function getStoreGoodsList(array $condition)
     {
         /**
          * @var \app\common\model\StoresModel $storeModel
          */
         $storeModel = app()->get("storeProfile");
-        $goodsList = $storeModel->goods()->visible(["id", "goodsName", "goodsCover", "goodsPrice", "goodsDiscountPrice", "goodsStock", "goodsSalesAmount", "commission", "createdAt"])
-            ->order("goodsSalesAmount", "desc")
+        $goodsEntity = $storeModel->goods()->visible(["id", "goodsName", "goodsCover", "goodsPrice", "goodsDiscountPrice", "goodsStock", "goodsSalesAmount", "commission", "createdAt"]);
+
+        if (isset($condition["goodsName"]))
+            $goodsEntity->whereLike("goodsName", "%" . $condition["goodsName"] . "%");
+
+        $goodsList = $goodsEntity->order("goodsSalesAmount", "desc")
             ->hidden(["pivot"])
-            ->paginate((int)$request->param("pageSize", 20));
+            ->paginate((int)\request()->param("pageSize", 20));
+
         return renderPaginateResponse($goodsList);
     }
 

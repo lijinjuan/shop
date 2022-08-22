@@ -24,12 +24,17 @@ class GoodsServlet
 
     /**
      * getGoodsList
-     * @return \think\Paginator
+     * @param array $condition
+     * @return \think\Paginator|void
      */
-    public function getGoodsList($request)
+    public function getGoodsList(array $condition)
     {
-        return $this->goodsModel->field(["id", "goodsName", "goodsCover", "goodsPrice", "goodsDiscountPrice", "goodsStock", "goodsSalesAmount", "commission", "createdAt"])
-            ->order("goodsSalesAmount", "desc")
-            ->paginate((int)$request->param("pageSize", 20));
+        $goodsList = $this->goodsModel->field(["id", "goodsName", "goodsCover", "goodsPrice", "goodsDiscountPrice", "goodsStock", "goodsSalesAmount", "commission", "createdAt"]);
+
+        if (isset($condition["goodsName"]))
+            $goodsList->whereLike("goodsName", "%" . $condition["goodsName"] . "%");
+
+        return $goodsList->order("goodsSalesAmount", "desc")
+            ->paginate((int)request()->param("pageSize", 20));
     }
 }

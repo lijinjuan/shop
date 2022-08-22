@@ -9,14 +9,15 @@ use think\Request;
  */
 class GoodsRepositories extends AbstractRepositories
 {
+
     /**
      * getPlatformGoodsList
-     * @param \think\Request $request
+     * @param array $condition
      * @return \think\response\Json
      */
-    public function getPlatformGoodsList(Request $request)
+    public function getPlatformGoodsList(array $condition)
     {
-        $platformGoodsList = $this->servletFactory->goodsServ()->getGoodsList($request);
+        $platformGoodsList = $this->servletFactory->goodsServ()->getGoodsList($condition);
         $storeGoodsList = app()->get("storeProfile")?->goods->column("id") ?? [];
         $platformGoodsList->each(fn($item) => ($item["status"] = (int)in_array($item["id"], $storeGoodsList)));
         return renderPaginateResponse($platformGoodsList);

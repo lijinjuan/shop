@@ -79,7 +79,8 @@ class StoreController
      */
     public function getStoreGoodsList(Request $request)
     {
-        return $this->storeRepositories->getStoreGoodsList($request);
+        $condition = $request->only(["goodsName"]);
+        return $this->storeRepositories->getStoreGoodsList($condition);
     }
 
     /**

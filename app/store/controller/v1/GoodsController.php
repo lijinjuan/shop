@@ -30,7 +30,8 @@ class GoodsController
      */
     public function getPlatformGoodsList(Request $request)
     {
-        return $this->goodsRepositories->getPlatformGoodsList($request);
+        $condition = $request->only(["goodsName"]);
+        return $this->goodsRepositories->getPlatformGoodsList($condition);
     }
 
     /**
