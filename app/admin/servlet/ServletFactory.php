@@ -142,4 +142,13 @@ class ServletFactory implements ServletFactoryInterface
     {
         return invoke(BannerItemsServlet::class);
     }
+
+    /**
+     * goodsSkuServ
+     * @return \app\admin\servlet\GoodsSkuServlet
+     */
+    public function goodsSkuServ(): GoodsSkuServlet
+    {
+        return invoke(GoodsSkuServlet::class);
+    }
 }

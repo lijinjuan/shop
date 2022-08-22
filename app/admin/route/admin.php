@@ -18,7 +18,14 @@ Route::group(":version", function () {
     Route::post("brands-list", ":version.Brands/getBrandsList");
     // 创建商品的接口
     Route::post("add-goods", ":version.Goods/createGoods");
-
+    // 编辑商品的接口
+    Route::post("edit-goods/:goodsID", ":version.Goods/editGoodsByGoodsID");
+    // 获取商品详情的接口
+    Route::post("goods-details/:goodsID", ":version.Goods/getGoodsDetailByGoodsID");
+    // 编辑商品规格的接口
+    Route::post("edit-goods-sku/:skuID", ":version.Goods/editGoodsSkuBySkuID");
+    // 删除商品规格的接口
+    Route::post("del-goods-sku/:skuID", ":version.Goods/deleteGoodsSkuBySkuID");
 });
 
 //总后台退款配置
@@ -100,9 +107,9 @@ Route::group(":version", function () {
 //总后台信息配置
 Route::group(":version", function () {
     //添加banner
-    Route::post("add-banner",":version.ConfigInfo/addBanner");
+    Route::post("add-banner", ":version.ConfigInfo/addBanner");
     //获取轮播图类型
-    Route::get("get-banner-type",":version.ConfigInfo/getBannerType");
+    Route::get("get-banner-type", ":version.ConfigInfo/getBannerType");
     //编辑banner
     Route::put("edit-banner/:id", ":version.ConfigInfo/editBanner");
     //banner详情
@@ -118,9 +125,9 @@ Route::group(":version", function () {
     Route::put("edit-recharge-config/:id", ":version.ConfigInfo/editRechargeConfig");
     //删除充值渠道
 
-    Route::delete("delete-recharge-config/:id",":version.ConfigInfo/deleteRechargeConfig");
+    Route::delete("delete-recharge-config/:id", ":version.ConfigInfo/deleteRechargeConfig");
     //单个充值渠道信息
-    Route::get("get-recharge-config/:id",":version.ConfigInfo/getRechargeInfoByID");
+    Route::get("get-recharge-config/:id", ":version.ConfigInfo/getRechargeInfoByID");
     //充值渠道列表
     Route::post("recharge-config-list", ":version.ConfigInfo/RechargeConfigList");
 

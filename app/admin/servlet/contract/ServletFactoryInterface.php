@@ -11,6 +11,7 @@ use app\admin\servlet\BrandsServlet;
 use app\admin\servlet\CategoryServlet;
 use app\admin\servlet\CommissionServlet;
 use app\admin\servlet\GoodsServlet;
+use app\admin\servlet\GoodsSkuServlet;
 use app\admin\servlet\ImagesServlet;
 use app\admin\servlet\RechargeConfigServlet;
 use app\admin\servlet\RechargeServet;
@@ -99,7 +100,7 @@ interface ServletFactoryInterface
      * @return \app\admin\servlet\BrandsServlet
      */
     public function brandsServ(): BrandsServlet;
-    
+
     /**
      * imageServ
      * @return \app\admin\servlet\ImagesServlet
@@ -110,4 +111,10 @@ interface ServletFactoryInterface
      * @return BannerItemsServlet
      */
     public function bannerItemServ(): BannerItemsServlet;
+
+    /**
+     * goodsSkuServ
+     * @return \app\admin\servlet\GoodsSkuServlet
+     */
+    public function goodsSkuServ(): GoodsSkuServlet;
 }
