@@ -3,6 +3,7 @@
 namespace app\admin\servlet\contract;
 
 
+use app\admin\servlet\AdminAccountServlet;
 use app\admin\servlet\AdminsServlet;
 use app\admin\servlet\AgentsServlet;
 use app\admin\servlet\BannerItemsServlet;
@@ -124,4 +125,11 @@ interface ServletFactoryInterface
      * @return \app\admin\servlet\OrderServlet
      */
     public function orderServ(): OrderServlet;
+
+    /**
+     * adminAccountServ
+     * @return \app\admin\servlet\AdminAccountServlet
+     */
+    public function adminAccountServ(): AdminAccountServlet;
+
 }

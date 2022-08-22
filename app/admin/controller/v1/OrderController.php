@@ -39,5 +39,15 @@ class OrderController
     {
         return $this->orderRepositories->getStoreInfoByOrderNo($orderNo);
     }
-    
+
+    /**
+     * ship2OrderByOrderNo
+     * @param string $orderNo
+     * @return \think\response\Json
+     */
+    public function ship2OrderByOrderNo(string $orderNo)
+    {
+        return $this->orderRepositories->ship2OrderByOrderNo($orderNo);
+    }
+
 }

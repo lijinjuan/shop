@@ -59,7 +59,7 @@ class AgentsServlet
      */
     public function getAgentsProfileByFields(array $whereFields, bool $passable = true): AgentsModel
     {
-        $user = $this->agentsModel->where($whereFields)->find();
+        $user = $this->agentsModel->where($whereFields)->hidden(['deletedAt'])->find();
 
         if (is_null($user) && $passable) {
             throw new ParameterException(["errMessage" => "user does not exist"]);

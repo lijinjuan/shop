@@ -243,6 +243,23 @@ class OrderRepositories extends AbstractRepositories
             //减库存 增销量
             $order->goodsSku?->each($this->addSalesAmount());
             $order->save();
+            //更新账变记录（商户或平台）
+            if ($order->storeID) {
+                $account = [
+                    'title' => '支付订单',
+                    'balance' => sprintf('%.2f', round(app()->get('userProfile')->balance + $order->userPayPrice, 2)),
+                    'storeID' => $order->storeID,
+                    'userID' => $order->userID,
+                    'changeBalance' => $order->userPayPrice,
+                    'action' => 1,
+                    'type' => 1
+                ];
+                $this->servletFactory->storeAccountServ()->addAccount($account);
+            } else {
+                $balance = $this->servletFactory->adminBalanceServ()->getBalance();
+                $account = ['type' => 1, 'userID' => $order->userID, 'title' => '支付订单', 'balance' => sprintf('%.2f', round($balance->balance + $order->userPayPrice, 2)), 'changeBalance' => $order->userPayPrice, 'remark' => '', 'action' => 1];
+                $this->servletFactory->adminAccountServ()->addAdminAccount($account);
+            }
         });
         return renderResponse();
     }

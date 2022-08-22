@@ -2,6 +2,8 @@
 
 namespace app\api\servlet\contract;
 
+use app\api\servlet\AdminAccountServlet;
+use app\api\servlet\AdminBalanceServlet;
 use app\api\servlet\AgentsServlet;
 use app\api\servlet\BannersServlet;
 use app\api\servlet\BrandsServlet;
@@ -22,6 +24,7 @@ use app\api\servlet\UsersAmountServlet;
 use app\api\servlet\UsersServlet;
 use app\api\servlet\UsersShoppingCartServlet;
 use app\api\servlet\WithdrawalServlet;
+use app\common\model\AdminsAccountModel;
 use app\common\model\UsersAmountModel;
 
 /**
@@ -142,7 +145,15 @@ interface ServletFactoryInterface
      */
     public function storeAccountServ():StoreAccountServlet;
 
+    /**
+     * @return AdminAccountServlet
+     */
+    public function adminAccountServ():AdminAccountServlet;
 
+    /**
+     * @return AdminBalanceServlet
+     */
+    public function adminBalanceServ():AdminBalanceServlet;
 
 
 }

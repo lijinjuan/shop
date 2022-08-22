@@ -76,5 +76,15 @@ class AgentController
         return $this->agentRepositories->agentStatistics($id);
     }
 
+    /**
+     * @param int $id
+     * @return \think\response\Json
+     * @throws \app\lib\exception\ParameterException
+     */
+    public function getAgentDetailByID(int $id)
+    {
+        return $this->agentRepositories->getAgentInfoByID($id);
+    }
+
 
 }

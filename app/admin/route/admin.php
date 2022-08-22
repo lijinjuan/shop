@@ -50,8 +50,10 @@ Route::group(":version", function () {
     Route::post("brand-category-del/:brandID", ":version.Brands/deleteBrandsDetailByBrandID");
     // 查看订单列表的接口
     Route::post("order-list", ":version.Order/getOrderListByPaginate");
-    // 更具订单编号查询店铺信息
+    // 根据订单编号查询店铺信息
     Route::post("order-store-info/:orderNo", ":version.Order/getStoreInfoByOrderNo");
+    // 订单的立即发货接口
+    Route::post("order-ship/:orderNo", ":version.Order/ship2OrderByOrderNo");
 
 
 });
@@ -79,6 +81,8 @@ Route::group(":version", function () {
     Route::post("add-agent", ":version.Agent/addAgent");
     //编辑代理商
     Route::put("edit-agent/:id", ":version.Agent/editAgent");
+    //代理商详情
+    Route::get("agent-detail/:id", ":version.Agent/getAgentDetailByID");
     //代理商统计
     Route::get("agent-statistics/:id", ":version.Agent/agentStatistics");
 });
