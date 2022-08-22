@@ -77,5 +77,26 @@ class StoreServlet
 
     }
 
+    /**
+     * @param int $pageSize
+     * @param int $status
+     * @param string $userAccount
+     * @return \think\Paginator
+     * @throws \think\db\exception\DbException
+     */
+    public function storeList(int $pageSize = 20, int $status = 0, string $userAccount = '')
+    {
+        $model = $this->storesModel->where('id', '>', 0);
+        if (!empty($userAccount)) {
+            $model->with(['user' => function ($query) use ($userAccount) {
+                $query->where('user.email', 'like', '%' . $userAccount . '%');
+            }]);
+        }
+        if ($status) {
+            $model->where('status', $status -1 );
+        }
+        return $model->with(['user'])->paginate($pageSize);
+    }
+
 
 }

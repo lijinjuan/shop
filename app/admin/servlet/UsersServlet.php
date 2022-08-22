@@ -26,19 +26,25 @@ class UsersServlet
     /**
      * @param int $type
      * @param int $pageSize
+     * @param string $userAccount
+     * @param int $status
      * @return \think\Paginator
      * @throws \think\db\exception\DbException
      */
-    public function userList(int $type,int $pageSize)
+    public function userList(int $pageSize, string $userAccount)
     {
         //1->普通会员 2->店铺
         $select = [
-            'id','userName','email','userAvatar','status','lastIP'
+            'id', 'userName', 'email', 'userAvatar', 'status', 'lastIP'
         ];
         $hidden = [
-            'store.deletedAt','store.updatedAt','store.parentStoreID','store.checkID','store.checkAt','store.reason'
+            'store.deletedAt', 'store.updatedAt', 'store.parentStoreID', 'store.checkID', 'store.checkAt', 'store.reason'
         ];
-        return $this->usersModel->where('isStore', (int)$type - 1)->field($select)->with(['store'])->hidden($hidden)->order('createdAt','desc')->paginate($pageSize);
+        $model = $this->usersModel->where('isStore', 0)->field($select);
+        if (!empty($userAccount)) {
+            $model->where('email', 'like', '%' . $userAccount . '%');
+        }
+        return $model->with(['store'])->hidden($hidden)->order('createdAt', 'desc')->paginate($pageSize);
 
     }
 
@@ -51,9 +57,7 @@ class UsersServlet
      */
     public function getUserInfoByID(int $id)
     {
-        return $this->usersModel->where('id',$id)->with(['store'=>function($query){
-            $query->field(['id','userID','storeName','storeRemark','isRealPeople','storeLevel','creditScore']);
-        }])->hidden(['deletedAt'])->find();
+        return $this->usersModel->where('id', $id)->with(['store'])->hidden(['deletedAt'])->find();
     }
 
 

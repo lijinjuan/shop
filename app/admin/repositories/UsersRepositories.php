@@ -12,17 +12,25 @@ class UsersRepositories extends AbstractRepositories
 
     /**
      * @param int $type
-     * @param $pageSize
+     * @param int $pageSize
+     * @param string $userAccount
+     * @param int $status
      * @return \think\response\Json
      * @throws ParameterException
      * @throws \think\db\exception\DbException
      */
-    public function userList(int $type, $pageSize)
+    public function userList(int $type, int $pageSize, string $userAccount,int $status)
     {
         if (!in_array($type, [1, 2])) {
             throw new ParameterException(['errMessage' => '参数错误...']);
         }
-        return renderPaginateResponse($this->servletFactory->userServ()->userList($type, $pageSize));
+        //1->普通会员 2->店铺
+        if ($type == 1){
+            $list = $this->servletFactory->userServ()->userList($pageSize,$userAccount);
+        }else{
+            $list = $this->servletFactory->storeServ()->storeList($pageSize,$status,$userAccount);
+        }
+        return renderPaginateResponse($list);
     }
 
     /**

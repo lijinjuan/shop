@@ -63,14 +63,16 @@ class RechargeServet
      */
     public function rechargeList(string $keywords = '', int $pageSize = 20)
     {
-        //商户账号?
+        //商户账号
         $select = ['id', 'orderNo',  'storeID', 'status', 'rechargeType', 'agentAccount', 'rechargeMoney', 'createdAt'];
         $model = $this->rechargeModel->field($select);
         if ($keywords) {
-            //$model->
+            $model->with(['store.user'=>function($query) use($keywords){
+                $query->where('store.user.email','like','%'.$keywords.'%');
+            }]);
         }
         return $model->with(['store' => function ($query) {
-            $query->field(['id', 'storeName', 'isRealPeople']);
+            $query->field(['id', 'storeName', 'isRealPeople','userID']);
         }])->paginate($pageSize);
     }
 
