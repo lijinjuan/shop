@@ -13,6 +13,7 @@ use app\admin\servlet\CommissionServlet;
 use app\admin\servlet\GoodsServlet;
 use app\admin\servlet\GoodsSkuServlet;
 use app\admin\servlet\ImagesServlet;
+use app\admin\servlet\OrderServlet;
 use app\admin\servlet\RechargeConfigServlet;
 use app\admin\servlet\RechargeServet;
 use app\admin\servlet\RefundConfigServlet;
@@ -117,4 +118,10 @@ interface ServletFactoryInterface
      * @return \app\admin\servlet\GoodsSkuServlet
      */
     public function goodsSkuServ(): GoodsSkuServlet;
+
+    /**
+     * orderServ
+     * @return \app\admin\servlet\OrderServlet
+     */
+    public function orderServ(): OrderServlet;
 }

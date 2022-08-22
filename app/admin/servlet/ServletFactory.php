@@ -151,4 +151,13 @@ class ServletFactory implements ServletFactoryInterface
     {
         return invoke(GoodsSkuServlet::class);
     }
+
+    /**
+     * orderServ
+     * @return \app\admin\servlet\OrderServlet
+     */
+    public function orderServ(): OrderServlet
+    {
+        return invoke(OrderServlet::class);
+    }
 }

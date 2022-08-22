@@ -48,6 +48,12 @@ Route::group(":version", function () {
     Route::post("brand-category-edit/:brandID", ":version.Brands/editBrandsDetailByBrandID");
     // 删除品牌的接口
     Route::post("brand-category-del/:brandID", ":version.Brands/deleteBrandsDetailByBrandID");
+    // 查看订单列表的接口
+    Route::post("order-list", ":version.Order/getOrderListByPaginate");
+    // 更具订单编号查询店铺信息
+    Route::post("order-store-info/:orderNo", ":version.Order/getStoreInfoByOrderNo");
+
+
 });
 
 //总后台退款配置
