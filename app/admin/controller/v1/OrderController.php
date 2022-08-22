@@ -3,6 +3,7 @@
 namespace app\admin\controller\v1;
 
 use app\admin\repositories\OrderRepositories;
+use think\Request;
 
 /**
  * \app\admin\controller\v1\OrderController
@@ -26,9 +27,10 @@ class OrderController
      * getOrderListByPaginate
      * @return \think\response\Json
      */
-    public function getOrderListByPaginate()
+    public function getOrderListByPaginate(Request $request)
     {
-        return $this->orderRepositories->getOrderListByPaginate();
+        $conditions = $request->only(["orderStatus", "userID", "storeID", "orderNo", "receiver", "startAt", "endAt"]);
+        return $this->orderRepositories->getOrderListByPaginate($conditions);
     }
 
     /**

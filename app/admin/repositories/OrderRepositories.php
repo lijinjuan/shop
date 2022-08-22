@@ -12,11 +12,12 @@ class OrderRepositories extends AbstractRepositories
 
     /**
      * getOrderListByPaginate
+     * @param array $conditions
      * @return \think\response\Json
      */
-    public function getOrderListByPaginate()
+    public function getOrderListByPaginate(array $conditions)
     {
-        $orderList = $this->servletFactory->orderServ()->getOrderListByPaginate();
+        $orderList = $this->servletFactory->orderServ()->getOrderListByPaginate($conditions);
         return renderPaginateResponse($orderList);
     }
 

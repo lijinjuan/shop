@@ -41,17 +41,39 @@ class OrderServlet
     }
 
     /**
-     * getOrderList
+     * getOrderListByPaginate
+     * @param array $conditions
      * @return \think\Paginator
      */
-    public function getOrderListByPaginate()
+    public function getOrderListByPaginate(array $conditions)
     {
-        return $this->ordersModel->with(["user" => function ($query) {
+        $orderList = $this->ordersModel->with(["user" => function ($query) {
             $query->field("id,userName");
         }, "goodsDetail" => function ($query) {
             $query->field("orderNo,goodsName,goodsPrice,skuImage,goodsNum");
-        }])->field(["id", "orderNo", "userID", "storeID", "userPayPrice", "storePayPrice", "agentAmount", "receiver", "receiverMobile", "receiverAddress", "createdAt"])
-            ->order("createdAt", "desc")
-            ->paginate((int)request()->param("pageSize", 20));
+        }])->field(["id", "orderNo", "userID", "storeID", "userPayPrice", "storePayPrice", "agentAmount", "receiver", "receiverMobile", "receiverAddress", "createdAt"]);
+
+        if (isset($conditions["orderStatus"]))
+            $orderList->where("orderStatus", (int)$conditions["orderStatus"]);
+
+        if (isset($conditions["userID"]))
+            $orderList->where("userID", (int)$conditions["userID"]);
+
+        if (isset($conditions["startAt"]))
+            $orderList->where("createdAt", ">=", $conditions["startAt"]);
+
+        if (isset($conditions["endAt"]))
+            $orderList->where("createdAt", "<=", $conditions["endAt"]);
+
+        if (isset($conditions["orderNo"]))
+            $orderList->where("orderNo", $conditions["orderNo"]);
+
+        if (isset($conditions["storeID"]))
+            $orderList->where("storeID", $conditions["storeID"]);
+
+        if (isset($conditions["receiver"]))
+            $orderList->whereLike("receiver", "%" . $conditions["receiver"] . "%");
+
+        return $orderList->order("createdAt", "desc")->paginate((int)request()->param("pageSize", 20));
     }
 }
