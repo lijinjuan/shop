@@ -36,6 +36,18 @@ class UserController
 
     /**
      * @param int $id
+     * @return \think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function userDetail(int $id)
+    {
+        return $this->usersRepositories->userDetail($id);
+    }
+
+    /**
+     * @param int $id
      * @param Request $request
      * @return \think\response\Json|void
      * @throws \think\db\exception\DataNotFoundException

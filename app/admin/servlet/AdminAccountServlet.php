@@ -29,6 +29,26 @@ class AdminAccountServlet
         return $this->adminsAccountModel::create($data);
     }
 
+    /**
+     * @param array $search
+     * @param int $pageSize
+     * @return \think\Paginator
+     * @throws \think\db\exception\DbException
+     */
+    public function accountList(array $search,int $pageSize = 20)
+    {
+        $model = $this->adminsAccountModel->where('type','>',0);
+        if (!empty($search['storeName'])){
+            $model->where('storeName','like','%'.$search['storeName'].'%');
+        }
+        if (!empty($search['startTime'])){
+            $model->where('createdAt','>=',$search['startTime']);
+        }
 
+        if (!empty($search['endTime'])){
+            $model->where('createdAt','<=',$search['endTime']);
+        }
+        return $model->order('createdAt','desc')->paginate($pageSize);
+    }
 
 }

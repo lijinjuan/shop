@@ -33,7 +33,7 @@ class UsersServlet
     {
         //1->普通会员 2->店铺
         $select = [
-            'id','userName','email','userAvatar','status'
+            'id','userName','email','userAvatar','status','lastIP'
         ];
         $hidden = [
             'store.deletedAt','store.updatedAt','store.parentStoreID','store.checkID','store.checkAt','store.reason'
@@ -51,8 +51,9 @@ class UsersServlet
      */
     public function getUserInfoByID(int $id)
     {
-        return $this->usersModel->where('id',$id)->find();
-
+        return $this->usersModel->where('id',$id)->with(['store'=>function($query){
+            $query->field(['id','userID','storeName','storeRemark','isRealPeople','storeLevel','creditScore']);
+        }])->hidden(['deletedAt'])->find();
     }
 
 
