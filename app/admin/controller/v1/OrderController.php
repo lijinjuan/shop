@@ -39,4 +39,5 @@ class OrderController
     {
         return $this->orderRepositories->getStoreInfoByOrderNo($orderNo);
     }
+    
 }
