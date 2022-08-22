@@ -4,7 +4,7 @@ use app\admin\middleware\JwtAuthMiddleware;
 use think\facade\Route;
 
 // 获取图片的验证码的接口
-Route::post(":version/create/captcha", ":version.Entry/createCaptcha");
+Route::get(":version/create/captcha", ":version.Entry/createCaptcha");
 // 总后台登录的接口
 Route::post(":version/launch", ":version.Entry/admin2Launch");
 
@@ -26,6 +26,17 @@ Route::group(":version", function () {
     Route::post("edit-goods-sku/:skuID", ":version.Goods/editGoodsSkuBySkuID");
     // 删除商品规格的接口
     Route::post("del-goods-sku/:skuID", ":version.Goods/deleteGoodsSkuBySkuID");
+
+    // 商品分类的接口
+    Route::post("goods-category-list", ":version.Category/getCategoryList");
+    // 新建商品分类的接口
+    Route::post("goods-category-add", ":version.Category/addGoodsCategory");
+    // 新建商品分类的接口
+    Route::post("goods-category-add", ":version.Category/getGoodsCategoryDetail");
+    // 新建商品分类的接口
+    Route::post("goods-category-add", ":version.Category/editGoodsCategory");
+    // 新建商品分类的接口
+    Route::post("goods-category-add", ":version.Category/deleteGoodsCategory");
 });
 
 //总后台退款配置
