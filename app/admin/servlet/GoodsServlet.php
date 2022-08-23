@@ -66,7 +66,7 @@ class GoodsServlet
      */
     public function getGoodsList(array $condition)
     {
-        $goodsList = $this->goodsModel->field(["id", "goodsName", "goodsCover", "goodsPrice", "goodsDiscountPrice", "isNew", "brandID", "categoryID", "goodsStock", "goodsSalesAmount", "status", "createdAt"]);
+        $goodsList = $this->goodsModel->field(["id", "goodsName", "goodsCover", "goodsPrice", "goodsDiscountPrice", "isNew", "isRank", "isItem", "brandID", "categoryID", "goodsStock", "goodsSalesAmount", "status", "createdAt"]);
 
         if (isset($condition["startAt"]))
             $goodsList->where("createdAt", ">=", $condition["startAt"]);

@@ -33,7 +33,7 @@ class BannerItemsModel extends Model
      * @var string[]
      */
     protected $hidden = ["updatedAt", "deletedAt"];
-    
+
     /**
      * @return \think\model\relation\HasOne
      */
