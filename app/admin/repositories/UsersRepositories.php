@@ -295,7 +295,7 @@ class UsersRepositories extends AbstractRepositories
                 $currentBalance = $userInfo->balance;
                 $data = [
                     'title' => '充值',
-                    'storeID' => $model->storeID,
+                    'storeID' => $model->storeID?$model->storeID:0,
                     'userID' => $model->userID,
                     'balance' => $currentBalance + $model->balance,
                     'changeBalance' => $model->balance,

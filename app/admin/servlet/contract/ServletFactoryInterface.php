@@ -13,6 +13,7 @@ use app\admin\servlet\CategoryServlet;
 use app\admin\servlet\CommissionServlet;
 use app\admin\servlet\GoodsServlet;
 use app\admin\servlet\GoodsSkuServlet;
+use app\admin\servlet\HelpServlet;
 use app\admin\servlet\ImagesServlet;
 use app\admin\servlet\OrderServlet;
 use app\admin\servlet\RechargeConfigServlet;
@@ -138,5 +139,10 @@ interface ServletFactoryInterface
      * @return \app\admin\servlet\RefundServlet
      */
     public function refundServ(): RefundServlet;
+
+    /**
+     * @return HelpServlet
+     */
+    public function helpServ():HelpServlet;
 
 }
