@@ -79,6 +79,18 @@ class GoodsController
     }
 
     /**
+     * addGoodsSkuByGoodsID
+     * @param int $goodsID
+     * @param \think\Request $request
+     * @return \think\response\Json
+     */
+    public function addGoodsSkuByGoodsID(int $goodsID, Request $request)
+    {
+        $skuDetail = $request->only(["skuName", "sku", "skuImg", "skuStock", "skuDiscountPrice", "skuPrice", "saleAmount"]);
+        return $this->goodsRepositories->addGoodsSkuByGoodsID($goodsID, $skuDetail);
+    }
+
+    /**
      * editGoodsSkuBySkuID
      * @param int $skuID
      * @param \think\Request $request

@@ -22,6 +22,8 @@ Route::group(":version", function () {
     Route::post("edit-goods/:goodsID", ":version.Goods/editGoodsByGoodsID");
     // 获取商品详情的接口
     Route::post("goods-details/:goodsID", ":version.Goods/getGoodsDetailByGoodsID");
+    // 新增商品规格的接口
+    Route::post("add-goods-sku/:goodsID", ":version.Goods/addGoodsSkuByGoodsID");
     // 编辑商品规格的接口
     Route::post("edit-goods-sku/:skuID", ":version.Goods/editGoodsSkuBySkuID");
     // 删除商品规格的接口

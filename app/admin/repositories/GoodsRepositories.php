@@ -51,6 +51,8 @@ class GoodsRepositories extends AbstractRepositories
     public function getGoodsDetailByGoodsID(int $goodsID)
     {
         $goodsDetail = $this->servletFactory->goodsServ()->getGoodsDetailsByGoodsID($goodsID);
+        $parentCategory = $this->servletFactory->categoryServ()->getCategoryDetailByCategoryID($goodsDetail["categoryID"]);
+        $goodsDetail->pCategoryID = $parentCategory->parentID;
         return renderResponse($goodsDetail);
     }
 
@@ -138,5 +140,29 @@ class GoodsRepositories extends AbstractRepositories
 
         return renderResponse();
 
+    }
+
+    /**
+     * addGoodsSkuByGoodsID
+     * @param int $goodsID
+     * @param array $skuDetail
+     * @return \think\response\Json
+     */
+    public function addGoodsSkuByGoodsID(int $goodsID, array $skuDetail)
+    {
+        $goodsDetail = $this->servletFactory->goodsServ()->getGoodsDetailsByGoodsID($goodsID);
+        $goodsDetail->goodsSku()->save($skuDetail);
+
+        // 所有的规格
+        $goodsSkuDetail = $goodsDetail->goodsSku()->select()->toArray();
+
+        $goodsDetail->goodsPrice = $goodsSkuDetail[0]["skuPrice"];
+        $goodsDetail->goodsDiscountPrice = $goodsSkuDetail[0]["skuDiscountPrice"];
+        $goodsDetail->goodsDifference = bcsub($goodsSkuDetail[0]["skuPrice"], $goodsSkuDetail[0]["skuDiscountPrice"], 2);
+        $goodsDetail->goodsStock = array_sum(array_column($goodsSkuDetail, "skuStock"));
+        $goodsDetail->goodsSalesAmount = array_sum(array_column($goodsSkuDetail, "saleAmount"));
+        $goodsDetail->save();
+        
+        return renderResponse();
     }
 }
