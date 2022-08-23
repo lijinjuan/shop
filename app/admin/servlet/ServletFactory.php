@@ -169,4 +169,13 @@ class ServletFactory implements ServletFactoryInterface
     {
         return invoke(AdminAccountServlet::class);
     }
+
+    /**
+     * refundServ
+     * @return \app\admin\servlet\RefundServlet
+     */
+    public function refundServ(): RefundServlet
+    {
+        return invoke(RefundServlet::class);
+    }
 }

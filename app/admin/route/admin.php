@@ -57,7 +57,7 @@ Route::group(":version", function () {
     // 订单的立即发货接口
     Route::post("order-ship", ":version.Order/ship2OrderByOrderNo");
     // 订单退款审核的接口
-    Route::post("order-ship", ":version.Order/ship2OrderByOrderNo");
+    Route::post("order-refund-review", ":version.Order/review2RefundOrderByRefundID");
     // 查看退款详情的接口
     Route::post("order-refund-info/:orderNo", ":version.Order/getOrderRefundDetail");
 });
@@ -167,7 +167,6 @@ Route::group(":version", function () {
     Route::get("get-recharge-config/:id", ":version.ConfigInfo/getRechargeInfoByID");
     //充值渠道列表
     Route::post("recharge-config-list", ":version.ConfigInfo/RechargeConfigList");
-
 
 
 });

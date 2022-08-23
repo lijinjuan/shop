@@ -18,6 +18,7 @@ use app\admin\servlet\OrderServlet;
 use app\admin\servlet\RechargeConfigServlet;
 use app\admin\servlet\RechargeServet;
 use app\admin\servlet\RefundConfigServlet;
+use app\admin\servlet\RefundServlet;
 use app\admin\servlet\StoreAccountServlet;
 use app\admin\servlet\StoreServlet;
 use app\admin\servlet\UsersServlet;
@@ -131,5 +132,11 @@ interface ServletFactoryInterface
      * @return \app\admin\servlet\AdminAccountServlet
      */
     public function adminAccountServ(): AdminAccountServlet;
+
+    /**
+     * refundServ
+     * @return \app\admin\servlet\RefundServlet
+     */
+    public function refundServ(): RefundServlet;
 
 }
