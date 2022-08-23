@@ -101,5 +101,4 @@ class OrderRepositories extends AbstractRepositories
         return renderResponse();
     }
 
-
 }
