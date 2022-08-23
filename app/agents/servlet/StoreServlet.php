@@ -27,10 +27,13 @@ class StoreServlet
      */
     public function storeList(int $pageSize,string $keywords = '',int $type = 0)
     {
-        //少个直属的代理商名称
         //0->待审核 1->审核通过 2->审核失败 3->冻结
         $select = ["id", "storeName", "agentID","agentName","mobile", "storeDesc", "status", "storeRemark", "cardID","frontPhoto","backPhoto","isRealPeople","storeLevel","increaseUV","userID", "parentStoreID", "createdAt"];
         $agentID = app()->get("agentProfile")->id;
+        //只有一级代理商能看到真家人
+        if (!app()->get("agentProfile")->agentParentID == ','){
+            unset($select['isRealPeople']);
+        }
         $model = $this->storesModel->whereLike("agentID", "%,$agentID,%")
             ->field($select);
         if ($keywords){

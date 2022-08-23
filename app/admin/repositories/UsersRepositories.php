@@ -94,7 +94,7 @@ class UsersRepositories extends AbstractRepositories
             $storeData = [
                 'storeLevel' => isset($data['storeLevel']) ? $data['storeLevel'] : 0,
                 'storeRemark' => isset($data['remark']) ? $data['remark'] : '',
-                'isRealPeople' => isset($data['isRealPeople']) ? $data['isRealPeople'] : 0,
+                'isRealPeople' => isset($data['isRealPerson']) ? $data['isRealPerson'] : 0,
                 'creditScore' => isset($data['creditScore']) ? $data['creditScore'] : 0,
                 'sortID' => isset($data['sort']) ? $data['sort'] : 0,
             ];
