@@ -76,7 +76,7 @@ class UsersRepositories extends AbstractRepositories
                 $updateData['payPassword'] = $data['payPassword'];
             }
             if (!empty($data['isRealPerson'])) {
-                $updateData['isRealPerson'] = $data['isRealPerson'];
+                $updateData['isRealPeople'] = $data['isRealPerson'];
             }
             if (!empty($data['remark'])) {
                 $updateData['remark'] = $data['remark'];
