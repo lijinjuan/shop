@@ -28,7 +28,7 @@ class StoreServlet
      */
     public function getStoreInfoByID(int $id)
     {
-        return $this->storesModel->where('id', $id)->find();
+        return $this->storesModel->where('id', $id)->with(['user'])->find();
     }
 
     /**

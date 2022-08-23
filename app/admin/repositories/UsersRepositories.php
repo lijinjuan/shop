@@ -171,7 +171,6 @@ class UsersRepositories extends AbstractRepositories
         if (!$store || $store->status != 0) {
             throw new ParameterException(['errMessage' => '店铺不存在或状态异常...']);
         }
-        //Todo 拿不到当前登录用户信息
         $update = [
             'storeRemark' => $checkData['remark'] ?? '',
             'status' => $checkData['status'],
@@ -286,8 +285,8 @@ class UsersRepositories extends AbstractRepositories
         $model = $this->servletFactory->rechargeServ()->getRechargeInfoByID($id);
         if ($model) {
             //Todo 当前登录用户
-            $data['checkID'] = '';
-            $data['checkName'] = '';
+            $data['checkID'] = app()->get("adminProfile")->id;
+            $data['checkName'] = app()->get("adminProfile")->adminName;
             $data['checkAt'] = date('Y-m-d H:i:s');
             $model::update($data, ['id' => $model->id]);
             //充值成功 写入用户账变表
@@ -352,8 +351,8 @@ class UsersRepositories extends AbstractRepositories
         $model = $this->servletFactory->withdrawalServ()->getOneWithdrawal($id);
         if ($model) {
             //Todo 当前登录用户
-            $data['checkID'] = '';
-            $data['checkName'] = '';
+            $data['checkID'] = app()->get("adminProfile")->id;
+            $data['checkName'] = app()->get("adminProfile")->adminName;
             $data['checkAt'] = date('Y-m-d H:i:s');
             $model::update($data, ['id' => $model->id]);
             $userInfo = $this->servletFactory->userServ()->getUserInfoByID($model->userID);

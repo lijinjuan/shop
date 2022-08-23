@@ -23,6 +23,8 @@ class StoreRepositories extends AbstractRepositories
         if (!$storeInfo) {
             throw new ParameterException(['errMessage' => '店铺不存在...']);
         }
+        $agentID = app()->get("agentProfile")->id;
+        //$this->servletFactory->agentsServ()->getAgentsProfileByFields();
         return renderResponse($storeInfo);
     }
 
