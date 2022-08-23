@@ -64,8 +64,7 @@ class JwtAuthMiddleware extends BaseMiddleware
     protected function bindUser2Container(array $payload): void
     {
         $adminID = (int)$payload['adminID']->getValue();
-        $adminModel = invoke(AdminsServlet::class)->getStoreProfileByFields(["id" => $adminID]);
-
+        $adminModel = invoke(AdminsServlet::class)->getAdminProfileByFields(["id" => $adminID]);
         app()->bind("adminProfile", $adminModel);
     }
 }
