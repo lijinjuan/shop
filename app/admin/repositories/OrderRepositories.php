@@ -59,6 +59,11 @@ class OrderRepositories extends AbstractRepositories
         return renderResponse();
     }
 
+    /**
+     * getOrderRefundDetail
+     * @param string $orderNo
+     * @return mixed
+     */
     public function getOrderRefundDetail(string $orderNo)
     {
         /**
@@ -69,7 +74,9 @@ class OrderRepositories extends AbstractRepositories
         if ($orderDetail->orderStatus != 6)
             throw new ParameterException(["errMessage" => "该订单状态异常..."]);
 
-        $refundDetail = $orderDetail->refundOrder;
+        $refundDetail = $orderDetail->refundOrder()->with("goods")->find();
+
+        return renderResponse($refundDetail);
     }
 
 
