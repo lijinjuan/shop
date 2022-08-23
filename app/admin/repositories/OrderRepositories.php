@@ -59,5 +59,18 @@ class OrderRepositories extends AbstractRepositories
         return renderResponse();
     }
 
+    public function getOrderRefundDetail(string $orderNo)
+    {
+        /**
+         * @var $orderDetail \app\common\model\OrdersModel
+         */
+        $orderDetail = $this->servletFactory->orderServ()->getOrderEntityByOrderNo($orderNo);
+
+        if ($orderDetail->orderStatus != 6)
+            throw new ParameterException(["errMessage" => "该订单状态异常..."]);
+
+        $refundDetail = $orderDetail->refundOrder;
+    }
+
 
 }

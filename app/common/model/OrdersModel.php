@@ -70,4 +70,12 @@ class OrdersModel extends Model
         return $this->belongsTo(StoresModel::class, "storeID", "id");
     }
 
+    /**
+     * refundOrder
+     * @return \think\model\relation\HasOne
+     */
+    public function refundOrder()
+    {
+        return $this->hasOne(RefundModel::class, "orderID", "id");
+    }
 }

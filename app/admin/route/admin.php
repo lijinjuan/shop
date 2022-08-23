@@ -56,8 +56,10 @@ Route::group(":version", function () {
     Route::post("order-store-info/:orderNo", ":version.Order/getStoreInfoByOrderNo");
     // 订单的立即发货接口
     Route::post("order-ship", ":version.Order/ship2OrderByOrderNo");
-
-
+    // 订单退款审核的接口
+    Route::post("order-ship", ":version.Order/ship2OrderByOrderNo");
+    // 查看退款详情的接口
+    Route::post("order-refund-info", ":version.Order/getOrderRefundDetail");
 });
 
 //总后台退款配置

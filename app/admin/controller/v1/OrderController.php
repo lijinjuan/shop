@@ -53,4 +53,14 @@ class OrderController
         return $this->orderRepositories->ship2OrderByOrderNo($orderNoArr);
     }
 
+    /**
+     * getOrderRefundDetail
+     * @param string $orderNo
+     * @return mixed
+     */
+    public function getOrderRefundDetail(string $orderNo)
+    {
+        return $this->orderRepositories->getOrderRefundDetail($orderNo);
+    }
+
 }
