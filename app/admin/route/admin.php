@@ -60,7 +60,7 @@ Route::group(":version", function () {
     Route::post("order-ship", ":version.Order/ship2OrderByOrderNo");
     // 查看退款详情的接口
     Route::post("order-refund-info", ":version.Order/getOrderRefundDetail");
-});
+})->middleware(JwtAuthMiddleware::class);
 
 //总后台退款配置
 Route::group(":version", function () {
@@ -73,7 +73,7 @@ Route::group(":version", function () {
     //退款配置列表
     Route::get("refund-config-list/:type", ":version.RefundConfig/refundConfigList");
 
-});
+})->middleware(JwtAuthMiddleware::class);
 
 //总后台代理商管理
 Route::group(":version", function () {
@@ -89,7 +89,7 @@ Route::group(":version", function () {
     Route::get("agent-detail/:id", ":version.Agent/getAgentDetailByID");
     //代理商统计
     Route::get("agent-statistics/:id", ":version.Agent/agentStatistics");
-});
+})->middleware(JwtAuthMiddleware::class);
 
 //总后台会员管理
 Route::group(":version", function () {
@@ -131,7 +131,7 @@ Route::group(":version", function () {
     //会员提现审核
     Route::post("check-withdrawal/:id", ":version.User/checkWithdrawal");
 
-});
+})->middleware(JwtAuthMiddleware::class);
 
 //总后台分销管理
 Route::group(":version", function () {
@@ -139,7 +139,7 @@ Route::group(":version", function () {
     Route::post("add-commission-config", ":version.Commission/addCommission");
     //代理商佣金配置
     Route::get("get-commission-config/:type", ":version.Commission/getCommissionByType");
-});
+})->middleware(JwtAuthMiddleware::class);
 
 //总后台信息配置
 Route::group(":version", function () {
@@ -168,13 +168,10 @@ Route::group(":version", function () {
     //充值渠道列表
     Route::post("recharge-config-list", ":version.ConfigInfo/RechargeConfigList");
 
-
-
-});
+})->middleware(JwtAuthMiddleware::class);
 
 //总后台账变管理
 Route::group(":version", function () {
     //账变列表
     Route::post("admin-account-list", ":version.AdminAccount/accountList");
-
-});
+})->middleware(JwtAuthMiddleware::class);

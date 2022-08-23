@@ -18,11 +18,9 @@ class AdminsRepositories extends AbstractRepositories
     public function userLaunch2Admin(array $adminProfile)
     {
         $AdminModel = $this->servletFactory->adminServ()->getAdminProfileByFields(["email" => trim($adminProfile["email"])]);
-
         if (!$this->isEqualByPassword($AdminModel->getAttr("password"), trim($adminProfile["password"]))) {
             throw new ParameterException(["errMessage" => "用户名或者密码错误..."]);
         }
-
         $accessToken = JWTAuth::builder(["adminID" => $AdminModel->id]);
         return renderResponse(compact("accessToken"));
     }

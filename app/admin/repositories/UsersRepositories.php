@@ -175,7 +175,7 @@ class UsersRepositories extends AbstractRepositories
         $update = [
             'storeRemark' => $checkData['remark'] ?? '',
             'status' => $checkData['status'],
-            'checkID' => '0',//app()->get("adminProfile")->id,
+            'checkID' => app()->get("adminProfile")->id,
             'checkAt' => date('Y-m-d H:i:s'),
         ];
         $update['reason'] = $checkData['status'] == 2 ? $checkData['reason'] : '';
