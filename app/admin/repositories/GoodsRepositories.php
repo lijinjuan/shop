@@ -162,7 +162,7 @@ class GoodsRepositories extends AbstractRepositories
         $goodsDetail->goodsStock = array_sum(array_column($goodsSkuDetail, "skuStock"));
         $goodsDetail->goodsSalesAmount = array_sum(array_column($goodsSkuDetail, "saleAmount"));
         $goodsDetail->save();
-        
+
         return renderResponse();
     }
 }

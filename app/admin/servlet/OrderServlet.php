@@ -51,7 +51,7 @@ class OrderServlet
             $query->field("id,userName");
         }, "goodsDetail" => function ($query) {
             $query->field("orderNo,goodsName,goodsPrice,skuImage,goodsNum");
-        }])->field(["id", "orderNo", "userID", "storeID", "userPayPrice", "storePayPrice", "agentAmount", "receiver", "receiverMobile", "receiverAddress", "createdAt"]);
+        }])->field(["id", "orderNo", "userID", "storeID", "userPayPrice", "storePayPrice", "orderStatus", "agentAmount", "receiver", "receiverMobile", "receiverAddress", "createdAt"]);
 
         if (isset($conditions["orderStatus"]))
             $orderList->where("orderStatus", (int)$conditions["orderStatus"]);
