@@ -35,7 +35,7 @@ class UsersServlet
     {
         //1->普通会员 2->店铺
         $select = [
-            'id', 'userName', 'email', 'userAvatar', 'status', 'lastIP'
+            'id', 'userName', 'email', 'userAvatar', 'status', 'lastIP','lastLoginTime','loginNum'
         ];
         $hidden = [
             'store.deletedAt', 'store.updatedAt', 'store.parentStoreID', 'store.checkID', 'store.checkAt', 'store.reason'

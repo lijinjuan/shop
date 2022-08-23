@@ -136,7 +136,8 @@ class ConfigInfoRepositories extends AbstractRepositories
         $model = $this->servletFactory->bannerItemServ()->getBannerByID($id);
         if ($model) {
             $data['bannerID'] = $data['type'];
-            unset($data['type']);
+            $data['itemAction'] = $data['link'];
+            unset($data['type'],$data['link']);
             $model::update($data, ['id' => $model->id]);
             return renderResponse();
         }

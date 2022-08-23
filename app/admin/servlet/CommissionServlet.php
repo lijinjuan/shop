@@ -3,6 +3,7 @@
 namespace app\admin\servlet;
 
 use app\common\model\CommissionModel;
+use app\lib\exception\ParameterException;
 
 class CommissionServlet
 {
@@ -25,7 +26,11 @@ class CommissionServlet
      */
     public function addCommission(array $data)
     {
-        return $this->commissionModel::create($data);
+        try{
+            return $this->commissionModel::create($data);
+        }catch (\Throwable $e){
+            throw new ParameterException(['errMessage'=>'已存在当前佣金类型不能重复设置...']);
+        }
     }
 
     /**

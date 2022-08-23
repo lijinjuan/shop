@@ -109,8 +109,7 @@ class StoreRepositories extends AbstractRepositories
      */
     public function getStoreInfoByID(int $id)
     {
-        //Todo 缺少直属代理商账号
-        $select = ['storeName', 'mobile', 'cardID', 'frontPhoto', 'backPhoto', 'storeDesc', 'status', 'checkAt', 'storeRemark'];
+        $select = ['storeName', 'mobile', 'cardID', 'frontPhoto', 'backPhoto', 'storeDesc', 'status', 'checkAt', 'storeRemark','isRealPeople','increaseUV'];
         return renderResponse($this->servletFactory->storeServ()->getStoreInfo($id, $select));
     }
 

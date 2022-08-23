@@ -58,7 +58,7 @@ class AgentController
      */
     public function agentTreeList(Request $request)
     {
-        $keywords = $request->post('keywords');
+        $keywords = $request->post('keywords','');
         return $this->agentsRepositories->treeAgentList($keywords);
     }
 
@@ -85,15 +85,14 @@ class AgentController
     }
 
     /**
-     * @param int $id
      * @param Request $request
      * @return \think\response\Json
      * @throws \app\lib\exception\ParameterException
      */
-    public function editPassword(int $id, Request $request)
+    public function editPassword(Request $request)
     {
         $data = $request->only(['oldPassword', 'newPassword']);
-        return $this->agentsRepositories->changeAgentPassword($id, $data);
+        return $this->agentsRepositories->changeAgentPassword(app()->get('agentProfile')->id, $data);
 
     }
 }

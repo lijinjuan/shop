@@ -44,9 +44,10 @@ class UserController
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function userDetail(int $id)
+    public function userDetail(int $id,Request $request)
     {
-        return $this->usersRepositories->userDetail($id);
+        $type = $request->post('type',1);
+        return $this->usersRepositories->userDetail($id,$type);
     }
 
     /**
@@ -59,7 +60,7 @@ class UserController
      */
     public function editUserInfo(int $id, Request $request)
     {
-        $data = $request->only(['loginPassword', 'payPassword', 'storeLevel', 'isRealPerson', 'creditScore', 'userName', 'remark', 'sort']);
+        $data = $request->only(['type','loginPassword', 'payPassword', 'storeLevel', 'isRealPerson', 'creditScore', 'userName', 'remark', 'sort']);
         return $this->usersRepositories->editUserInfo($id, $data);
     }
 
@@ -106,7 +107,7 @@ class UserController
     public function editVirtualVisitors(int $id, Request $request)
     {
         $visitors = $request->post('visitors');
-        return $this->usersRepositories->modifyUserInfo($id, ['increaseUV' => $visitors]);
+        return $this->usersRepositories->editVisitor($id, $visitors);
     }
 
     /**

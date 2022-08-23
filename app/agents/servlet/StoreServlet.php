@@ -29,7 +29,7 @@ class StoreServlet
     {
         //少个直属的代理商名称
         //0->待审核 1->审核通过 2->审核失败 3->冻结
-        $select = ["id", "storeName", "mobile", "storeDesc", "status", "storeRemark", "cardID","frontPhoto","backPhoto","isRealPeople","storeLevel","increaseUV","userID", "parentStoreID", "createdAt"];
+        $select = ["id", "storeName", "agentID","agentName","mobile", "storeDesc", "status", "storeRemark", "cardID","frontPhoto","backPhoto","isRealPeople","storeLevel","increaseUV","userID", "parentStoreID", "createdAt"];
         $agentID = app()->get("agentProfile")->id;
         $model = $this->storesModel->whereLike("agentID", "%,$agentID,%")
             ->field($select);
@@ -58,7 +58,7 @@ class StoreServlet
      */
     public function getStoreInfoByID(int $id)
     {
-        return $this->storesModel->where('id',$id)->field(["id","userID","storeLevel","creditScore","parentStoreID","agentID"])->with(["user" => function ($query) {
+        return $this->storesModel->where('id',$id)->field(["id","userID","storeLevel","creditScore","parentStoreID","agentID","increaseUV","isRealPeople"])->with(["user" => function ($query) {
             $query->field(["id", "userName","password","payPassword"]);
         }])->append(["parentID","parentAgentID"])->find();
     }

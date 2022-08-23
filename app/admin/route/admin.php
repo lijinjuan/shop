@@ -152,7 +152,7 @@ Route::group(":version", function () {
     //banner详情
     Route::get("get-banner-info/:id", ":version.ConfigInfo/getBannerInfo");
     //删除banner
-    Route::delete("delete-agent/:id", ":version.ConfigInfo/deleteBanner");
+    Route::delete("delete-banner/:id", ":version.ConfigInfo/deleteBanner");
     //banner列表
     Route::post("banner-list", ":version.ConfigInfo/bannerList");
 

@@ -23,7 +23,7 @@ Route::group(":version", function () {
     //代理商详情
     Route::get("get-agent/:id", ":version.Agent/getAgentDetail");
     //修改密码
-    Route::put("modify-password/:id", ":version.Agent/editPassword");
+    Route::put("modify-password", ":version.Agent/editPassword");
 
 })->middleware(JwtAuthMiddleware::class)->allowCrossDomain();
 

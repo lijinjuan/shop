@@ -19,16 +19,16 @@ class UsersRepositories extends AbstractRepositories
      * @throws ParameterException
      * @throws \think\db\exception\DbException
      */
-    public function userList(int $type, int $pageSize, string $userAccount,int $status)
+    public function userList(int $type, int $pageSize, string $userAccount, int $status)
     {
         if (!in_array($type, [1, 2])) {
             throw new ParameterException(['errMessage' => '参数错误...']);
         }
         //1->普通会员 2->店铺
-        if ($type == 1){
-            $list = $this->servletFactory->userServ()->userList($pageSize,$userAccount);
-        }else{
-            $list = $this->servletFactory->storeServ()->storeList($pageSize,$status,$userAccount);
+        if ($type == 1) {
+            $list = $this->servletFactory->userServ()->userList($pageSize, $userAccount);
+        } else {
+            $list = $this->servletFactory->storeServ()->storeList($pageSize, $status, $userAccount);
         }
         return renderPaginateResponse($list);
     }
@@ -40,9 +40,15 @@ class UsersRepositories extends AbstractRepositories
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function userDetail(int $id)
+    public function userDetail(int $id, int $type)
     {
-        return renderResponse($this->servletFactory->userServ()->getUserInfoByID($id));
+        //1->普通会员 2->店铺
+        if ($type == 1) {
+            return renderResponse($this->servletFactory->userServ()->getUserInfoByID($id));
+        } else {
+            return renderResponse($this->servletFactory->storeServ()->getStoreInfoByID($id));
+        }
+
     }
 
     /**
@@ -55,40 +61,49 @@ class UsersRepositories extends AbstractRepositories
      */
     public function editUserInfo(int $id, array $data)
     {
-        $userModel = $this->servletFactory->userServ()->getUserInfoByID($id);
-        if ($userModel) {
+        if ($data['type'] == 1) {
+            $userModel = $this->servletFactory->userServ()->getUserInfoByID($id);
+            if (!$userModel) {
+                throw new ParameterException(['errMessage' => '用户不存在...']);
+            }
             if (!empty($data['userName'])) {
-                $userModel->userName = $data['userName'];
+                $updateData['userName'] = $data['userName'];
             }
             if (!empty($data['loginPassword'])) {
-                $userModel->password = $data['loginPassword'];
+                $updateData['password'] = $data['loginPassword'];
             }
             if (!empty($data['payPassword'])) {
-                $userModel->payPassword = $data['payPassword'];
+                $updateData['payPassword'] = $data['payPassword'];
             }
             if (!empty($data['isRealPerson'])) {
-                $userModel->isRealPerson = $data['isRealPerson'];
+                $updateData['isRealPerson'] = $data['isRealPerson'];
             }
             if (!empty($data['remark'])) {
-                $userModel->remark = $data['remark'];
+                $updateData['remark'] = $data['remark'];
             }
             if (!empty($data['sort'])) {
-                $userModel->remark = $data['sort'];
+                $updateData['sort'] = $data['sort'];
             }
-            if ($userModel->isStore == 1) {
-                $storeData = [
-                    'storeLevel' => $data['storeLevel'],
-                    'storeRemark' => $data['remark'],
-                    'isRealPeople' => $data['isRealPeople'],
-                    'creditScore' => $data['creditScore'],
-                    'sort' => $data['sort'],
-                ];
-                $userModel->store()->update($storeData);
+            $userModel::update($updateData, ['id' => $userModel->id]);
+
+        } elseif ($data['type'] == 2) {
+            $storeModel = $this->servletFactory->storeServ()->getStoreInfoByID($id);
+            if (!$storeModel) {
+                throw new ParameterException(['errMessage' => '用户不存在...']);
             }
-            $userModel->save();
-            return renderResponse();
+            $storeData = [
+                'storeLevel' => isset($data['storeLevel']) ? $data['storeLevel'] : 0,
+                'storeRemark' => isset($data['remark']) ? $data['remark'] : '',
+                'isRealPeople' => isset($data['isRealPeople']) ? $data['isRealPeople'] : 0,
+                'creditScore' => isset($data['creditScore']) ? $data['creditScore'] : 0,
+                'sortID' => isset($data['sort']) ? $data['sort'] : 0,
+            ];
+            $storeModel::update(array_filter($storeData), ['id' => $storeModel->id]);
+            $storeModel->user()->update(['password' => $data['loginPassword'], 'payPassword' => $data['payPassword'], 'userName' => $data['userName']]);
+
         }
-        throw new ParameterException(['errMessage' => '用户不存在...']);
+        return renderResponse();
+
     }
 
 
@@ -118,6 +133,26 @@ class UsersRepositories extends AbstractRepositories
             return renderResponse();
         }
         throw new ParameterException(['errMessage' => '用户不存在...']);
+    }
+
+    /**
+     * 更改虚拟访客数
+     * @param int $id
+     * @param int $num
+     * @return \think\response\Json
+     * @throws ParameterException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function editVisitor(int $id, int $num)
+    {
+        $storeModel = $this->servletFactory->storeServ()->getStoreInfoByID($id);
+        if (!$storeModel) {
+            throw new ParameterException(['errMessage' => '店铺不存在...']);
+        }
+        $storeModel::update(['increaseUV' => $num], ['id' => $storeModel->id]);
+        return renderResponse();
     }
 
     /**
@@ -328,7 +363,7 @@ class UsersRepositories extends AbstractRepositories
                 'storeID' => $model->storeID,
                 'userID' => $model->userID,
                 'balance' => $currentBalance - $model->balance,
-                'changeBalance' => $model->balance,
+                'changeBalance' => $model->balance ? $model->balance : 0,
                 'action' => 2,
                 'remark' => '会员提现',
                 'type' => 2
