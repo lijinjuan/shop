@@ -41,6 +41,16 @@ class OrderServlet
     }
 
     /**
+     * getOrderMultiEntities
+     * @param array $orderNoArr
+     * @return \app\common\model\OrdersModel[]|array|\think\Collection
+     */
+    public function getOrderMultiEntities(array $orderNoArr)
+    {
+        return $this->ordersModel->whereIn("orderNo", $orderNoArr)->select();
+    }
+
+    /**
      * getOrderListByPaginate
      * @param array $conditions
      * @return \think\Paginator

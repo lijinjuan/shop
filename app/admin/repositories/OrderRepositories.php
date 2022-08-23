@@ -38,21 +38,23 @@ class OrderRepositories extends AbstractRepositories
 
     /**
      * ship2OrderByOrderNo
-     * @param string $orderNo
+     * @param array $orderNoArr
      * @return \think\response\Json
      */
-    public function ship2OrderByOrderNo(string $orderNo)
+    public function ship2OrderByOrderNo(array $orderNoArr)
     {
         /**
-         * @var $orderDetail \app\common\model\OrdersModel
+         * @var $orderDetail \think\model\Collection
          */
-        $orderDetail = $this->servletFactory->orderServ()->getOrderEntityByOrderNo($orderNo);
+        $orderDetailArr = $this->servletFactory->orderServ()->getOrderMultiEntities($orderNoArr);
 
-        if ($orderDetail->orderStatus != 2)
-            throw new ParameterException(["errMessage" => "订单状态异常..."]);
+        foreach ($orderDetailArr as $orderDetail) {
+            if ($orderDetail->orderStatus != 2)
+                continue;
 
-        $orderDetail->orderStatus = 3;
-        $orderDetail->save();
+            $orderDetail->orderStatus = 3;
+            $orderDetail->save();
+        }
 
         return renderResponse();
     }

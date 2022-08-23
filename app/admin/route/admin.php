@@ -55,7 +55,7 @@ Route::group(":version", function () {
     // 根据订单编号查询店铺信息
     Route::post("order-store-info/:orderNo", ":version.Order/getStoreInfoByOrderNo");
     // 订单的立即发货接口
-    Route::post("order-ship/:orderNo", ":version.Order/ship2OrderByOrderNo");
+    Route::post("order-ship", ":version.Order/ship2OrderByOrderNo");
 
 
 });

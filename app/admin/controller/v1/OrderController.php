@@ -44,12 +44,13 @@ class OrderController
 
     /**
      * ship2OrderByOrderNo
-     * @param string $orderNo
+     * @param \think\Request $request
      * @return \think\response\Json
      */
-    public function ship2OrderByOrderNo(string $orderNo)
+    public function ship2OrderByOrderNo(Request $request)
     {
-        return $this->orderRepositories->ship2OrderByOrderNo($orderNo);
+        $orderNoArr = $request->param("orderNoArr");
+        return $this->orderRepositories->ship2OrderByOrderNo($orderNoArr);
     }
 
 }
