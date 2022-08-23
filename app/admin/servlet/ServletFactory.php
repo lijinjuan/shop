@@ -187,4 +187,12 @@ class ServletFactory implements ServletFactoryInterface
     {
         return invoke(OrderDetailServlet::class);
     }
+
+    /**
+     * @return HelpServlet
+     */
+    public function helpServ(): HelpServlet
+    {
+        return invoke(HelpServlet::class);
+    }
 }
