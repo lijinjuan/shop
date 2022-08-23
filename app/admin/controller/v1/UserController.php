@@ -30,12 +30,11 @@ class UserController
      */
     public function userList(int $type, Request $request)
     {
-        $pageSize = $request->post('pageSize',20);
-        $userAccount = $request->post('keywords','');
-        $status = $request->post('status',0);
-        return $this->usersRepositories->userList($type, $pageSize,$userAccount,$status);
+        $pageSize = $request->post('pageSize', 20);
+        $userAccount = $request->post('keywords', '');
+        $status = $request->post('status', 0);
+        return $this->usersRepositories->userList($type, $pageSize, $userAccount, $status);
     }
-
 
 
     /**
@@ -224,8 +223,11 @@ class UserController
      */
     public function withdrawalList(Request $request)
     {
-        $pageSize = $request->post('pageSize',20);
-        return $this->usersRepositories->withdrawalList($pageSize);
+        $pageSize = $request->post('pageSize', 20);
+        $keywords = $request->post('keywords', '');
+        $status = $request->post('status');
+        $type = $request->post('type');
+        return $this->usersRepositories->withdrawalList($pageSize, compact('keywords', 'status', 'type'));
     }
 
     /**
@@ -246,11 +248,11 @@ class UserController
      * @return \think\response\Json
      * @throws \app\lib\exception\ParameterException
      */
-    public function checkWithdrawal(int $id,Request $request)
+    public function checkWithdrawal(int $id, Request $request)
     {
         $status = $request->post('status');
         $refuseReason = $request->post('reason');
-        return $this->usersRepositories->checkWithdrawalByID($id,compact('status','refuseReason'));
+        return $this->usersRepositories->checkWithdrawalByID($id, compact('status', 'refuseReason'));
     }
 
 

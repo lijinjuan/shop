@@ -10,9 +10,9 @@ class OrderRepositories extends AbstractRepositories
      * @return \think\response\Json
      * @throws \think\db\exception\DbException
      */
-    public function orderList(int $pageSize, array $conditons)
+    public function orderList(int $pageSize, array $conditions)
     {
-        return renderPaginateResponse($this->servletFactory->orderServ()->orderList($pageSize, $conditons));
+        return renderPaginateResponse($this->servletFactory->orderServ()->orderList($pageSize, $conditions));
     }
 
     /**

@@ -60,7 +60,7 @@ class AgentsServlet
      * @return \think\Paginator
      * @throws \think\db\exception\DbException
      */
-    public function agentList(int $pageSize, string $keywords = '')
+    public function agentList(int $pageSize = 20, string $keywords = '')
     {
         $select = ['id', 'agentAccount', 'agentName', 'loginIP', 'lastLoginAt', 'loginNum', 'status', 'createdAt'];
         $model = $this->agentsModel->where('agentParentID', 'like', '%,' . app()->get("agentProfile")->id . ',%');

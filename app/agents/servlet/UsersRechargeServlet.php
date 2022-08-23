@@ -21,20 +21,20 @@ class UsersRechargeServlet
 
     /**
      * @param int $pageSize
+     * @param string $keywords
      * @return \think\Paginator
      * @throws \think\db\exception\DbException
      */
-    public function rechargeList(int $pageSize,string $keywords)
+    public function rechargeList(int $pageSize = 20, string $keywords = '')
     {
-        //商户账号? 真假人
-        $select = ['id','orderNo','storeID','status','rechargeType','agentAccount','rechargeMoney','createdAt'];
-        $model = $this->rechargeModel->where('agentID','like','%,' . app()->get("agentProfile")->id . ',%')->field($select);
-        if ($keywords){
-            //$model->
+        $select = ['id', 'orderNo', 'storeID', 'status', 'rechargeType', 'agentAccount', 'rechargeMoney', 'createdAt'];
+        $model = $this->rechargeModel->where('agentID', 'like', '%,' . app()->get("agentProfile")->id . ',%')->field($select);
+        if ($keywords) {
+            $model->where('userEmail','like','%'.$keywords.'%');
         }
-        return $model->with(['store'=>function($query){
-            $query->field(['id','storeName','isRealPeople']);
-        }])->paginate($pageSize);
+        return $this->rechargeModel->with(['store'=>function($query){
+            $query->field(['id','isRealPeople','storeName']);
+        }])->append(['RechargeName'])->paginate($pageSize);
     }
 
 

@@ -43,8 +43,17 @@ class OrderServlet
         if (!empty($conditions['endTime'])) {
             $model->where('createdAt', '<=', $conditions['endTime']);
         }
+        //以下两个搜索是我从业以来写的最傻叉的搜索条件，不要问我为什么，产品要这样做。。。
+        if (!empty($conditions['storeID'])){
+            $model->where('storeID','like','%'.$conditions['storeID'].'%');
+        }
+        if (!empty($conditions['userID'])){
+            $model->where('userID','like','%'.$conditions['userID'].'%');
+        }
 
-        return $model->with(['goodsDetail'])->paginate($pageSize);
+        return $model->with(['goodsDetail','user'=>function($query){
+            $query->field(['id','userName','balance']);
+        }])->paginate($pageSize);
     }
 
     /**

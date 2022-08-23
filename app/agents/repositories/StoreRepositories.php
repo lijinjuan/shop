@@ -41,7 +41,10 @@ class StoreRepositories extends AbstractRepositories
         if (!$store) {
             throw new ParameterException(['errMessage' => '店铺不存在...']);
         }
-        $store::update(['remark' => $remark], ['id' => $id]);
+        if ($store->parentAgentID != app()->get("agentProfile")->id){
+            throw new ParameterException(['errMessage'=>'当前账户无权设置备注请更换账号...']);
+        }
+        $store::update(['storeRemark' => $remark], ['id' => $id]);
         return renderResponse();
     }
 
@@ -60,6 +63,9 @@ class StoreRepositories extends AbstractRepositories
         if (!$store) {
             throw new ParameterException(['errMessage' => '店铺不存在...']);
         }
+        if ($store->parentAgentID != app()->get("agentProfile")->id){
+            throw new ParameterException(['errMessage'=>'当前账户无权冻结/解冻店铺请更换账号...']);
+        }
         $store::update(['status' => $action == 'stop' ? 3 : 1], ['id' => $id]);
         return renderResponse();
     }
@@ -76,16 +82,15 @@ class StoreRepositories extends AbstractRepositories
     public function checkStore(int $id, array $checkData)
     {
         //0->待审核 1->成功 2->失败
-        //Todo 判断当前审核人是不是一级代理商
         $store = $this->servletFactory->storeServ()->getStoreInfoByID($id);
         if (!$store) {
             throw new ParameterException(['errMessage' => '店铺不存在...']);
         }
-        if ($store->parentAgentID != app()->get("agentProfile")->id ){
+        if ($store->parentAgentID != app()->get("agentProfile")->id) {
             throw new ParameterException(['errMessage' => '当前账户无权审核店铺请更换账号...']);
         }
         $updata = [
-            'storeRemark' => $checkData['remark']??'',
+            'storeRemark' => $checkData['remark'] ?? '',
             'status' => $checkData['status'],
             'checkID' => app()->get("agentProfile")->id,
             'checkAt' => date('Y-m-d H:i:s'),
@@ -105,7 +110,7 @@ class StoreRepositories extends AbstractRepositories
     public function getStoreInfoByID(int $id)
     {
         //Todo 缺少直属代理商账号
-        $select = ['storeName', 'mobile', 'cardID', 'frontPhoto', 'backPhoto', 'storeDesc','status','checkAt','storeRemark'];
+        $select = ['storeName', 'mobile', 'cardID', 'frontPhoto', 'backPhoto', 'storeDesc', 'status', 'checkAt', 'storeRemark'];
         return renderResponse($this->servletFactory->storeServ()->getStoreInfo($id, $select));
     }
 
@@ -123,9 +128,9 @@ class StoreRepositories extends AbstractRepositories
      * @return \think\response\Json
      * @throws \think\db\exception\DbException
      */
-    public function rechargeList(int $pageSize,string $keywords)
+    public function rechargeList(int $pageSize, string $keywords)
     {
-        return renderPaginateResponse($this->servletFactory->rechargeServ()->rechargeList($pageSize,$keywords));
+        return renderPaginateResponse($this->servletFactory->rechargeServ()->rechargeList($pageSize, $keywords));
     }
 
     /**
@@ -133,9 +138,60 @@ class StoreRepositories extends AbstractRepositories
      * @return \think\response\Json
      * @throws \think\db\exception\DbException
      */
-    public function withdrawList(int $pageSize,array $conditions)
+    public function withdrawList(int $pageSize, array $conditions)
     {
-        return renderPaginateResponse($this->servletFactory->withdrawalServ()->withdralList($pageSize,$conditions));
+        return renderPaginateResponse($this->servletFactory->withdrawalServ()->withdralList($pageSize, $conditions));
+
+    }
+
+    /**
+     * @param int $id
+     * @param array $data
+     * @return \think\response\Json
+     * @throws ParameterException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function editStoreByID(int $id, array $data)
+    {
+        $storeInfo = $this->servletFactory->storeServ()->getStoreInfoByID($id);
+        if (!$storeInfo) {
+            throw new ParameterException(['errMessage' => '店铺不存在...']);
+        }
+        if ($storeInfo->parentAgentID != app()->get("agentProfile")->id){
+            throw new ParameterException(['errMessage'=>'当前账户无权更改用户信息请更换账号...']);
+        }
+        if (!empty($data['isRealPeople']) && !in_array($data['isRealPeople'], [1, 2])) {
+            throw new ParameterException(['errMessage' => '真假人参数错误...']);
+        }
+        //'password','payPassword','storeLevel','isRealPeople','creditScore','userName','remark'
+        $storeInfo::update(['storeLevel' => $data['storeLevel'], 'isRealPeople' => $data['isRealPeople'], 'creditScore' => $data['creditScore'], 'remark' => $data['remark']], ['id' => $storeInfo->id]);
+        $storeInfo->user()->update(['password' => $data['password'], 'payPassword' => $data['payPassword'], 'userName' => $data['userName']]);
+        return renderResponse();
+    }
+
+    /**
+     * @param int $id
+     * @param int $num
+     * @return \think\response\Json
+     * @throws ParameterException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function editVirtualVisitors(int $id, int $num)
+    {
+
+        $storeInfo = $this->servletFactory->storeServ()->getStoreInfoByID($id);
+        if (!$storeInfo) {
+            throw new ParameterException(['errMessage' => '店铺不存在...']);
+        }
+        if ($storeInfo->parentAgentID != app()->get("agentProfile")->id){
+            throw new ParameterException(['errMessage'=>'当前账户无权更改虚拟访客请更换账号...']);
+        }
+        $storeInfo::update(['increaseUV' => $num], ['id' => $storeInfo->id]);
+        return renderResponse();
 
     }
 }

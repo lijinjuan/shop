@@ -47,9 +47,9 @@ class WithdrawalServlet
         }
         if (!empty($conditions['keywords'])) {
             //钱包地址 银行卡
-//            $model->with(['usersAmount' => function ($query) use ($conditions['keywords']){
-//                $query->field(['userID','bankCard','walletAddress'])->where('bankCard','like','%'.$conditions['keywords'].'%')->whereOr('walletAddress','like','%'.$conditions['keywords'].'%');
-//            }]);
+            $model->with(['usersAmount'=>function($query) use($conditions){
+                $query->field(['userID','bankCard','walletAddress'])->where('bankCard','like','%'.$conditions['keywords'].'%')->whereOr('walletAddress','like','%'.$conditions['keywords'].'%');
+            }]);
         }
         return $model->field($select)->with(['store' => function ($query) {
             $query->field(['id', 'storeName', 'isRealPeople']);
