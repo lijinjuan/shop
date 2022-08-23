@@ -15,9 +15,15 @@ Route::group(":version", function () {
     //新增代理商
     Route::post("add-agent", ":version.Agent/createAgents");
     //代理商列表
-    Route::post("agent-list",":version.Agent/agentList");
+    Route::post("agent-list", ":version.Agent/agentList");
     //代理商层级列表
-    Route::post("agent-tree-list",":version.Agent/agentTreeList");
+    Route::post("agent-tree-list", ":version.Agent/agentTreeList");
+    //编辑代理商
+    Route::put("edit-agent/:id", ":version.Agent/editAgent");
+    //代理商详情
+    Route::get("get-agent/:id", ":version.Agent/getAgentDetail");
+    //修改密码
+    Route::put("modify-password/:id", ":version.Agent/editPassword");
 
 })->middleware(JwtAuthMiddleware::class)->allowCrossDomain();
 
@@ -26,19 +32,23 @@ Route::group(":version", function () {
     //下级店铺列表
     Route::post("agent-store-list", ":version.Store/storeList");
     //获取店铺用户信息
-    Route::get("agent-store-user-info/:id",":version.Store/storeUserInfo");
+    Route::get("agent-store-user-info/:id", ":version.Store/storeUserInfo");
+    //编辑用户信息
+    Route::put("agent-edit-user-info/:id", ":version.Store/editStoreInfoByID");
+    //编辑虚拟访客书
+    Route::put("agent-edit-user-visitor/:id", ":version.Store/editVirtualVisitors");
     //设置店内的备注内容
-    Route::post("agent-store-remark",":version.Store/storeRemark");
+    Route::post("agent-store-remark", ":version.Store/storeRemark");
     //冻结店铺
-    Route::post("agent-stop-store",":version.Store/storeStop");
+    Route::post("agent-stop-store", ":version.Store/storeStop");
     //解冻店铺
-    Route::post("agent-start-store",":version.Store/storeStart");
+    Route::post("agent-start-store", ":version.Store/storeStart");
     //获取店铺基本信息
-    Route::get("agent-store-info/:id",":version.Store/storeInfo");
+    Route::get("agent-store-info/:id", ":version.Store/storeInfo");
     //审核店铺
-    Route::post("agent-check-store",":version.Store/storeCheck");
+    Route::post("agent-check-store", ":version.Store/storeCheck");
     //获取店铺统计数据
-    Route::get("agent-store-statistics/:id",":version.Store/storeStatistics");
+    Route::get("agent-store-statistics/:id", ":version.Store/storeStatistics");
 
 })->middleware(JwtAuthMiddleware::class)->allowCrossDomain();
 
@@ -47,7 +57,7 @@ Route::group(":version", function () {
     //订单列表
     Route::post("agent-order-list", ":version.Order/orderList");
     //发货
-    Route::post("agent-order-ship",":version.Order/orderShip");
+    Route::post("agent-order-ship", ":version.Order/orderShip");
 
 })->middleware(JwtAuthMiddleware::class)->allowCrossDomain();
 
@@ -56,7 +66,7 @@ Route::group(":version", function () {
     //会员充值记录
     Route::post("agent-recharge-list", ":version.Store/rechargeList");
     //会员提现记录
-    Route::post("agent-withdraw-list",":version.Store/withdrawList");
+    Route::post("agent-withdraw-list", ":version.Store/withdrawList");
 
 
 })->middleware(JwtAuthMiddleware::class)->allowCrossDomain();

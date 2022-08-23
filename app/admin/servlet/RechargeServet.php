@@ -37,8 +37,8 @@ class RechargeServet
      */
     public function getRechargeInfoByID(int $id)
     {
-        return $this->rechargeModel->where('id', $id)->field(['id','rechargeType','rechargeMoney','rechargeVoucher','status','refuseReason','userID'])->with(['user'=>function($query){
-            $query->field(['id','balance']);
+        return $this->rechargeModel->where('id', $id)->field(['id', 'rechargeType', 'rechargeMoney', 'rechargeVoucher', 'status', 'refuseReason', 'userID'])->with(['user' => function ($query) {
+            $query->field(['id', 'balance']);
         }])->append(['RechargeName'])->find();
     }
 
@@ -51,7 +51,7 @@ class RechargeServet
      */
     public function getOneRechargeInfoByID(int $id)
     {
-        return $this->rechargeModel->where('id',$id)->find();
+        return $this->rechargeModel->where('id', $id)->find();
     }
 
 
@@ -64,16 +64,14 @@ class RechargeServet
     public function rechargeList(string $keywords = '', int $pageSize = 20)
     {
         //商户账号
-        $select = ['id', 'orderNo',  'storeID', 'status', 'rechargeType', 'agentAccount', 'rechargeMoney', 'createdAt'];
-        $model = $this->rechargeModel->field($select);
+        $select = ['id', 'orderNo', 'storeID', 'status', 'rechargeType', 'agentAccount', 'rechargeMoney', 'createdAt'];
+        $model = $this->rechargeModel->field($select)->with(['store' => function ($query) {
+            $query->field(['id', 'storeName', 'isRealPeople', 'userID']);
+        }]);
         if ($keywords) {
-            $model->with(['store.user'=>function($query) use($keywords){
-                $query->where('store.user.email','like','%'.$keywords.'%');
-            }]);
+            $model->where('userEmail','like','%'.$keywords.'%');
         }
-        return $model->with(['store' => function ($query) {
-            $query->field(['id', 'storeName', 'isRealPeople','userID']);
-        }])->paginate($pageSize);
+        return $model->with(['store.user'])->paginate($pageSize);
     }
 
 }

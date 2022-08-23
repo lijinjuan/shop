@@ -79,4 +79,54 @@ class AgentsRepositories extends AbstractRepositories
         $agentList = $this->servletFactory->agentsServ()->getAgentTreeList(app()->get("agentProfile")->id, $keywords);
         return renderResponse(assertTreeDatum($agentList));
     }
+
+    /**
+     * @param int $id
+     * @return \think\response\Json
+     * @throws ParameterException
+     */
+    public function getAgentInfoByID(int $id)
+    {
+        $agentModel = $this->servletFactory->agentsServ()->getAgentsProfileByFields(['id' => $id]);
+        if (!$agentModel) {
+            throw new ParameterException(['errMessage' => '代理商不存在...']);
+        }
+        return renderResponse($agentModel);
+
+    }
+
+    /**
+     * @param int $id
+     * @param array $data
+     * @return \think\response\Json
+     * @throws ParameterException
+     */
+    public function editAgentByID(int $id, array $data)
+    {
+        $agentModel = $this->servletFactory->agentsServ()->getAgentsProfileByFields(['id' => $id]);
+        if (!$agentModel) {
+            throw new ParameterException(['errMessage' => '代理商不存在...']);
+        }
+        $agentModel::update($data, ['id' => $id]);
+        return renderResponse();
+    }
+
+    /**
+     * @param int $id
+     * @param array $data
+     * @return \think\response\Json
+     * @throws ParameterException
+     */
+    public function changeAgentPassword(int $id, array $data)
+    {
+        $agentModel = $this->servletFactory->agentsServ()->getAgentsProfileByFields(['id' => $id]);
+        if (!$agentModel) {
+            throw new ParameterException(['errMessage' => '代理商不存在...']);
+        }
+        if (!password_verify($data['oldPassword'], $agentModel->agentPassword)) {
+            throw new ParameterException(['errMessage' => '原密码输入错误...']);
+        }
+        $agentModel::update($data, ['id' => $id]);
+        return renderResponse();
+    }
 }

@@ -42,9 +42,9 @@ class AgentController
      */
     public function agentList(Request $request)
     {
-        $pageSize = $request->post('pageSize',20);
-        $keywords = $request->post('keywords');
-        return $this->agentsRepositories->agentList($pageSize,$keywords);
+        $pageSize = $request->post('pageSize', 20);
+        $keywords = $request->post('keywords', '');
+        return $this->agentsRepositories->agentList($pageSize, $keywords);
 
     }
 
@@ -60,5 +60,40 @@ class AgentController
     {
         $keywords = $request->post('keywords');
         return $this->agentsRepositories->treeAgentList($keywords);
+    }
+
+    /**
+     * @param int $id
+     * @return \think\response\Json
+     * @throws \app\lib\exception\ParameterException
+     */
+    public function getAgentDetail(int $id)
+    {
+        return $this->agentsRepositories->getAgentInfoByID($id);
+    }
+
+    /**
+     * @param int $id
+     * @param Request $request
+     * @return \think\response\Json
+     * @throws \app\lib\exception\ParameterException
+     */
+    public function editAgent(int $id, Request $request)
+    {
+        $data = $request->only(['agentPassword', 'agentName']);
+        return $this->agentsRepositories->editAgentByID($id, $data);
+    }
+
+    /**
+     * @param int $id
+     * @param Request $request
+     * @return \think\response\Json
+     * @throws \app\lib\exception\ParameterException
+     */
+    public function editPassword(int $id, Request $request)
+    {
+        $data = $request->only(['oldPassword', 'newPassword']);
+        return $this->agentsRepositories->changeAgentPassword($id, $data);
+
     }
 }
