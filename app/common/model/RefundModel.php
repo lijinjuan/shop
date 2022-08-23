@@ -26,4 +26,14 @@ class RefundModel extends Model
      * @var string
      */
     protected $autoWriteTimestamp = "timestamp";
+
+    /**
+     * goods
+     * @return \think\model\relation\HasOne
+     */
+    public function goods()
+    {
+        return $this->hasOne(GoodsModel::class, "id", "goodsID");
+    }
+
 }

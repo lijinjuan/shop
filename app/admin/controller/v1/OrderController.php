@@ -63,4 +63,14 @@ class OrderController
         return $this->orderRepositories->getOrderRefundDetail($orderNo);
     }
 
+    /**
+     * review2RefundOrderByRefundID
+     * @param \think\Request $request
+     * @return \think\response\Json
+     */
+    public function review2RefundOrderByRefundID(Request $request)
+    {
+        $refundReason = $request->only(["refundID", "status", "refuseReason"]);
+        return $this->orderRepositories->review2RefundOrderByRefundID($refundReason);
+    }
 }

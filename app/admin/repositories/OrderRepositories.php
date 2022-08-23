@@ -59,6 +59,11 @@ class OrderRepositories extends AbstractRepositories
         return renderResponse();
     }
 
+    /**
+     * getOrderRefundDetail
+     * @param string $orderNo
+     * @return mixed
+     */
     public function getOrderRefundDetail(string $orderNo)
     {
         /**
@@ -70,6 +75,30 @@ class OrderRepositories extends AbstractRepositories
             throw new ParameterException(["errMessage" => "该订单状态异常..."]);
 
         $refundDetail = $orderDetail->refundOrder;
+        $refundReason = $this->servletFactory->refundConfigServ()->getRefundReasonConfigByID($refundDetail->reasonID, 2);
+        $refundDetail->refundReason = $refundReason;
+        $refundDetail->refundTypeDesc = $this->servletFactory->refundConfigServ()->getRefundReasonConfigByID($refundDetail->refundType, 1);;
+
+        return renderResponse($refundDetail->visible(["id", "goodsName", "goodsNum", "status", "voucherImg", "remark"]));
+
+    }
+
+    /**
+     * review2RefundOrderByRefundID
+     * @param array $refundReason
+     * @return \think\response\Json
+     */
+    public function review2RefundOrderByRefundID(array $refundReason)
+    {
+        $refundDetail = $this->servletFactory->refundServ()->getRefundDetailByID($refundReason["refundID"], 0);
+
+        $refundDetail->status = $refundReason["status"];
+        $refundDetail->refuseReason = $refundReason["refuseReason"];
+        $refundDetail->checkID = app()->get("adminProfile")->id;
+        $refundDetail->checkName = app()->get("adminProfile")->adminName;
+        $refundDetail->checkAt = date("Y-m-d H:i:s");
+        $refundDetail->save();
+        return renderResponse();
     }
 
 

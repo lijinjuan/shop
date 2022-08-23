@@ -4,6 +4,9 @@ namespace app\common\model;
 
 use think\Model;
 
+/**
+ * \app\common\model\RefundConfigModel
+ */
 class RefundConfigModel extends Model
 {
     /**
@@ -26,5 +29,7 @@ class RefundConfigModel extends Model
      * @var string
      */
     protected $autoWriteTimestamp = "timestamp";
+
+
 
 }

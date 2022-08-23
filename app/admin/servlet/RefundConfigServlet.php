@@ -4,6 +4,9 @@ namespace app\admin\servlet;
 
 use app\common\model\RefundConfigModel;
 
+/**
+ * \app\admin\servlet\RefundConfigServlet
+ */
 class RefundConfigServlet
 {
     /**
@@ -37,7 +40,7 @@ class RefundConfigServlet
      */
     public function editRefundConfig(int $id, array $updateData)
     {
-        return $this->refundConfigModel::update($updateData,['id'=>$id]);
+        return $this->refundConfigModel::update($updateData, ['id' => $id]);
     }
 
     /**
@@ -69,5 +72,16 @@ class RefundConfigServlet
     public function getRefundConfigByID(int $id)
     {
         return $this->refundConfigModel->where('id', $id)->select();
+    }
+
+    /**
+     * getRefundReasonConfigByID
+     * @param int $id
+     * @param int $type
+     * @return \app\common\model\RefundConfigModel|array|mixed|\think\Model|null
+     */
+    public function getRefundReasonConfigByID(int $id, int $type)
+    {
+        return $this->refundConfigModel->where('id', $id)->where("type", $type)->find();
     }
 }
