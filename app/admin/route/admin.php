@@ -59,13 +59,9 @@ Route::group(":version", function () {
     // 订单退款审核的接口
     Route::post("order-refund-review", ":version.Order/review2RefundOrderByRefundID");
     // 查看退款详情的接口
-<<<<<<< HEAD
     Route::post("order-refund-info", ":version.Order/getOrderRefundDetail");
 })->middleware(JwtAuthMiddleware::class);
-=======
-    Route::post("order-refund-info/:orderNo", ":version.Order/getOrderRefundDetail");
-});
->>>>>>> a1650ba82007d0fa2c9472f007a1b5889fdd97d1
+
 
 //总后台退款配置
 Route::group(":version", function () {
@@ -173,12 +169,7 @@ Route::group(":version", function () {
     //充值渠道列表
     Route::post("recharge-config-list", ":version.ConfigInfo/RechargeConfigList");
 
-<<<<<<< HEAD
 })->middleware(JwtAuthMiddleware::class);
-=======
-
-});
->>>>>>> a1650ba82007d0fa2c9472f007a1b5889fdd97d1
 
 //总后台账变管理
 Route::group(":version", function () {
