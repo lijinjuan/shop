@@ -79,7 +79,7 @@ class OrderRepositories extends AbstractRepositories
         $refundDetail->refundReason = $refundReason;
         $refundDetail->refundTypeDesc = $this->servletFactory->refundConfigServ()->getRefundReasonConfigByID($refundDetail->refundType, 1);;
 
-        return renderResponse($refundDetail->visible(["id", "goodsName", "goodsNum", "status", "voucherImg", "remark"]));
+        return renderResponse($refundDetail->visible(["id", "goodsName", "goodsNum", "status", "voucherImg", "refuseReason", "remark"]));
 
     }
 
