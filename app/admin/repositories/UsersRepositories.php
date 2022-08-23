@@ -76,7 +76,7 @@ class UsersRepositories extends AbstractRepositories
                 $updateData['payPassword'] = $data['payPassword'];
             }
             if (!empty($data['isRealPerson'])) {
-                $updateData['isRealPerson'] = $data['isRealPerson'];
+                $updateData['isRealPeople'] = $data['isRealPerson'];
             }
             if (!empty($data['remark'])) {
                 $updateData['remark'] = $data['remark'];
@@ -94,7 +94,7 @@ class UsersRepositories extends AbstractRepositories
             $storeData = [
                 'storeLevel' => isset($data['storeLevel']) ? $data['storeLevel'] : 0,
                 'storeRemark' => isset($data['remark']) ? $data['remark'] : '',
-                'isRealPeople' => isset($data['isRealPeople']) ? $data['isRealPeople'] : 0,
+                'isRealPeople' => isset($data['isRealPerson']) ? $data['isRealPerson'] : 0,
                 'creditScore' => isset($data['creditScore']) ? $data['creditScore'] : 0,
                 'sortID' => isset($data['sort']) ? $data['sort'] : 0,
             ];
@@ -171,7 +171,6 @@ class UsersRepositories extends AbstractRepositories
         if (!$store || $store->status != 0) {
             throw new ParameterException(['errMessage' => '店铺不存在或状态异常...']);
         }
-        //Todo 拿不到当前登录用户信息
         $update = [
             'storeRemark' => $checkData['remark'] ?? '',
             'status' => $checkData['status'],
@@ -286,8 +285,8 @@ class UsersRepositories extends AbstractRepositories
         $model = $this->servletFactory->rechargeServ()->getRechargeInfoByID($id);
         if ($model) {
             //Todo 当前登录用户
-            $data['checkID'] = '';
-            $data['checkName'] = '';
+            $data['checkID'] = app()->get("adminProfile")->id;
+            $data['checkName'] = app()->get("adminProfile")->adminName;
             $data['checkAt'] = date('Y-m-d H:i:s');
             $model::update($data, ['id' => $model->id]);
             //充值成功 写入用户账变表
@@ -352,8 +351,8 @@ class UsersRepositories extends AbstractRepositories
         $model = $this->servletFactory->withdrawalServ()->getOneWithdrawal($id);
         if ($model) {
             //Todo 当前登录用户
-            $data['checkID'] = '';
-            $data['checkName'] = '';
+            $data['checkID'] = app()->get("adminProfile")->id;
+            $data['checkName'] = app()->get("adminProfile")->adminName;
             $data['checkAt'] = date('Y-m-d H:i:s');
             $model::update($data, ['id' => $model->id]);
             $userInfo = $this->servletFactory->userServ()->getUserInfoByID($model->userID);

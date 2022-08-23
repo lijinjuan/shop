@@ -35,16 +35,13 @@ class UsersServlet
     {
         //1->普通会员 2->店铺
         $select = [
-            'id', 'userName', 'email', 'userAvatar', 'status', 'lastIP','lastLoginTime','loginNum'
-        ];
-        $hidden = [
-            'store.deletedAt', 'store.updatedAt', 'store.parentStoreID', 'store.checkID', 'store.checkAt', 'store.reason'
+            'id', 'userName', 'email', 'userAvatar', 'status', 'lastIP','lastLoginTime','loginNum','remark','isRealPeople'
         ];
         $model = $this->usersModel->where('isStore', 0)->field($select);
         if (!empty($userAccount)) {
             $model->where('email', 'like', '%' . $userAccount . '%');
         }
-        return $model->with(['store'])->hidden($hidden)->order('createdAt', 'desc')->paginate($pageSize);
+        return $model->order('createdAt', 'desc')->paginate($pageSize);
 
     }
 
