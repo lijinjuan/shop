@@ -127,7 +127,6 @@ Route::group(":version", function () {
     //会员提现审核
     Route::post("check-withdrawal/:id", ":version.User/checkWithdrawal");
 
-
 });
 
 //总后台分销管理

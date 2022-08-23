@@ -30,7 +30,7 @@ class BannersServlet
      */
     public function getBannerById(int $bannerId)
     {
-        return $this->bannersModel->with(['items', 'items.img'])->field(["id", "bannerName", "bannerDescription"])->find($bannerId);
+        return $this->bannersModel->with(['items'])->field(["id", "bannerName", "bannerDescription"])->find($bannerId);
     }
 
 

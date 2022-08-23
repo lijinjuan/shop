@@ -33,16 +33,7 @@ class BannerItemsModel extends Model
      * @var string[]
      */
     protected $hidden = ["updatedAt", "deletedAt"];
-
-    /**
-     * img
-     * @return \think\model\relation\BelongsTo
-     */
-    public function img()
-    {
-        return $this->belongsTo(ImagesModel::class, "imgID", 'id');
-    }
-
+    
     /**
      * @return \think\model\relation\HasOne
      */
