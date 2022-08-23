@@ -33,8 +33,8 @@ class GoodsRepositories extends AbstractRepositories
         $goodsInfo["goodsDiscountPrice"] = $goodsSku[0]["skuDiscountPrice"];
         $goodsInfo["goodsDifference"] = bcsub($goodsSku[0]["skuPrice"], $goodsSku[0]["skuDiscountPrice"], 2);
         $goodsInfo["goodsImg"] = json_encode($goodsInfo["goodsImg"], JSON_UNESCAPED_UNICODE);
-        $goodsInfo["goodsStock"] = array_sum(array_column($goodsSku, "skuStock"));
-
+        $goodsInfo["goodsStock"] = (int)array_sum(array_column($goodsSku, "skuStock"));
+        $goodsInfo["goodsSalesAmount"] = (int)array_sum(array_column($goodsSku, "saleAmount"));
         /**
          * @var $goodsModel \app\common\model\GoodsModel
          */
@@ -102,6 +102,7 @@ class GoodsRepositories extends AbstractRepositories
         $goodsModel->goodsDiscountPrice = $goodsSkuDetail[0]["skuDiscountPrice"];
         $goodsModel->goodsDifference = bcsub($goodsSkuDetail[0]["skuPrice"], $goodsSkuDetail[0]["skuDiscountPrice"], 2);
         $goodsModel->goodsStock = array_sum(array_column($goodsSkuDetail, "skuStock"));
+        $goodsModel->goodsSalesAmount = array_sum(array_column($goodsSkuDetail, "saleAmount"));
         $goodsModel->save();
 
         return renderResponse();
@@ -132,6 +133,7 @@ class GoodsRepositories extends AbstractRepositories
         $goodsModel->goodsDiscountPrice = $goodsSkuDetail[0]["skuDiscountPrice"];
         $goodsModel->goodsDifference = bcsub($goodsSkuDetail[0]["skuPrice"], $goodsSkuDetail[0]["skuDiscountPrice"], 2);
         $goodsModel->goodsStock = array_sum(array_column($goodsSkuDetail, "skuStock"));
+        $goodsModel->goodsSalesAmount = array_sum(array_column($goodsSkuDetail, "saleAmount"));
         $goodsModel->save();
 
         return renderResponse();

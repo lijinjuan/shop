@@ -86,7 +86,7 @@ class GoodsController
      */
     public function editGoodsSkuBySkuID(int $skuID, Request $request)
     {
-        $skuDetail = $request->only(["skuName", "sku", "skuImg", "skuStock", "skuDiscountPrice", "skuPrice"]);
+        $skuDetail = $request->only(["skuName", "sku", "skuImg", "skuStock", "skuDiscountPrice", "skuPrice", "saleAmount"]);
         return $this->goodsRepositories->editGoodsSkuBySkuID($skuID, $skuDetail);
     }
 
