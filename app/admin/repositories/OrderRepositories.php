@@ -61,18 +61,16 @@ class OrderRepositories extends AbstractRepositories
 
     /**
      * getOrderRefundDetail
-     * @param string $orderNo
+     * @param int $orderDetailID
      * @return mixed
      */
-    public function getOrderRefundDetail(string $orderNo)
+    public function getOrderRefundDetail(int $orderDetailID)
     {
-        /**
-         * @var $orderDetail \app\common\model\OrdersModel
-         */
-        $orderDetail = $this->servletFactory->orderServ()->getOrderEntityByOrderNo($orderNo);
 
-        if ($orderDetail->orderStatus != 6)
-            throw new ParameterException(["errMessage" => "该订单状态异常..."]);
+        $orderDetail = $this->servletFactory->orderDetailServ()->getOrderDetailByID($orderDetailID);
+
+        if ($orderDetail->status != 6)
+            throw new ParameterException(["errMessage" => "子订单状态异常..."]);
 
         $refundDetail = $orderDetail->refundOrder;
         $refundReason = $this->servletFactory->refundConfigServ()->getRefundReasonConfigByID($refundDetail->reasonID, 2);
