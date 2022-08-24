@@ -117,7 +117,7 @@ class OrderRepositories extends AbstractRepositories
     protected function refundOrder(RefundModel $refundDetail, array $refundReason)
     {
         $refundDetail->status = $refundReason["status"];
-        $refundDetail->refuseReason = $refundReason["refuseReason"];
+        $refundDetail->refuseReason = $refundReason["refuseReason"] ?? "";
         $refundDetail->checkID = app()->get("adminProfile")->id;
         $refundDetail->checkName = app()->get("adminProfile")->adminName;
         $refundDetail->checkAt = date("Y-m-d H:i:s");
