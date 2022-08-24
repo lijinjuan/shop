@@ -72,7 +72,7 @@ class OrderRepositories extends AbstractRepositories
 
         $orderDetail = $this->servletFactory->orderDetailServ()->getOrderDetailByID($orderDetailID);
 
-        if ($orderDetail->status != 6)
+        if (!in_array($orderDetail->status, [6, 7]))
             throw new ParameterException(["errMessage" => "子订单状态异常..."]);
 
         $refundDetail = $orderDetail->refundOrder;
@@ -117,7 +117,7 @@ class OrderRepositories extends AbstractRepositories
     protected function refundOrder(RefundModel $refundDetail, array $refundReason)
     {
         $refundDetail->status = $refundReason["status"];
-        $refundDetail->refuseReason = $refundReason["refuseReason"];
+        $refundDetail->refuseReason = $refundReason["refuseReason"] ?? "";
         $refundDetail->checkID = app()->get("adminProfile")->id;
         $refundDetail->checkName = app()->get("adminProfile")->adminName;
         $refundDetail->checkAt = date("Y-m-d H:i:s");
@@ -174,11 +174,13 @@ class OrderRepositories extends AbstractRepositories
             $this->servletFactory->adminAccountServ()->addAdminAccount($changeLog);
         }
 
-        $balance = bcsub($ordersDetailModel->store->user->balance, $returnAmount, 2);
-        $ordersDetailModel->store->user->balance = $balance;
-        $ordersDetailModel->store->user->save();
+        if ((!is_null($ordersDetailModel->store))) {
+            $balance = bcsub($ordersDetailModel->store->user->balance, $returnAmount, 2);
+            $ordersDetailModel->store->user->balance = $balance;
+            $ordersDetailModel?->store?->user->save();
+        }
 
-        if ($returnAmount > 0) {
+        if ($ordersDetailModel->store && $returnAmount > 0) {
             $changeLog = $this->update2ChangeAccountLog($ordersDetailModel->storeID, (int)$ordersDetailModel->store->userID, $balance, $returnAmount, 2);
             $ordersDetailModel->store->storeAccount()->save($changeLog);
         }
