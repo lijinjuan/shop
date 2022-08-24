@@ -98,7 +98,7 @@ class UsersRepositories extends AbstractRepositories
     {
         $userModel = app()->get("userProfile");
         $creditScore = ($userModel->isStore != 0) ? $userModel->store->creditScore : 0;
-        $userModel->creditScore = (int)$creditScore ;
+        $userModel->creditScore = (int)$creditScore;
         return renderResponse($userModel->hidden(["password", "createdAt", "updatedAt", "deletedAt"]));
     }
 

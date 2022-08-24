@@ -143,7 +143,7 @@ class GoodsServlet
      */
     public function getGoodsListByCategoryIDs(array $categories)
     {
-        return $this->goodsModel->whereIn("id", $categories)->where("status", 1)->field(["id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "commission", "goodsSalesAmount", "createdAt"])->order("goodsSalesAmount", "desc")->paginate((int)request()->param("pageSize"));
+        return $this->goodsModel->whereIn("id", $categories)->where("status", 1)->field(["id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "goodsSalesAmount", "createdAt"])->order("goodsSalesAmount", "desc")->paginate((int)request()->param("pageSize"));
     }
 
     /**
