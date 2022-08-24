@@ -33,4 +33,19 @@ class AdminAccountController
 
     }
 
+    /**
+     * @param Request $request
+     * @return \think\response\Json
+     * @throws \app\lib\exception\ParameterException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function modifyPassword(Request $request)
+    {
+        $data = $request->only(['oldPassword', 'newPassword']);
+        return $this->adminAccountRepositories->changeAdminPassword($data);
+
+    }
+
 }
