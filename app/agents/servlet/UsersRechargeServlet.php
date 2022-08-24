@@ -37,5 +37,14 @@ class UsersRechargeServlet
         }])->append(['RechargeName'])->paginate($pageSize);
     }
 
+    /**
+     * @return int
+     * @throws \think\db\exception\DbException
+     */
+    public function rechargeStatistics()
+    {
+        return $this->rechargeModel->where('agentID','like','%,'.app()->get('agentProfile')->id.',%')->count();
+    }
+
 
 }

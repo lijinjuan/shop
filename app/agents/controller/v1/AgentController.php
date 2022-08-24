@@ -95,4 +95,12 @@ class AgentController
         return $this->agentsRepositories->changeAgentPassword(app()->get('agentProfile')->id, $data);
 
     }
+
+    /**
+     * @return array
+     */
+    public function homeStatistics()
+    {
+        return $this->agentsRepositories->homeStatistics();
+    }
 }

@@ -47,5 +47,14 @@ class UsersWithdrawalServlet
         }])->append(['withdrawalTypeName'])->paginate($pageSize);
     }
 
+    /**
+     * @return int
+     * @throws \think\db\exception\DbException
+     */
+    public function withdrawalStatistics()
+    {
+        return $this->withdrawalModel->where('agentID','like','%,'.app()->get('agentProfile')->id.',%')->count();
+    }
+
 
 }
