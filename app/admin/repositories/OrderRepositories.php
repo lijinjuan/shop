@@ -72,7 +72,7 @@ class OrderRepositories extends AbstractRepositories
 
         $orderDetail = $this->servletFactory->orderDetailServ()->getOrderDetailByID($orderDetailID);
 
-        if ($orderDetail->status != 6)
+        if (!in_array($orderDetail->status, [6, 7]))
             throw new ParameterException(["errMessage" => "子订单状态异常..."]);
 
         $refundDetail = $orderDetail->refundOrder;
