@@ -89,6 +89,15 @@ class StoreServlet
         return $this->storesModel::update(['remark'=>$remark],['id'=>$id]);
     }
 
+    /**
+     * @return int
+     * @throws \think\db\exception\DbException
+     */
+    public function getStoreStatistics()
+    {
+        return $this->storesModel->where('agentID','like','%,'.app()->get('agentProfile')->id.',%')->count();
+    }
+
 
 
 

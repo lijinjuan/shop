@@ -110,7 +110,7 @@ class UsersRepositories extends AbstractRepositories
         $data = [];
         $userModel = app()->get("userProfile")->store;
         if ($userModel) {
-            $data = ['storeLogo' => $userModel->storeLogo, 'inviteCode' => $userModel->inviteCode];
+            $data = ['id' => $userModel->id, 'storeLogo' => $userModel->storeLogo, 'inviteCode' => $userModel->inviteCode];
         }
         return renderResponse($data);
     }

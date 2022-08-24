@@ -24,6 +24,8 @@ Route::group(":version", function () {
     Route::get("get-agent/:id", ":version.Agent/getAgentDetail");
     //修改密码
     Route::put("modify-password", ":version.Agent/editPassword");
+    //首页统计
+    Route::get("home-statistics", ":version.Agent/homeStatistics");
 
 })->middleware(JwtAuthMiddleware::class)->allowCrossDomain();
 

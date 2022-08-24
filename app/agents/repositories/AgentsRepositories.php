@@ -129,4 +129,32 @@ class AgentsRepositories extends AbstractRepositories
         $agentModel::update($data, ['id' => $id]);
         return renderResponse();
     }
+
+    public function homeStatistics()
+    {
+        //店铺数
+        $storeCount = $this->servletFactory->storeServ()->getStoreStatistics();
+        //会员充值金额
+        $rechargeCount = $this->servletFactory->rechargeServ()->rechargeStatistics();
+        //会员提现金额
+        $withdrawalCount = $this->servletFactory->withdrawalServ()->withdrawalStatistics();
+        //总订单金额
+        $orderCount = $this->servletFactory->orderServ()->orderStatistics();
+        //在途订单金额(待收货)
+        $noReceivedCount = $this->servletFactory->orderServ()->orderStatistics(4);
+        //今日订单金额
+        $todayOrderCount = $this->servletFactory->orderServ()->orderStatisticsByType('today');
+        //月订单金额
+        $mothOrderCount = $this->servletFactory->orderServ()->orderStatisticsByType('month');
+        //已完成订单数
+        $finishedNum = $this->servletFactory->orderServ()->orderNumStatistics(6);
+        //已发货订单数
+        $noReceivedNum = $this->servletFactory->orderServ()->orderNumStatistics(4);
+        //待支付订单数
+        $noPayNum = $this->servletFactory->orderServ()->orderNumStatistics(1);
+        //待发货订单数
+        $noShipNum = $this->servletFactory->orderServ()->orderNumStatistics(3);
+
+        return renderResponse(compact('storeCount','rechargeCount','withdrawalCount','orderCount','noReceivedCount','todayOrderCount','mothOrderCount','finishedNum','noReceivedNum','noPayNum','noShipNum'));
+    }
 }

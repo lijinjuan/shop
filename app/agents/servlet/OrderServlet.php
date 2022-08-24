@@ -44,15 +44,15 @@ class OrderServlet
             $model->where('createdAt', '<=', $conditions['endTime']);
         }
         //以下两个搜索是我从业以来写的最傻叉的搜索条件，不要问我为什么，产品要这样做。。。
-        if (!empty($conditions['storeID'])){
-            $model->where('storeID','like','%'.$conditions['storeID'].'%');
+        if (!empty($conditions['storeID'])) {
+            $model->where('storeID', 'like', '%' . $conditions['storeID'] . '%');
         }
-        if (!empty($conditions['userID'])){
-            $model->where('userID','like','%'.$conditions['userID'].'%');
+        if (!empty($conditions['userID'])) {
+            $model->where('userID', 'like', '%' . $conditions['userID'] . '%');
         }
 
-        return $model->with(['goodsDetail','user'=>function($query){
-            $query->field(['id','userName','balance']);
+        return $model->with(['goodsDetail', 'user' => function ($query) {
+            $query->field(['id', 'userName', 'balance']);
         }])->paginate($pageSize);
     }
 
@@ -71,6 +71,51 @@ class OrderServlet
             $item->goodsDetail()->update(['status' => 3, 'updatedAt' => date('Y-m-d H:i:s')]);
         }
         return true;
+    }
+
+    /**
+     * @param int $status
+     * @return int
+     * @throws \think\db\exception\DbException
+     */
+    public function orderStatistics(int $status = 0)
+    {
+        if ($status) {
+            $count = $this->ordersModel->where('agentID', 'like', '%,' . app()->get('agentProfile')->id . ',%')->where('orderStatus', $status - 1)->sum('userPayPrice');
+        } else {
+            $count = $this->ordersModel->where('agentID', 'like', '%,' . app()->get('agentProfile')->id . ',%')->sum('userPayPrice');
+        }
+        return $count;
+    }
+
+    /**
+     * @param $type
+     * @return float|int
+     */
+    public function orderStatisticsByType($type)
+    {
+        $count = 0;
+        if ($type == 'today') {
+            $beginTime = date("Y-m-d H:i:s", strtotime(date("Y-m-d", time())));
+            $endTime = date("Y-m-d H:i:s", strtotime(date("Y-m-d", time())) + 60 * 60 * 24);
+            $count = $this->ordersModel->where('agentID', 'like', '%,' . app()->get('agentProfile')->id . ',%')->where('createdAt', '>=', $beginTime)->where('createdAt', '<', $endTime)->sum('userPayPrice');
+        } elseif ($type == 'month') {
+            $beginTime = date("Y-m-01", time());
+            $endTime = date("Y-m-t", time());
+            $count = $this->ordersModel->where('agentID', 'like', '%,' . app()->get('agentProfile')->id . ',%')->where('createdAt', '>=', $beginTime)->where('createdAt', '<', $endTime)->sum('userPayPrice');
+        }
+
+        return $count;
+    }
+
+    /**
+     * @param int $status
+     * @return int
+     * @throws \think\db\exception\DbException
+     */
+    public function orderNumStatistics(int $status)
+    {
+        return $this->ordersModel->where('agentID', 'like', '%,' . app()->get('agentProfile')->id . ',%')->where('orderStatus', $status - 1)->count();
     }
 
 
