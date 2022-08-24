@@ -2,7 +2,9 @@
 
 namespace app\agents\repositories;
 
+use app\common\service\InviteServiceInterface;
 use app\lib\exception\ParameterException;
+use think\facade\Db;
 
 class StoreRepositories extends AbstractRepositories
 {
@@ -41,8 +43,8 @@ class StoreRepositories extends AbstractRepositories
         if (!$store) {
             throw new ParameterException(['errMessage' => '店铺不存在...']);
         }
-        if ($store->parentAgentID != app()->get("agentProfile")->id){
-            throw new ParameterException(['errMessage'=>'当前账户无权设置备注请更换账号...']);
+        if ($store->parentAgentID != app()->get("agentProfile")->id) {
+            throw new ParameterException(['errMessage' => '当前账户无权设置备注请更换账号...']);
         }
         $store::update(['storeRemark' => $remark], ['id' => $id]);
         return renderResponse();
@@ -63,8 +65,8 @@ class StoreRepositories extends AbstractRepositories
         if (!$store) {
             throw new ParameterException(['errMessage' => '店铺不存在...']);
         }
-        if ($store->parentAgentID != app()->get("agentProfile")->id){
-            throw new ParameterException(['errMessage'=>'当前账户无权冻结/解冻店铺请更换账号...']);
+        if ($store->parentAgentID != app()->get("agentProfile")->id) {
+            throw new ParameterException(['errMessage' => '当前账户无权冻结/解冻店铺请更换账号...']);
         }
         $store::update(['status' => $action == 'stop' ? 3 : 1], ['id' => $id]);
         return renderResponse();
@@ -89,14 +91,23 @@ class StoreRepositories extends AbstractRepositories
         if ($store->parentAgentID != app()->get("agentProfile")->id) {
             throw new ParameterException(['errMessage' => '当前账户无权审核店铺请更换账号...']);
         }
-        $updata = [
+        $update = [
             'storeRemark' => $checkData['remark'] ?? '',
             'status' => $checkData['status'],
             'checkID' => app()->get("agentProfile")->id,
             'checkAt' => date('Y-m-d H:i:s'),
         ];
-        $updata['reason'] = $checkData['status'] == 2 ? $checkData['reason'] : '';
-        $store::update($updata, ['id' => $id]);
+        $update['reason'] = $checkData['status'] == 2 ? $checkData['reason'] : '';
+
+        //审核成功之后生成邀请码
+        if ($update['status'] == 1) {
+            $update['inviteCode'] = app()->get(InviteServiceInterface::class)->agentInviteCode();;
+        }
+        Db::transaction(function () use ($store, $update, $id) {
+            $store::update($update, ['id' => $id]);
+            $store->user()->update(['isStore' => 1]);
+        });
+
         return renderResponse();
     }
 
@@ -109,7 +120,7 @@ class StoreRepositories extends AbstractRepositories
      */
     public function getStoreInfoByID(int $id)
     {
-        $select = ['storeName', 'mobile', 'cardID', 'frontPhoto', 'backPhoto', 'storeDesc', 'status', 'checkAt', 'storeRemark','isRealPeople','increaseUV'];
+        $select = ['storeName', 'mobile', 'cardID', 'frontPhoto', 'backPhoto', 'storeDesc', 'status', 'checkAt', 'storeRemark', 'isRealPeople', 'increaseUV'];
         return renderResponse($this->servletFactory->storeServ()->getStoreInfo($id, $select));
     }
 
@@ -158,15 +169,17 @@ class StoreRepositories extends AbstractRepositories
         if (!$storeInfo) {
             throw new ParameterException(['errMessage' => '店铺不存在...']);
         }
-        if ($storeInfo->parentAgentID != app()->get("agentProfile")->id){
-            throw new ParameterException(['errMessage'=>'当前账户无权更改用户信息请更换账号...']);
+        if ($storeInfo->parentAgentID != app()->get("agentProfile")->id) {
+            throw new ParameterException(['errMessage' => '当前账户无权更改用户信息请更换账号...']);
         }
         if (!empty($data['isRealPeople']) && !in_array($data['isRealPeople'], [1, 2])) {
             throw new ParameterException(['errMessage' => '真假人参数错误...']);
         }
         //'password','payPassword','storeLevel','isRealPeople','creditScore','userName','remark'
-        $storeInfo::update(['storeLevel' => $data['storeLevel'], 'isRealPeople' => $data['isRealPeople'], 'creditScore' => $data['creditScore'], 'remark' => $data['remark']], ['id' => $storeInfo->id]);
-        $storeInfo->user()->update(['password' => $data['password'], 'payPassword' => $data['payPassword'], 'userName' => $data['userName']]);
+        Db::transaction(function () use ($data, $storeInfo) {
+            $storeInfo::update(['storeLevel' => $data['storeLevel'], 'isRealPeople' => $data['isRealPeople'], 'creditScore' => $data['creditScore'], 'remark' => $data['remark']], ['id' => $storeInfo->id]);
+            $storeInfo->user()->update(['password' => $data['password'], 'payPassword' => $data['payPassword'], 'userName' => $data['userName']]);
+        });
         return renderResponse();
     }
 
@@ -186,8 +199,8 @@ class StoreRepositories extends AbstractRepositories
         if (!$storeInfo) {
             throw new ParameterException(['errMessage' => '店铺不存在...']);
         }
-        if ($storeInfo->parentAgentID != app()->get("agentProfile")->id){
-            throw new ParameterException(['errMessage'=>'当前账户无权更改虚拟访客请更换账号...']);
+        if ($storeInfo->parentAgentID != app()->get("agentProfile")->id) {
+            throw new ParameterException(['errMessage' => '当前账户无权更改虚拟访客请更换账号...']);
         }
         $storeInfo::update(['increaseUV' => $num], ['id' => $storeInfo->id]);
         return renderResponse();

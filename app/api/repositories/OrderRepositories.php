@@ -262,7 +262,7 @@ class OrderRepositories extends AbstractRepositories
                 $this->servletFactory->adminAccountServ()->addAdminAccount($account);
             }
             //发送站内信
-            $this->servletFactory->messageServ()->addMessage(['title'=>'购买成功通知','content'=>sprintf('您购买的商品已成功付款，付款金额为%s美元，订单号为%s。谢谢您的到来！',$order->goodsTotalPrice,$order->orderNo),'userID'=>app()->get('userProfile')->id]);
+            $this->servletFactory->messageServ()->addMessage(['title' => '购买成功通知', 'content' => sprintf('您购买的商品已成功付款，付款金额为%s美元，订单号为%s。谢谢您的到来！', $order->goodsTotalPrice, $order->orderNo), 'userID' => app()->get('userProfile')->id]);
         });
         return renderResponse();
     }
@@ -402,7 +402,12 @@ class OrderRepositories extends AbstractRepositories
             $order::update(['orderStatus' => 4], ['orderNo' => $orderSn]);
             $order->goodsDetail()->update(['status' => 4]);
             //发送站内信
-            $this->servletFactory->messageServ()->addMessage(['title'=>'确认收货通知','content'=>sprintf('亲爱的，您的订单%s和商品%s已确认收货，谢谢您的到来！',$order->orderNo,''),'userID'=>app()->get('userProfile')->id]);
+            $allGoodsName = [];
+            foreach ($order->goodsDetail as $item) {
+                $allGoodsName[] = $item['goodsName'];
+            }
+            $allGoodsNameString = implode(',', $allGoodsName);
+            $this->servletFactory->messageServ()->addMessage(['title' => '确认收货通知', 'content' => sprintf('亲爱的，您的订单%s和商品%s已确认收货，谢谢您的到来！', $order->orderNo, $allGoodsNameString), 'userID' => app()->get('userProfile')->id]);
         });
         return renderResponse();
     }

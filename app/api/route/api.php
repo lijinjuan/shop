@@ -79,6 +79,9 @@ Route::group(":version", function () {
     Route::post("shop-goods-list", ":version.Shop/getGoodsListByMyStore");
     // 获取所有的商品列表的接口
     Route::post("goods", ":version.Goods/getPlatformGoods");
+    //获取店铺邀请码
+    Route::get("get-inviteCode", ":version.Entry/getInviteCode");
+
 
 })->middleware(JwtAuthMiddleware::class)->json()->allowCrossDomain();
 

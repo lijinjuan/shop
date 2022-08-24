@@ -99,4 +99,17 @@ class UsersRepositories extends AbstractRepositories
         $userModel = app()->get("userProfile");
         return renderResponse($userModel->hidden(["password", "createdAt", "updatedAt", "deletedAt"]));
     }
+
+    /**
+     * @return \think\response\Json
+     */
+    public function getStoreInfo()
+    {
+        $data = [];
+        $userModel = app()->get("userProfile")->store;
+        if ($userModel) {
+            $data = ['storeLoge' => $userModel->storeLogo, 'inviteCode' => $userModel->inviteCode];
+        }
+        return renderResponse($data);
+    }
 }
