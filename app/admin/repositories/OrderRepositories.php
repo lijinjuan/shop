@@ -98,14 +98,16 @@ class OrderRepositories extends AbstractRepositories
         if ($refundOrderDetails->status != 6)
             throw new ParameterException(["errMessage" => "退款的订单异常..."]);
 
-        Db::transaction(function () use ($refundDetail, $refundReason, $refundOrderDetails) {
-            $this->refundOrder($refundDetail, $refundReason);
-            $this->returnAmount2UserAccount($refundOrderDetails->userID, (float)$refundOrderDetails->goodsTotalPrice);
+        if ($refundOrderDetails->status == 1) {
+            Db::transaction(function () use ($refundDetail, $refundReason, $refundOrderDetails) {
+                $this->refundOrder($refundDetail, $refundReason);
+                $this->returnAmount2UserAccount($refundOrderDetails->userID, (float)$refundOrderDetails->goodsTotalPrice);
 
-            $this->returnAmount2MerchantAccount($refundOrderDetails);
-            $this->refund2UpdateOrderDetailStatus($refundOrderDetails);
-        });
-
+                $this->returnAmount2MerchantAccount($refundOrderDetails);
+                $this->refund2UpdateOrderDetailStatus($refundOrderDetails);
+            });
+        }
+        
         return renderResponse();
 
     }
