@@ -169,6 +169,16 @@ Route::group(":version", function () {
     Route::get("get-recharge-config/:id", ":version.ConfigInfo/getRechargeInfoByID");
     //充值渠道列表
     Route::post("recharge-config-list", ":version.ConfigInfo/RechargeConfigList");
+    //添加帮助中心
+    Route::post("add-help", ":version.Help/addHelp");
+    //修改帮助中心
+    Route::put("edit-help/:id", ":version.Help/editHelp");
+    //帮助中心详情
+    Route::get("get-help/:id", ":version.Help/getOneByID");
+    //帮助中心列表
+    Route::post("help-list", ":version.Help/helpList");
+    //删除帮助中心
+    Route::delete("del-help/:id", ":version.Help/delHelp");
 
 })->middleware(JwtAuthMiddleware::class);
 

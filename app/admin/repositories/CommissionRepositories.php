@@ -15,7 +15,13 @@ class CommissionRepositories extends AbstractRepositories
     public function addCommission(array $data, int $type)
     {
         $content = json_encode($data);
-        $this->servletFactory->commissionServ()->addCommission(['content' => $content, 'type' => $type]);
+        $commission = $this->servletFactory->commissionServ()->getCommissionByType($type);
+        if ($commission){
+            $commission->content = $content;
+            $commission->save();
+        }else{
+            $this->servletFactory->commissionServ()->addCommission(['content' => $content, 'type' => $type]);
+        }
         return renderResponse();
     }
 
