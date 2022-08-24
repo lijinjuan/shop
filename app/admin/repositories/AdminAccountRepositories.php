@@ -34,7 +34,6 @@ class AdminAccountRepositories extends AbstractRepositories
         }
         $adminModel::update($data, ['id' => $adminModel->id]);
         return renderResponse();
-
     }
 
 }

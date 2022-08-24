@@ -150,6 +150,10 @@ Route::group(":version", function () {
 
 
 })->middleware(JwtAuthMiddleware::class)->json()->allowCrossDomain();
+//帮助中心
+Route::post(":version/help-list", ":version.Help/helpList")->json()->allowCrossDomain();
+//帮助中心详情
+Route::get(":version/get-help/:id", ":version.Help/helpDetail")->json()->allowCrossDomain();
 
 Route::get(":version/upload-sign", ":version.FileSystem/directTransferBySignUrl")->json()->allowCrossDomain();
 Route::get(":version/upload-sign-callback", ":version.FileSystem/directTransferByCallback")->json()->allowCrossDomain();
