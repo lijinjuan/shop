@@ -174,6 +174,7 @@ class OrderRepositories extends AbstractRepositories
             $this->servletFactory->adminAccountServ()->addAdminAccount($changeLog);
         }
 
+
         if ((!is_null($ordersDetailModel->store))) {
             $balance = bcsub($ordersDetailModel->store->user->balance, $returnAmount, 2);
             $ordersDetailModel->store->user->balance = $balance;
@@ -214,5 +215,21 @@ class OrderRepositories extends AbstractRepositories
     public function confirm2CommissionOrderDetails(string $orderNo)
     {
         return $orderNo;
+    }
+
+    /**
+     * getUserBalanceByUserID
+     * @param int $userID
+     * @return \think\response\Json
+     */
+    public function getUserBalanceByUserID(int $userID)
+    {
+        $userInfo = $this->servletFactory->userServ()->getUserInfoByID($userID);
+
+        if (is_null($userInfo)) {
+            throw new ParameterException(["errMessage" => "用户不存在或者已被删除..."]);
+        }
+
+        return renderResponse(["balance" => $userInfo->balance]);
     }
 }

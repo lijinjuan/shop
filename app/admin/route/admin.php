@@ -62,6 +62,8 @@ Route::group(":version", function () {
     Route::post("order-refund-info", ":version.Order/getOrderRefundDetail");
     // 点击确认完成分佣
     Route::post("order-confirm-commission/:orderNo", ":version.Order/confirm2Commission");
+    // 根据用户id查询用户余e
+    Route::post("user-balance/:userID", ":version.Order/getUserBalanceByUserID");
 
 })->middleware(JwtAuthMiddleware::class);
 
