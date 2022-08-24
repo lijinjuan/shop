@@ -60,7 +60,7 @@ class OrderServlet
         $orderList = $this->ordersModel->with(["user" => function ($query) {
             $query->field("id,userName");
         }, "goodsDetail" => function ($query) {
-            $query->field("orderNo,goodsName,goodsPrice,skuImage,goodsNum");
+            $query->field("id,orderNo,goodsName,goodsPrice,skuImage,goodsNum");
         }])->field(["id", "orderNo", "userID", "storeID", "userPayPrice", "storePayPrice", "orderStatus", "agentAmount", "receiver", "receiverMobile", "receiverAddress", "createdAt"]);
 
         if (isset($conditions["orderStatus"]))

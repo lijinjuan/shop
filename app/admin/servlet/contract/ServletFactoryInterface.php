@@ -15,6 +15,7 @@ use app\admin\servlet\GoodsServlet;
 use app\admin\servlet\GoodsSkuServlet;
 use app\admin\servlet\HelpServlet;
 use app\admin\servlet\ImagesServlet;
+use app\admin\servlet\OrderDetailServlet;
 use app\admin\servlet\OrderServlet;
 use app\admin\servlet\RechargeConfigServlet;
 use app\admin\servlet\RechargeServet;
@@ -141,8 +142,15 @@ interface ServletFactoryInterface
     public function refundServ(): RefundServlet;
 
     /**
+     * <<<<<<< HEAD
+     * orderDetailServ
+     * @return \app\admin\servlet\OrderDetailServlet
+     */
+    public function orderDetailServ(): OrderDetailServlet;
+
+    /**
      * @return HelpServlet
      */
-    public function helpServ():HelpServlet;
+    public function helpServ(): HelpServlet;
 
 }

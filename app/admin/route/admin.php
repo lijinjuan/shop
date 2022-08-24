@@ -59,7 +59,7 @@ Route::group(":version", function () {
     // 订单退款审核的接口
     Route::post("order-refund-review", ":version.Order/review2RefundOrderByRefundID");
     // 查看退款详情的接口
-    Route::post("order-refund-info/:orderNo", ":version.Order/getOrderRefundDetail");
+    Route::post("order-refund-info", ":version.Order/getOrderRefundDetail");
 
 })->middleware(JwtAuthMiddleware::class);
 

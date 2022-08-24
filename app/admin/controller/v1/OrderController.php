@@ -55,12 +55,13 @@ class OrderController
 
     /**
      * getOrderRefundDetail
-     * @param string $orderNo
+     * @param \think\Request $request
      * @return mixed
      */
-    public function getOrderRefundDetail(string $orderNo)
+    public function getOrderRefundDetail(Request $request)
     {
-        return $this->orderRepositories->getOrderRefundDetail($orderNo);
+        $orderDetailID = (int)$request->param("orderDetailID");
+        return $this->orderRepositories->getOrderRefundDetail($orderDetailID);
     }
 
     /**

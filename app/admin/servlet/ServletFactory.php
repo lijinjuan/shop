@@ -180,6 +180,15 @@ class ServletFactory implements ServletFactoryInterface
     }
 
     /**
+     * orderDetailServ
+     * @return \app\admin\servlet\OrderDetailServlet
+     */
+    public function orderDetailServ(): OrderDetailServlet
+    {
+        return invoke(OrderDetailServlet::class);
+    }
+
+    /**
      * @return HelpServlet
      */
     public function helpServ(): HelpServlet
