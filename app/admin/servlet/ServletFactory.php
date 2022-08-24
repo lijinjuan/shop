@@ -195,4 +195,13 @@ class ServletFactory implements ServletFactoryInterface
     {
         return invoke(HelpServlet::class);
     }
+
+    /**
+     * adminBalanceServ
+     * @return \app\admin\servlet\AdminBalanceServlet
+     */
+    public function adminBalanceServ(): AdminBalanceServlet
+    {
+        return invoke(AdminBalanceServlet::class);
+    }
 }

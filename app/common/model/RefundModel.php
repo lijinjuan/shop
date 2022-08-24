@@ -36,4 +36,13 @@ class RefundModel extends Model
         return $this->hasOne(GoodsModel::class, "id", "goodsID");
     }
 
+    /**
+     * orderDetails
+     * @return \think\model\relation\BelongsTo
+     */
+    public function orderDetails()
+    {
+        return $this->belongsTo(OrdersDetailModel::class, "orderID", "id");
+    }
+
 }

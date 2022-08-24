@@ -1,6 +1,6 @@
 <?php
 
-namespace app\api\servlet;
+namespace app\admin\servlet;
 
 use app\common\model\AdminBalanceModel;
 
@@ -27,7 +27,7 @@ class AdminBalanceServlet
      */
     public function getBalance()
     {
-        return $this->adminBalanceModel->where('id',1)->field(['balance'])->find();
+        return $this->adminBalanceModel->where('id', 1)->field(['balance'])->find();
     }
 
 }
