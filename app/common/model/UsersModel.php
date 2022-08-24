@@ -68,7 +68,7 @@ class UsersModel extends Model
      */
     public function shoppingCart()
     {
-        return $this->hasMany(UsersShoppingCartModel::class,'userID','id');
+        return $this->hasMany(UsersShoppingCartModel::class, 'userID', 'id');
     }
 
     /**
@@ -76,8 +76,16 @@ class UsersModel extends Model
      */
     public function withdrawal()
     {
-        return $this->hasMany(UsersAmountModel::class,'userID','id');
+        return $this->hasMany(UsersAmountModel::class, 'userID', 'id');
+    }
 
+    /**
+     * storeAccount
+     * @return \think\model\relation\HasMany
+     */
+    public function storeAccount()
+    {
+        return $this->hasMany(StoreAccountModel::class, "userID", "id");
     }
 
 }

@@ -4,6 +4,7 @@ namespace app\admin\servlet\contract;
 
 
 use app\admin\servlet\AdminAccountServlet;
+use app\admin\servlet\AdminBalanceServlet;
 use app\admin\servlet\AdminsServlet;
 use app\admin\servlet\AgentsServlet;
 use app\admin\servlet\BannerItemsServlet;
@@ -152,5 +153,11 @@ interface ServletFactoryInterface
      * @return HelpServlet
      */
     public function helpServ(): HelpServlet;
+
+    /**
+     * adminBalanceServ
+     * @return \app\admin\servlet\AdminBalanceServlet
+     */
+    public function adminBalanceServ(): AdminBalanceServlet;
 
 }
