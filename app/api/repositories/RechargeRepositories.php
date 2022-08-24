@@ -12,11 +12,12 @@ class RechargeRepositories extends AbstractRepositories
     {
         $data['orderNo'] = makeOrderNo();
         $data['userID'] = app()->get('userProfile')->id;
+        $data['userEmail'] = app()->get('userProfile')->email;
         $store = app()->get('userProfile')->store;
-        if ($store->id) {
+        if ($store) {
             $data['storeID'] = $store->id;
             $data['agentID'] = $store->agentID;
-            $data['agentAccount'] = NULL;
+            $data['agentAccount'] = $store->agentName;
         };
         $this->servletFactory->rechargeServ()->addRecharge($data);
         return renderResponse();

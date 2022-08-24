@@ -284,7 +284,6 @@ class UsersRepositories extends AbstractRepositories
     {
         $model = $this->servletFactory->rechargeServ()->getRechargeInfoByID($id);
         if ($model) {
-            //Todo 当前登录用户
             $data['checkID'] = app()->get("adminProfile")->id;
             $data['checkName'] = app()->get("adminProfile")->adminName;
             $data['checkAt'] = date('Y-m-d H:i:s');
@@ -297,8 +296,8 @@ class UsersRepositories extends AbstractRepositories
                     'title' => '充值',
                     'storeID' => $model->storeID?$model->storeID:0,
                     'userID' => $model->userID,
-                    'balance' => $currentBalance + $model->balance,
-                    'changeBalance' => $model->balance,
+                    'balance' => $currentBalance + $model->rechargeMoney,
+                    'changeBalance' => $model->rechargeMoney?$model->rechargeMoney:0.00,
                     'action' => 1,
                     'remark' => '会员充值',
                     'type' => 1

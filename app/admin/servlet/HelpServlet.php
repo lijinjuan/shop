@@ -30,7 +30,7 @@ class HelpServlet
         try{
             return $this->helpCenterModel::create($data);
         }catch (\Throwable $e){
-            throw new ParameterException(['errMessage'=>'添加失败...']);
+            throw new ParameterException(['errMessage'=>$e->getMessage()]);
         }
     }
 

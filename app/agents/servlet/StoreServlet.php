@@ -46,7 +46,7 @@ class StoreServlet
             }]);
         }
         if ($type){
-            $model->where('status',$type);
+            $model->where('status',$type-1);
         }
         return $model->append(["parentID",'statusName'])->paginate($pageSize);
 

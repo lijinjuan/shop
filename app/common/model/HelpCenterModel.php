@@ -9,7 +9,7 @@ class HelpCenterModel extends Model
     /**
      * @var string
      */
-    protected $table = "s_goods_stores";
+    protected $table = "s_help_center";
 
     /**
      * @var string

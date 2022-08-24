@@ -29,7 +29,7 @@ class OrderServlet
     {
         $model = $this->ordersModel->where('agentID', 'like', '%,' . app()->get("agentProfile")->id . ',%');
         if (isset($conditions['status'])) {
-            $model->where('orderStatus', $conditions['status']);
+            $model->where('orderStatus', $conditions['status'] - 1);
         }
         if (!empty($conditions['orderNo'])) {
             $model->where('orderNo', $conditions['orderNo']);

@@ -3,13 +3,14 @@
 namespace app\api\servlet;
 
 use app\common\model\RechargeModel;
+use app\lib\exception\ParameterException;
 
 class RechargeServlet
 {
     /**
      * @var RechargeModel
      */
-     protected RechargeModel $rechargeModel;
+    protected RechargeModel $rechargeModel;
 
     /**
      * @param RechargeModel $rechargeModel
@@ -25,7 +26,11 @@ class RechargeServlet
      */
     public function addRecharge(array $data)
     {
-        return $this->rechargeModel::create($data);
+        try {
+            return $this->rechargeModel::create($data);
+        } catch (\Throwable $e) {
+            throw new ParameterException(['errMessage' => '提交充值申请失败...']);
+        }
     }
 
     /**
@@ -34,9 +39,9 @@ class RechargeServlet
      * @return \think\Paginator
      * @throws \think\db\exception\DbException
      */
-    public function rechargeList(int $status,int $pageSize)
+    public function rechargeList(int $status, int $pageSize)
     {
-        return $this->rechargeModel->where('userID',app()->get('userProfile')->id)->where('status',$status)->field(['id','rechargeType','rechargeMoney','createdAt'])->append(['rechargeName'])->order('createdAt','desc')->paginate($pageSize);
+        return $this->rechargeModel->where('userID', app()->get('userProfile')->id)->where('status', $status)->field(['id', 'rechargeType', 'rechargeMoney', 'createdAt'])->append(['rechargeName'])->order('createdAt', 'desc')->paginate($pageSize);
     }
 
     /**
@@ -48,7 +53,7 @@ class RechargeServlet
      */
     public function rechargeDetail(int $id)
     {
-        return $this->rechargeModel->where('id',$id)->field(['id','orderNo','rechargeMoney','createdAt','status','rechargeVoucher'])->append(['rechargeName','orderStatus'])->find();
+        return $this->rechargeModel->where('id', $id)->field(['id', 'orderNo', 'rechargeMoney', 'createdAt', 'status', 'rechargeVoucher'])->append(['rechargeName', 'orderStatus'])->find();
     }
 
 
