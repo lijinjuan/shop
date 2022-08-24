@@ -107,9 +107,8 @@ class OrderRepositories extends AbstractRepositories
                 $this->refund2UpdateOrderDetailStatus($refundOrderDetails);
             });
         }
-        
-        return renderResponse();
 
+        return renderResponse();
     }
 
     // 修改退款订单的状态

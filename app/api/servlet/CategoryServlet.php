@@ -28,7 +28,7 @@ class CategoryServlet
      */
     public function getCategoriesByTree()
     {
-        $categories = $this->categoryModel->where("status", 1)->field(["id", "categoryName", "categoryImgID", "parentID"])->with(["img"])->select()?->toArray() ?? [];
+        $categories = $this->categoryModel->where("status", 1)->field(["id", "categoryName", "categoryImgUrl", "parentID"])->select()?->toArray() ?? [];
         return assertTreeDatum($categories);
     }
 
@@ -50,7 +50,7 @@ class CategoryServlet
      */
     public function getParentCategories(int $categoryID)
     {
-        $categories = $this->categoryModel->where("status", 1)->where("parentID", $categoryID)->field(["id", "categoryName", "categoryImgID", "parentID"])->select();
+        $categories = $this->categoryModel->where("status", 1)->where("parentID", $categoryID)->field(["id", "categoryName", "categoryImgUrl", "parentID"])->select();
         return $categories;
     }
 }

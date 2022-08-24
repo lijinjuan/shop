@@ -74,4 +74,9 @@ class OrderController
         $refundReason = $request->only(["refundID", "status", "refuseReason"]);
         return $this->orderRepositories->review2RefundOrderByRefundID($refundReason);
     }
+
+
+    public function confirm2Commission()
+    {
+    }
 }
