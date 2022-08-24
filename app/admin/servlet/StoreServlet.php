@@ -88,12 +88,10 @@ class StoreServlet
     {
         $model = $this->storesModel->where('id', '>', 0);
         if (!empty($userAccount)) {
-            $model->with(['user' => function ($query) use ($userAccount) {
-                $query->where('user.email', 'like', '%' . $userAccount . '%');
-            }]);
+            $model->where('userEmail', 'like', '%' . $userAccount . '%');
         }
         if ($status) {
-            $model->where('status', $status -1 );
+            $model->where('status', $status - 1);
         }
         return $model->with(['user'])->paginate($pageSize);
     }

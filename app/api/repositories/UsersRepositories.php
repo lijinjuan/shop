@@ -101,4 +101,17 @@ class UsersRepositories extends AbstractRepositories
         $userModel->creditScore = (int)$creditScore ;
         return renderResponse($userModel->hidden(["password", "createdAt", "updatedAt", "deletedAt"]));
     }
+
+    /**
+     * @return \think\response\Json
+     */
+    public function getStoreInfo()
+    {
+        $data = [];
+        $userModel = app()->get("userProfile")->store;
+        if ($userModel) {
+            $data = ['storeLogo' => $userModel->storeLogo, 'inviteCode' => $userModel->inviteCode];
+        }
+        return renderResponse($data);
+    }
 }

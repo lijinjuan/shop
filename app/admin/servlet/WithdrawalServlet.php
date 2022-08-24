@@ -25,7 +25,7 @@ class WithdrawalServlet
      */
     public function getWithdrawalByID(int $id)
     {
-        return $this->withdrawalModel->where('id',$id)->where('status',1)->sum('withdrawalMoney');
+        return $this->withdrawalModel->where('id', $id)->where('status', 1)->sum('withdrawalMoney');
     }
 
     /**
@@ -38,7 +38,7 @@ class WithdrawalServlet
     {
         //商户账号 提现方式 真假人
         $select = ['id', 'storeID', 'withdrawalMoney', 'withdrawalType', 'createdAt', 'status', 'agentAmount', 'refuseReason'];
-        $model = $this->withdrawalModel->where('id','>',0);
+        $model = $this->withdrawalModel->where('id', '>', 0);
         if (!empty($conditions['type']) && in_array($conditions['type'], [1, 2, 3])) {
             $model->where('withdrawalType', $conditions['type']);
         }
@@ -47,9 +47,7 @@ class WithdrawalServlet
         }
         if (!empty($conditions['keywords'])) {
             //钱包地址 银行卡
-            $model->with(['usersAmount'=>function($query) use($conditions){
-                $query->field(['userID','bankCard','walletAddress'])->where('bankCard','like','%'.$conditions['keywords'].'%')->whereOr('walletAddress','like','%'.$conditions['keywords'].'%');
-            }]);
+            $model->where('withdrawalAmount', 'like', '%' . $conditions['keywords'] . '%');
         }
         return $model->field($select)->with(['store' => function ($query) {
             $query->field(['id', 'storeName', 'isRealPeople']);
@@ -65,9 +63,9 @@ class WithdrawalServlet
      */
     public function getWithdrawalInfoByID(int $id)
     {
-        $select = ['id','withdrawalType','withdrawalMoney','refuseReason','status','userID'];
-       return $this->withdrawalModel->where('id',$id)->field($select)->with(['user'=>function($query){
-            $query->field(['id','balance']);
+        $select = ['id', 'withdrawalType', 'withdrawalMoney', 'refuseReason', 'status', 'userID'];
+        return $this->withdrawalModel->where('id', $id)->field($select)->with(['user' => function ($query) {
+            $query->field(['id', 'balance']);
         }])->append(['withdrawalTypeName'])->find();
 
     }
@@ -81,9 +79,8 @@ class WithdrawalServlet
      */
     public function getOneWithdrawal(int $id)
     {
-        return $this->withdrawalModel->where('id',$id)->find();
+        return $this->withdrawalModel->where('id', $id)->find();
     }
-
 
 
 }

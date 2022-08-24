@@ -79,6 +79,9 @@ Route::group(":version", function () {
     Route::post("shop-goods-list", ":version.Shop/getGoodsListByMyStore");
     // 获取所有的商品列表的接口
     Route::post("goods", ":version.Goods/getPlatformGoods");
+    //获取店铺邀请码
+    Route::get("get-inviteCode", ":version.Entry/getInviteCode");
+
 
 })->middleware(JwtAuthMiddleware::class)->json()->allowCrossDomain();
 
@@ -150,6 +153,19 @@ Route::group(":version", function () {
 
 
 })->middleware(JwtAuthMiddleware::class)->json()->allowCrossDomain();
+
+//客户端站内信
+Route::group(":version", function () {
+    // 站内信列表
+    Route::post("message-list", ":version.Message/messageList");
+    // 站内信详情
+    Route::get("message-detail/:id", ":version.Message/messageDetail");
+})->middleware(JwtAuthMiddleware::class)->json()->allowCrossDomain();
+
+//帮助中心
+Route::post(":version/help-list", ":version.Help/helpList")->json()->allowCrossDomain();
+//帮助中心详情
+Route::get(":version/get-help/:id", ":version.Help/helpDetail")->json()->allowCrossDomain();
 
 Route::get(":version/upload-sign", ":version.FileSystem/directTransferBySignUrl")->json()->allowCrossDomain();
 Route::get(":version/upload-sign-callback", ":version.FileSystem/directTransferByCallback")->json()->allowCrossDomain();

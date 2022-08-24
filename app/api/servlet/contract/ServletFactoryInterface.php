@@ -11,6 +11,8 @@ use app\api\servlet\CategoryServlet;
 use app\api\servlet\CommissionConfigServlet;
 use app\api\servlet\GoodsServlet;
 use app\api\servlet\GoodsSkuServlet;
+use app\api\servlet\HelpServlet;
+use app\api\servlet\MessageServlet;
 use app\api\servlet\OrderDetailServlet;
 use app\api\servlet\OrderServlet;
 use app\api\servlet\RechargeConfigServlet;
@@ -155,5 +157,14 @@ interface ServletFactoryInterface
      */
     public function adminBalanceServ():AdminBalanceServlet;
 
+    /**
+     * @return HelpServlet
+     */
+    public function helpServ():HelpServlet;
+
+    /**
+     * @return MessageServlet
+     */
+    public function messageServ():MessageServlet;
 
 }

@@ -90,4 +90,12 @@ class EntryController
 
         return renderResponse();
     }
+
+    /**
+     * @return \think\response\Json
+     */
+    public function getInviteCode()
+    {
+        return $this->usersRepositories->getStoreInfo();
+    }
 }

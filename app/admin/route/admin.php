@@ -189,3 +189,8 @@ Route::group(":version", function () {
     //账变列表
     Route::post("admin-account-list", ":version.AdminAccount/accountList");
 })->middleware(JwtAuthMiddleware::class);
+
+//修改密码接口
+Route::group(":version", function () {
+    Route::put("modify-password", ":version.AdminAccount/modifyPassword");
+})->middleware(JwtAuthMiddleware::class);
