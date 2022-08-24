@@ -4,6 +4,7 @@ namespace app\agents\servlet\contract;
 
 
 use app\agents\servlet\AgentsServlet;
+use app\agents\servlet\MessageServlet;
 use app\agents\servlet\OrderServlet;
 use app\agents\servlet\StoreAccountServlet;
 use app\agents\servlet\StoreServlet;
@@ -46,4 +47,9 @@ interface ServletFactoryInterface
      * @return UsersWithdrawalServlet
      */
     public function withdrawalServ():UsersWithdrawalServlet;
+
+    /**
+     * @return MessageServlet
+     */
+    public function messageServ():MessageServlet;
 }
