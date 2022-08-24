@@ -48,7 +48,13 @@ class AdminAccountServlet
         if (!empty($search['endTime'])){
             $model->where('createdAt','<=',$search['endTime']);
         }
-        return $model->order('createdAt','desc')->paginate($pageSize);
+        return $model->with(['store'=>function($query){
+            $query->field(['id','mobile']);
+        },'user'=>function($query){
+            $query->field(['id','email']);
+        },'agent'=>function($query){
+            $query->field(['id','agentAccount']);
+        }])->order('createdAt','desc')->paginate($pageSize);
     }
 
 }
