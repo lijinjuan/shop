@@ -174,11 +174,13 @@ class OrderRepositories extends AbstractRepositories
             $this->servletFactory->adminAccountServ()->addAdminAccount($changeLog);
         }
 
-        $balance = bcsub($ordersDetailModel->store->user->balance, $returnAmount, 2);
-        $ordersDetailModel->store->user->balance = $balance;
-        $ordersDetailModel->store->user->save();
+        if ((!is_null($ordersDetailModel->store))) {
+            $balance = bcsub($ordersDetailModel->store->user->balance, $returnAmount, 2);
+            $ordersDetailModel->store->user->balance = $balance;
+            $ordersDetailModel?->store?->user->save();
+        }
 
-        if ($returnAmount > 0) {
+        if ($ordersDetailModel->store && $returnAmount > 0) {
             $changeLog = $this->update2ChangeAccountLog($ordersDetailModel->storeID, (int)$ordersDetailModel->store->userID, $balance, $returnAmount, 2);
             $ordersDetailModel->store->storeAccount()->save($changeLog);
         }
