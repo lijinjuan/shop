@@ -204,4 +204,12 @@ class ServletFactory implements ServletFactoryInterface
     {
         return invoke(HelpServlet::class);
     }
+
+    /**
+     * @return MessageServlet
+     */
+    public function messageServ(): MessageServlet
+    {
+        return invoke(MessageServlet::class);
+    }
 }

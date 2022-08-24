@@ -150,6 +150,15 @@ Route::group(":version", function () {
 
 
 })->middleware(JwtAuthMiddleware::class)->json()->allowCrossDomain();
+
+//客户端站内信
+Route::group(":version", function () {
+    // 站内信列表
+    Route::post("message-list", ":version.Message/messageList");
+    // 站内信详情
+    Route::get("message-detail/:id", ":version.Message/messageDetail");
+})->middleware(JwtAuthMiddleware::class)->json()->allowCrossDomain();
+
 //帮助中心
 Route::post(":version/help-list", ":version.Help/helpList")->json()->allowCrossDomain();
 //帮助中心详情
