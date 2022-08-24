@@ -61,7 +61,7 @@ Route::group(":version", function () {
     // 查看退款详情的接口
     Route::post("order-refund-info", ":version.Order/getOrderRefundDetail");
     // 点击确认完成分佣
-    Route::post("order-confirm-commission", ":version.Order/confirm2Commission");
+    Route::post("order-confirm-commission/:orderNo", ":version.Order/confirm2Commission");
 
 })->middleware(JwtAuthMiddleware::class);
 

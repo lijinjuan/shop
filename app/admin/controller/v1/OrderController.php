@@ -75,8 +75,9 @@ class OrderController
         return $this->orderRepositories->review2RefundOrderByRefundID($refundReason);
     }
 
-
-    public function confirm2Commission()
+    // 分佣
+    public function confirm2Commission(string $orderNo)
     {
+        return $this->orderRepositories->confirm2CommissionOrderDetails($orderNo);
     }
 }
