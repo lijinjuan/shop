@@ -74,4 +74,10 @@ class OrderController
         $refundReason = $request->only(["refundID", "status", "refuseReason"]);
         return $this->orderRepositories->review2RefundOrderByRefundID($refundReason);
     }
+
+    // 分佣
+    public function confirm2Commission(string $orderNo)
+    {
+        return $this->orderRepositories->confirm2CommissionOrderDetails($orderNo);
+    }
 }

@@ -78,7 +78,7 @@ class GoodsServlet
      */
     public function getGoodsListByGoodsItem(array $itemFields, array $order, int $limit)
     {
-        return $this->goodsModel->where($itemFields)->field(["id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "commission", "goodsSalesAmount", "createdAt"])->order($order)->limit($limit)->select();
+        return $this->goodsModel->where($itemFields)->field(["id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "goodsSalesAmount", "createdAt"])->order($order)->limit($limit)->select();
     }
 
 
@@ -89,7 +89,7 @@ class GoodsServlet
      */
     public function getGoodsListByGoodsRecommend(array $order)
     {
-        return $this->goodsModel->where("status", 1)->where("isRecommend", 1)->field(["id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "commission", "goodsSalesAmount", "createdAt"])->order($order)->paginate((int)request()->param("pageSize"));
+        return $this->goodsModel->where("status", 1)->where("isRecommend", 1)->field(["id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "goodsSalesAmount", "createdAt"])->order($order)->paginate((int)request()->param("pageSize", 20));
     }
 
     /**
@@ -143,7 +143,7 @@ class GoodsServlet
      */
     public function getGoodsListByCategoryIDs(array $categories)
     {
-        return $this->goodsModel->whereIn("id", $categories)->where("status", 1)->field(["id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "commission", "goodsSalesAmount", "createdAt"])->order("goodsSalesAmount", "desc")->paginate((int)request()->param("pageSize"));
+        return $this->goodsModel->whereIn("id", $categories)->where("status", 1)->field(["id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "goodsSalesAmount", "createdAt"])->order("goodsSalesAmount", "desc")->paginate((int)request()->param("pageSize"));
     }
 
     /**
