@@ -176,6 +176,9 @@ Route::get(":version/get-help/:id", ":version.Help/helpDetail")->json()->allowCr
 
 Route::get(":version/upload-sign", ":version.FileSystem/directTransferBySignUrl")->json()->allowCrossDomain();
 Route::get(":version/upload-sign-callback", ":version.FileSystem/directTransferByCallback")->json()->allowCrossDomain();
+Route::miss(function () {
+    return 404;
+});
 
 
 

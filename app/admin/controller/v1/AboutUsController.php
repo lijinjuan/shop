@@ -33,4 +33,14 @@ class AboutUsController
         return renderResponse();
     }
 
+
+    /**
+     * @return \think\response\Json
+     */
+    public function getAboutUs()
+    {
+        $content = Cache::get("relationShip");
+        return renderResponse(compact('content'));
+    }
+
 }

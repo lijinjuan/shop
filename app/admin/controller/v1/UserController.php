@@ -125,6 +125,10 @@ class UserController
     /**
      * @param int $id
      * @return \think\response\Json
+     * @throws \app\lib\exception\ParameterException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     public function storeStatistics(int $id)
     {

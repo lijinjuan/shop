@@ -141,6 +141,8 @@ Route::group(":version", function () {
 
     // 保存关于我们
     Route::post("save-about-us", ":version.AboutUs/addAboutUs");
+    //获取关于我们
+    Route::get("get-about-us", ":version.AboutUs/getAboutUs");
 
 })->middleware(JwtAuthMiddleware::class);
 
@@ -201,3 +203,7 @@ Route::group(":version", function () {
 Route::group(":version", function () {
     Route::put("modify-password", ":version.AdminAccount/modifyPassword");
 })->middleware(JwtAuthMiddleware::class);
+
+Route::miss(function () {
+    return 404;
+});

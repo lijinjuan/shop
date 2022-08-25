@@ -40,3 +40,7 @@ Route::group(":version", function () {
     Route::post("store-statistics", ":version.Store/getStoreStatistics");
 
 })->middleware(JwtAuthMiddleware::class)->allowCrossDomain();
+
+Route::miss(function () {
+    return 404;
+});
