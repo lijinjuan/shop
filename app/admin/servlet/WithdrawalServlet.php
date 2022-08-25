@@ -82,5 +82,14 @@ class WithdrawalServlet
         return $this->withdrawalModel->where('id', $id)->find();
     }
 
+    /**
+     * @param int $storeID
+     * @return float
+     */
+    public function getStatisticsByID(int $storeID)
+    {
+        return $this->withdrawalModel->where('storeID',$storeID)->where('status',1)->sum('withdrawalMoney');
+    }
+
 
 }

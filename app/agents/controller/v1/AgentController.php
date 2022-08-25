@@ -97,7 +97,7 @@ class AgentController
     }
 
     /**
-     * @return array
+     * @return \think\response\Json
      */
     public function homeStatistics()
     {

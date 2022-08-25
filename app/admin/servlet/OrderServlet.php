@@ -86,4 +86,55 @@ class OrderServlet
 
         return $orderList->order("createdAt", "desc")->paginate((int)request()->param("pageSize", 20));
     }
+
+    /**
+     * @param int $id
+     * @param int $type
+     * @return float
+     */
+    public function getStatisticsByStoreID(int $id, int $type = 0)
+    {
+        //总订单金额 totalOrderMoney
+        //在途订单金额 noReceivedMoney
+
+        $orderModel = $this->ordersModel->where('storeID', $id);
+        if ($type) {
+            $orderModel->where('orderStatus', $type);
+        }
+        return round($orderModel->sum('userPayPrice'), 2);
+    }
+
+    /**
+     * @param int $id
+     * @param string $startTime
+     * @param string $endTime
+     * @return float
+     */
+    public function getStatisticsByStoreID2Time(int $id, string $startTime,string $endTime)
+    {
+        //今日订单金额 todayOrderMoney
+        //月订单金额 monthOrderMoney
+        $money = $this->ordersModel->where('storeID', $id)->where('createdAt','>=',$startTime)->where('createdAt','<',$endTime)->sum('userPayPrice');
+        return $money;
+
+    }
+
+    /**
+     * @param int $id
+     * @param int $type
+     * @return float
+     * @throws \think\db\exception\DbException
+     */
+    public function getStatisticsNumByStoreID(int $id, int $type = 0)
+    {
+        //已完成订单数 finishedOrderCount
+        //已发货订单数 shipOrderCount
+        //待支付订单数 noPayOrderCount
+        //待发货订单数 noShipOrderCount
+        $orderModel = $this->ordersModel->where('storeID', $id);
+        if ($type) {
+            $orderModel->where('orderStatus', $type - 1);
+        }
+        return round($orderModel->count(), 2);
+    }
 }

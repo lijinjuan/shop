@@ -182,13 +182,52 @@ class UsersRepositories extends AbstractRepositories
         return renderResponse();
     }
 
+    /**
+     * @param int $id
+     * @return array
+     * @throws ParameterException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
     public function storeStatistics(int $id)
     {
         $store = $this->servletFactory->storeServ()->getStoreInfoByID($id);
         if ($store) {
-            return renderResponse($this->servletFactory->storeServ()->storeStatistics($id));
+            //访客数 totalUV
+            //下级店铺数 childStore
+            //今日预估佣金 todayCommission 用户购买商品获取到的佣金
+            //已结算佣金 totalCommission ?????
+            //推广奖励 extensionMoney 我是别人的上级获取的奖励
+            //提现总金额 withdrawal
+            //总订单金额 totalOrderMoney
+            //在途订单金额 noReceivedMoney
+            //今日订单金额 todayOrderMoney
+            //月订单金额 monthOrderMoney
+            //已完成订单数 finishedOrderCount
+            //已发货订单数 shipOrderCount
+            //待支付订单数 noPayOrderCount
+            //待发货订单数 noShipOrderCount
+            $totalCommission = 0.00;
+            $storeStatistics = $this->servletFactory->storeServ()->storeStatistics($id);
+            $totalUV = $storeStatistics['totalUV'];
+            $childStore = $storeStatistics['childStore'];
+            $beginTime = date("Y-m-d H:i:s", strtotime(date("Y-m-d", time())));
+            $endTime = date("Y-m-d H:i:s", strtotime(date("Y-m-d", time())) + 60 * 60 * 24);
+            $todayCommission = $this->servletFactory->storeAccountServ()->getCommissionByID($id, 3, $beginTime, $endTime);
+            $extensionMoney = $this->servletFactory->storeAccountServ()->getCommissionByID($id, 4);
+            $withdrawal = $this->servletFactory->withdrawalServ()->getStatisticsByID($id);
+            $totalOrderMoney = $this->servletFactory->orderServ()->getStatisticsByStoreID($id);
+            $noReceivedMoney = $this->servletFactory->orderServ()->getStatisticsByStoreID($id, 3);
+            $todayOrderMoney = $this->servletFactory->orderServ()->getStatisticsByStoreID2Time($id, $beginTime, $endTime);
+            $monthOrderMoney = $this->servletFactory->orderServ()->getStatisticsByStoreID2Time($id, date("Y-m-01", time()), date("Y-m-t", time()));
+            $finishedOrderCount = $this->servletFactory->orderServ()->getStatisticsNumByStoreID($id, 6);
+            $shipOrderCount = $this->servletFactory->orderServ()->getStatisticsNumByStoreID($id, 4);
+            $noPayOrderCount = $this->servletFactory->orderServ()->getStatisticsNumByStoreID($id, 1);
+            $noShipOrderCount = $this->servletFactory->orderServ()->getStatisticsNumByStoreID($id, 3);
+            return compact('totalUV', 'childStore', 'todayCommission', 'totalCommission', 'extensionMoney', 'withdrawal', 'totalOrderMoney', 'noReceivedMoney', 'todayOrderMoney', 'monthOrderMoney', 'finishedOrderCount', 'shipOrderCount', 'noPayOrderCount', 'noShipOrderCount');
         }
-        throw  new ParameterException(['errMessage' => '用户不存在...']);
+        throw  new ParameterException(['errMessage' => '店铺不存在...']);
 
     }
 
@@ -294,10 +333,10 @@ class UsersRepositories extends AbstractRepositories
                 $currentBalance = $userInfo->balance;
                 $data = [
                     'title' => '充值',
-                    'storeID' => $model->storeID?$model->storeID:0,
+                    'storeID' => $model->storeID ? $model->storeID : 0,
                     'userID' => $model->userID,
                     'balance' => $currentBalance + $model->rechargeMoney,
-                    'changeBalance' => $model->rechargeMoney?$model->rechargeMoney:0.00,
+                    'changeBalance' => $model->rechargeMoney ? $model->rechargeMoney : 0.00,
                     'action' => 1,
                     'remark' => '会员充值',
                     'type' => 1

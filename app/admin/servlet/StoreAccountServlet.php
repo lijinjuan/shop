@@ -42,5 +42,22 @@ class StoreAccountServlet
         return $this->storeAccountModel::create($data);
     }
 
+    /**
+     * @param int $id
+     * @param int $type
+     * @param string $startTime
+     * @param string $endTime
+     * @return float
+     */
+    public function getCommissionByID(int $id, int $type, string $startTime = '', string $endTime = '')
+    {
+        $commission = $this->storeAccountModel->where('storeID', $id)->where('type', $type);
+        if ($startTime && $endTime) {
+            $commission->where('createdAt', '>=', $startTime)->where('endTime', '<', $endTime);
+        }
+        $commissionRes = $commission->sum('changeBalance');
+        return round($commissionRes, 2);
+    }
+
 
 }
