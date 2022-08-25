@@ -38,7 +38,7 @@ class OrdersServlet
         else
             $orderList = $this->ordersModel;
 
-        $orderList = $orderList->where("storeID", $storeID)->field(["id", "orderNo", "userID", "goodsTotalPrice", "orderStatus", "orderCommission", "userPayAt", "createdAt"])
+        $orderList = $orderList->where("storeID", $storeID)->field(["s_orders.id", "orderNo", "userID", "goodsTotalPrice", "orderStatus", "orderCommission", "userPayAt", "s_orders.createdAt"])
             ->with(["user" => function ($query) {
                 $query->field(["id", "userName", "email"]);
             }, "goodsDetail" => function ($query) {
