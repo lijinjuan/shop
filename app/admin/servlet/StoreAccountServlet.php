@@ -59,5 +59,17 @@ class StoreAccountServlet
         return sprintf('%.2f',round($commissionRes, 2));
     }
 
+    /**
+     * 总提现佣金
+     * @param int $id
+     * @return string
+     */
+    public function getTotalCommissionByID(int $id)
+    {
+        $commission = $this->storeAccountModel->where('storeID', $id)->whereIn('type',[3,4]);
+        $commissionRes = $commission->sum('changeBalance');
+        return sprintf('%.2f',round($commissionRes, 2));
+    }
+
 
 }

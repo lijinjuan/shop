@@ -208,7 +208,7 @@ class UsersRepositories extends AbstractRepositories
             //已发货订单数 shipOrderCount
             //待支付订单数 noPayOrderCount
             //待发货订单数 noShipOrderCount
-            $totalCommission = 0.00;
+
             $storeStatistics = $this->servletFactory->storeServ()->storeStatistics($id);
             $totalUV = $storeStatistics['totalUV'];
             $childStore = $storeStatistics['childStore'];
@@ -216,6 +216,7 @@ class UsersRepositories extends AbstractRepositories
             $endTime = date("Y-m-d H:i:s", strtotime(date("Y-m-d", time())) + 60 * 60 * 24);
             $todayCommission = $this->servletFactory->storeAccountServ()->getCommissionByID($id, 3, $beginTime, $endTime);
             $extensionMoney = $this->servletFactory->storeAccountServ()->getCommissionByID($id, 4);
+            $totalCommission = $this->servletFactory->storeAccountServ()->getTotalCommissionByID($id);
             $withdrawal = $this->servletFactory->withdrawalServ()->getStatisticsByID($id);
             $totalOrderMoney = $this->servletFactory->orderServ()->getStatisticsByStoreID($id);
             $noReceivedMoney = $this->servletFactory->orderServ()->getStatisticsByStoreID($id, 3);
