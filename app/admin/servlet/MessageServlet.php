@@ -34,5 +34,4 @@ class MessageServlet
             throw new ParameterException(['errMessage'=>'站内信写入失败...'.$e->getMessage()]);
         }
     }
-
 }

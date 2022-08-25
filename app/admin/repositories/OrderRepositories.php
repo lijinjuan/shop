@@ -55,9 +55,7 @@ class OrderRepositories extends AbstractRepositories
         $orderDetailArr = $this->servletFactory->orderServ()->getOrderMultiEntities($orderNoArr);
 
         foreach ($orderDetailArr as $orderDetail) {
-            /**
-             * @var $orderDetail OrdersDetailModel
-             */
+
             if ($orderDetail->orderStatus != 2)
                 continue;
 
@@ -76,9 +74,9 @@ class OrderRepositories extends AbstractRepositories
      * @param string $content
      * @return \app\common\model\MessagesModel|\think\Model
      */
-    protected function assertMessageTemplate(UsersModel $usersModel, OrdersDetailModel $ordersDetailModel, \Closure $getMessageContent)
+    protected function assertMessageTemplate(UsersModel $usersModel, OrdersModel $ordersModel, \Closure $getMessageContent)
     {
-        $message = ["title" => "发货通知", "content" => $getMessageContent($usersModel, $ordersDetailModel), "userID" => $usersModel->id];
+        $message = ["title" => "发货通知", "content" => $getMessageContent($usersModel, $ordersModel), "userID" => $usersModel->id];
         return $this->servletFactory->messageServ()->addMessage($message);
     }
 
@@ -88,7 +86,7 @@ class OrderRepositories extends AbstractRepositories
      */
     protected function formatMessageContent(): \Closure
     {
-        return fn($user, $ordersDetailModel) => sprintf("尊敬的用户：%s,订单号：%d已发货，请注意查收", $user->userName, $ordersDetailModel->orderNo);
+        return fn($user, $ordersModel) => sprintf("尊敬的用户：%s,订单号：%s 已发货，请注意查收", $user->userName, $ordersModel->orderNo);
     }
 
     /**
@@ -130,7 +128,7 @@ class OrderRepositories extends AbstractRepositories
         if ($refundReason['status'] == 1) {
             Db::transaction(function () use ($refundDetail, $refundReason, $refundOrderDetails) {
                 $this->refundOrder($refundDetail, $refundReason);
-                $this->returnAmount2UserAccount($refundOrderDetails->userID, (float)$refundOrderDetails->goodsTotalPrice);
+                $this->returnAmount2UserAccount($refundOrderDetails->userID, (float)$refundOrderDetails->goodsTotalPrice, $refundOrderDetails);
 
                 $this->returnAmount2MerchantAccount($refundOrderDetails);
                 $this->refund2UpdateOrderDetailStatus($refundOrderDetails);
@@ -154,7 +152,7 @@ class OrderRepositories extends AbstractRepositories
     }
 
     // 返回用户订单的金额
-    protected function returnAmount2UserAccount(int $userID, float $amount)
+    protected function returnAmount2UserAccount(int $userID, float $amount, OrdersDetailModel $ordersDetailModel)
     {
         $payUser = $this->servletFactory->userServ()->getUserInfoByID($userID);
 
@@ -174,6 +172,30 @@ class OrderRepositories extends AbstractRepositories
         }
 
         $payUser->save();
+        // 发送站内信
+        $this->assertRefundMessageTemplate($payUser, $ordersDetailModel, $amount, $this->formatRefundMessageContent());
+    }
+
+    /**
+     * assertRefundMessageTemplate
+     * @param \app\common\model\UsersModel $usersModel
+     * @param \app\common\model\OrdersModel $ordersModel
+     * @param \Closure $getMessageContent
+     * @return \app\common\model\MessagesModel|\think\Model
+     */
+    protected function assertRefundMessageTemplate(UsersModel $usersModel, OrdersDetailModel $ordersDetailModel, float $amount, \Closure $getMessageContent)
+    {
+        $message = ["title" => "退款通知", "content" => $getMessageContent($ordersDetailModel, $amount), "userID" => $usersModel->id];
+        return $this->servletFactory->messageServ()->addMessage($message);
+    }
+
+    /**
+     * formatRefundMessageContent
+     * @return \Closure
+     */
+    protected function formatRefundMessageContent(): \Closure
+    {
+        return fn($ordersDetailModel, $amount) => sprintf("您的订单：%s，平台已同意退款，金额：%f。", $ordersDetailModel->orderNo, $amount);
     }
 
     // 商家返回用户的金额
