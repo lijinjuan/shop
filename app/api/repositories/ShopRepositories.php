@@ -32,21 +32,25 @@ class ShopRepositories extends AbstractRepositories
          */
         $storeModel = app()->get("userProfile")->store;
         $storeInfo = $this->servletFactory->shopServ()->getStoreByBasicStatistics();
-        $orderStatistics = $storeModel->orders()->field("id,orderStatus")->select();
+        $orderStatistics = $storeModel->orders()->field("id,orderStatus,goodsTotalPrice")->select();
+        $financialStatistics = $storeModel->withdrawList()->field("id,status,withdrawalMoney")->select();
 
         // 财务统计 收入 未结算
-        $financial["totalWithdraw"] = 0;
-        $financial["totalAmount"] = 0;
+        $totalIncome = $storeModel->orders()->where("orderStatus", ">", 0)->sum("orderCommission");
+        $financial["totalWithdraw"] = array_sum($financialStatistics->where("status", 1)->column("withdrawalMoney"));
+        $financial["totalAmount"] = array_sum($orderStatistics->where("orderStatus", ">", 0)->column("goodsTotalPrice"));
         $financial["unsetAmount"] = 0;
-        $financial["todayAmount"] = 0;
-        $financial["monthAmount"] = 0;
-        $financial["todayIncome"] = 0;
-        $financial["todayIncome"] = 0;
+        $financial["todayAmount"] = $storeModel->orders()->where("orderStatus", ">", 0)->whereDay("createdAt")->sum("goodsTotalPrice");
+        $financial["monthAmount"] = $storeModel->orders()->where("orderStatus", ">", 0)->whereMonth("createdAt")->sum("goodsTotalPrice");
+        $financial["todayIncome"] = $storeModel->orders()->where("orderStatus", ">", 0)->whereDay("createdAt")->sum("orderCommission");
+        $financial["totalIncome"] = $totalIncome;
+        $financial["unsetAmount"] = bcsub($financial["totalIncome"], $financial["totalWithdraw"], 2);
 
         $orderInfo["completeCount"] = $orderStatistics?->where("orderStatus", 5)->count() ?? 0;
         $orderInfo["pendingReceiptCount"] = $orderStatistics?->where("orderStatus", 3)->count() ?? 0;
         $orderInfo["unPayedCount"] = $orderStatistics?->where("orderStatus", 1)->count() ?? 0;
         $orderInfo["pendingShipCount"] = $orderStatistics?->where("orderStatus", 2)->count() ?? 0;
+
         return renderResponse(compact("storeInfo", "financial", "orderInfo"));
     }
 

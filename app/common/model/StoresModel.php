@@ -2,6 +2,7 @@
 
 namespace app\common\model;
 
+use app\agents\servlet\UsersWithdrawalServlet;
 use think\Model;
 
 /**
@@ -29,16 +30,17 @@ class StoresModel extends Model
      */
     protected $autoWriteTimestamp = "timestamp";
 
-    public function getStatusNameAttr($value,$data)
+    public function getStatusNameAttr($value, $data)
     {
         $status = [
-            0=>'待审核',
-            1=>'审核通过',
-            2=>'审核失败',
-            3=>'冻结'
+            0 => '待审核',
+            1 => '审核通过',
+            2 => '审核失败',
+            3 => '冻结'
         ];
         return $status[$data['status']];
     }
+
     /**
      * goods
      * @return \think\model\relation\BelongsToMany
@@ -104,6 +106,15 @@ class StoresModel extends Model
         $parentStoreID = trim($data["agentID"], ",");
         $parentArr = explode(",", $parentStoreID);
         return (int)current($parentArr);
+    }
+
+    /**
+     * withdrawList
+     * @return \think\model\relation\HasMany
+     */
+    public function withdrawList()
+    {
+        return $this->hasMany(WithdrawalModel::class, "storeID", "id");
     }
 
 }
