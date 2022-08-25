@@ -34,7 +34,7 @@ class OrdersServlet
         $condition = request()->only(["orderStatus", "orderNo", "userID", "userEmail", "startAt", "endAt"]);
 
         if (isset($condition["userEmail"]))
-            $orderList = $this->ordersModel::hasWhere("user", [["email", "LIKE", "%" . $condition['userEmail'] . "%"]]);
+            $orderList = $this->ordersModel::hasWhere("user", [["userName", "LIKE", "%" . $condition['userEmail'] . "%"]]);
         else
             $orderList = $this->ordersModel;
 
