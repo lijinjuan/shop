@@ -48,7 +48,7 @@ class WithdrawalController
      * @param int $type
      * @return \think\response\Json
      */
-    public function withdrawalList(int $type = 0,Request $request)
+    public function withdrawalList(int $type = 0)
     {
         return $this->withdrawalRepositories->withdrawalList($type);
     }
