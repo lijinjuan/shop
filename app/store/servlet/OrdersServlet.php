@@ -31,9 +31,11 @@ class OrdersServlet
      */
     public function getOrderListByStore(int $storeID)
     {
-        return $this->ordersModel->where("storeID", $storeID)->field(["id", "orderNo", "userID", "goodsTotalPrice", "orderStatus", "orderCommission", "userPayAt", "createdAt"])
+        $condition = request()->only(["orderStatus", "orderNo", "userID", "userEmail", "startAt", "endAt"]);
+
+        return $this->ordersModel->where("storeID", $storeID)->field(["id", "orderNo", "userID", "userEmail", "goodsTotalPrice", "orderStatus", "orderCommission", "userPayAt", "createdAt"])
             ->with(["user" => function ($query) {
-                $query->field(["id", "userName"]);
+                $query->field(["id", "userName", "email"]);
             }, "goodsDetail" => function ($query) {
                 $query->field(["orderNo", "goodsName", "goodsPrice", "goodsNum", "skuImage"]);
             }])
