@@ -179,6 +179,9 @@ class UsersRepositories extends AbstractRepositories
         ];
         $update['reason'] = $checkData['status'] == 2 ? $checkData['reason'] : '';
         $store::update($update, ['id' => $id]);
+        if ($update['status'] == 1) {
+            $store->user()->update(['isStore' => 1]);
+        }
         return renderResponse();
     }
 
