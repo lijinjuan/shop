@@ -7,6 +7,8 @@ use think\facade\Route;
 Route::post(":version/launch", ":version.Entry/userLaunch")->json()->allowCrossDomain();
 // 注册
 Route::post(":version/register", ":version.Entry/registerNewUser")->json()->allowCrossDomain();
+// 上传文件
+Route::post(":version/upload-file", ":version.FileSystem/uploadFile");
 
 // 用户收货地址的管理
 Route::group(":version", function () {

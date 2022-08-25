@@ -8,6 +8,8 @@ Route::get(":version/create/captcha", ":version.Entry/createCaptcha");
 // 总后台登录的接口
 Route::post(":version/launch", ":version.Entry/admin2Launch");
 
+Route::post(":version/upload-file", ":version.FileSystem/uploadFile");
+
 // 总后台的操作
 Route::group(":version", function () {
     // 获取商品列表的接口
@@ -62,6 +64,8 @@ Route::group(":version", function () {
     Route::post("order-refund-info", ":version.Order/getOrderRefundDetail");
     // 点击确认完成分佣
     Route::post("order-confirm-commission/:orderNo", ":version.Order/confirm2Commission");
+    // 根据用户id查询用户余e
+    Route::post("user-balance/:userID", ":version.Order/getUserBalanceByUserID");
 
 })->middleware(JwtAuthMiddleware::class);
 

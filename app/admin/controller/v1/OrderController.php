@@ -80,4 +80,14 @@ class OrderController
     {
         return $this->orderRepositories->confirm2CommissionOrderDetails($orderNo);
     }
+
+    /**
+     * getUserBalanceByUserID
+     * @param int $userID
+     * @return \think\response\Json
+     */
+    public function getUserBalanceByUserID(int $userID)
+    {
+        return $this->orderRepositories->getUserBalanceByUserID($userID);
+    }
 }

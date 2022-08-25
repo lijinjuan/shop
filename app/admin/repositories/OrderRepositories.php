@@ -6,6 +6,7 @@ use app\common\model\OrdersDetailModel;
 use app\common\model\RefundModel;
 use app\lib\exception\ParameterException;
 use think\facade\Db;
+use think\model\Collection;
 
 /**
  * \app\admin\repositories\OrderRepositories
@@ -174,6 +175,7 @@ class OrderRepositories extends AbstractRepositories
             $this->servletFactory->adminAccountServ()->addAdminAccount($changeLog);
         }
 
+
         if ((!is_null($ordersDetailModel->store))) {
             $balance = bcsub($ordersDetailModel->store->user->balance, $returnAmount, 2);
             $ordersDetailModel->store->user->balance = $balance;
@@ -213,6 +215,39 @@ class OrderRepositories extends AbstractRepositories
 
     public function confirm2CommissionOrderDetails(string $orderNo)
     {
+        /**
+         * @var $masterOrder \app\common\model\OrdersModel
+         */
+        $masterOrder = $this->servletFactory->orderServ()->getOrderEntityByOrderNo($orderNo);
+        // 待分佣的订单
+        $toBeCommissionOrders = $masterOrder->goodsDetail()->where("status", 4)->select();
+        if ($toBeCommissionOrders->isEmpty())
+            throw new ParameterException(["errMessage" => "不存在推广分佣的订单..."]);
+
+        // 待分佣的金额
+        $toBeCommissionAmount = (float)array_sum(array_column($toBeCommissionOrders->toArray(), "goodsTotalPrice"));
+
+
+
+
+
+
         return $orderNo;
+    }
+
+    /**
+     * getUserBalanceByUserID
+     * @param int $userID
+     * @return \think\response\Json
+     */
+    public function getUserBalanceByUserID(int $userID)
+    {
+        $userInfo = $this->servletFactory->userServ()->getUserInfoByID($userID);
+
+        if (is_null($userInfo)) {
+            throw new ParameterException(["errMessage" => "用户不存在或者已被删除..."]);
+        }
+
+        return renderResponse(["balance" => $userInfo->balance]);
     }
 }
