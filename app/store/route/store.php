@@ -36,5 +36,7 @@ Route::group(":version", function () {
     Route::post("goods-list", ":version.Goods/getPlatformGoodsList");
     // 平台中商品上架的接口
     Route::post("goods-on-sale/:goodsID", ":version.Goods/onSaleGoods2Store");
+    // 店铺的首页统计的接口
+    Route::post("store-statistics", ":version.Store/getStoreStatistics");
 
 })->middleware(JwtAuthMiddleware::class)->allowCrossDomain();
