@@ -49,7 +49,7 @@ class StoreController
      * @param \think\Request $request
      * @return \think\response\Json
      */
-    public function getStoreList(Request $request)
+    public function getStoreList()
     {
         return $this->storeRepositories->getStoreList();
     }
