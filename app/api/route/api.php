@@ -10,6 +10,8 @@ Route::post(":version/register", ":version.Entry/registerNewUser")->json()->allo
 // 上传文件
 Route::post(":version/upload-file", ":version.FileSystem/uploadFile");
 
+Route::get(":version/about-us", ":version.AboutUs/getAboutUsContent");
+
 // 用户收货地址的管理
 Route::group(":version", function () {
     // 用户修改密码

@@ -139,6 +139,9 @@ Route::group(":version", function () {
     //会员提现审核
     Route::post("check-withdrawal/:id", ":version.User/checkWithdrawal");
 
+    // 保存关于我们
+    Route::post("save-about-us", ":version.AboutUs/addAboutUs");
+
 })->middleware(JwtAuthMiddleware::class);
 
 //总后台分销管理
