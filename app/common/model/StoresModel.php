@@ -2,7 +2,7 @@
 
 namespace app\common\model;
 
-use app\agents\servlet\UsersWithdrawalServlet;
+
 use think\Model;
 
 /**
@@ -30,6 +30,12 @@ class StoresModel extends Model
      */
     protected $autoWriteTimestamp = "timestamp";
 
+    /**
+     * getStatusNameAttr
+     * @param $value
+     * @param $data
+     * @return string
+     */
     public function getStatusNameAttr($value, $data)
     {
         $status = [
@@ -38,6 +44,7 @@ class StoresModel extends Model
             2 => '审核失败',
             3 => '冻结'
         ];
+
         return $status[$data['status']];
     }
 
