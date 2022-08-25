@@ -39,7 +39,7 @@ class UsersModel extends Model
         $userName = current(explode("@", $model->getAttr("email")));
         $model->setAttr("userName", $userName);
         $model->setAttr("password", password_hash($model->getAttr("password"), PASSWORD_DEFAULT));
-        $model->setAttr("userAvatar", "1231231231");
+        $model->setAttr("userAvatar", null);
         $model->setAttr("balance", 0.00);
         $model->setAttr("isStore", 0);
         return true;

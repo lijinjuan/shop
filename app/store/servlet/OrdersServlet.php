@@ -33,14 +33,32 @@ class OrdersServlet
     {
         $condition = request()->only(["orderStatus", "orderNo", "userID", "userEmail", "startAt", "endAt"]);
 
-        return $this->ordersModel->where("storeID", $storeID)->field(["id", "orderNo", "userID", "userEmail", "goodsTotalPrice", "orderStatus", "orderCommission", "userPayAt", "createdAt"])
+        $orderList = $this->ordersModel->where("storeID", $storeID)->field(["id", "orderNo", "userID", "userEmail", "goodsTotalPrice", "orderStatus", "orderCommission", "userPayAt", "createdAt"])
             ->with(["user" => function ($query) {
                 $query->field(["id", "userName", "email"]);
             }, "goodsDetail" => function ($query) {
                 $query->field(["orderNo", "goodsName", "goodsPrice", "goodsNum", "skuImage"]);
-            }])
-            ->order("createdAt", "desc")
-            ->paginate((int)request()->param("pageSize"));
+            }]);
+
+        if (isset($condition["orderStatus"]))
+            $orderList->where("orderStatus", $condition["orderStatus"]);
+
+        if (isset($condition["orderNo"]))
+            $orderList->where("orderNo", $condition["orderNo"]);
+
+        if (isset($condition["userID"]))
+            $orderList->where("userID", $condition["userID"]);
+
+        if (isset($condition["userEmail"]))
+            $orderList->where("userEmail", $condition["userEmail"]);
+
+        if (isset($condition["startAt"]))
+            $orderList->where("createdAt", ">=", $condition["startAt"]);
+
+        if (isset($condition["endAt"]))
+            $orderList->where("createdAt", "<=", $condition["endAt"]);
+
+        return $orderList->order("createdAt", "desc")->paginate((int)request()->param("pageSize", 20));
     }
 
     /**

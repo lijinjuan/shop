@@ -115,7 +115,7 @@ class OrderServlet
         //今日订单金额 todayOrderMoney
         //月订单金额 monthOrderMoney
         $money = $this->ordersModel->where('storeID', $id)->where('createdAt', '>=', $startTime)->where('createdAt', '<', $endTime)->sum('userPayPrice');
-        return sprintf("%.2f",round($money,2));
+        return sprintf("%.2f", round($money, 2));
 
     }
 

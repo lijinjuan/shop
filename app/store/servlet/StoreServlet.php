@@ -54,7 +54,7 @@ class StoreServlet
         if ($userEmail != "")
             $storeList->whereLike("userEmail", "%" . $userEmail . "%");
 
-        return $storeList->field(["id", "storeName", "mobile", "storeDesc", "status", "storeRemark", "userID", "parentStoreID", "createdAt"])
+        return $storeList->field(["id", "storeName", "mobile", "storeDesc", "status", "storeRemark", "userID", "userEmail", "parentStoreID", "createdAt"])
             ->where("status", 1)->append(["parentID"])->paginate((int)request()->param("pageSize"), 20);
     }
 

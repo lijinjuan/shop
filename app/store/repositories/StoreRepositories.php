@@ -121,13 +121,23 @@ class StoreRepositories extends AbstractRepositories
      */
     public function getStoreAccountList(Request $request)
     {
+        $condition = $request->only(["type", "startAt", "endAt"]);
         /**
          * @var \app\common\model\StoresModel $storeModel
          */
         $storeModel = app()->get("storeProfile");
+        $accountList = $storeModel->storeAccount();
 
-        $accountList = $storeModel->storeAccount()->order("createdAt", "desc")->paginate((int)$request->param("pageSize", 20));
+        if (isset($condition["type"]))
+            $accountList->where("type", $condition["type"]);
 
+        if (isset($condition["startAt"]))
+            $accountList->where("createdAt", ">=", $condition["startAt"]);
+
+        if (isset($condition["endAt"]))
+            $accountList->where("createdAt", "<=", $condition["endAt"]);
+
+        $accountList = $accountList->order("createdAt", "desc")->paginate((int)$request->param("pageSize", 20));
         return renderPaginateResponse($accountList);
     }
 

@@ -58,9 +58,9 @@ class GoodsServlet
         $order = request()->only(["goodsDiscountPrice", "goodsSalesAmount", "commission"]);
         $order["goodsDiscountPrice"] ??= "asc";
         $order["goodsSalesAmount"] ??= "asc";
-        $order["commission"] ??= "asc";
+        $order["goodsDiscountPrice"] = isset($order["commission"]) ? $order["commission"] : "asc";
 
-        $goodsList = $this->goodsModel->field(["id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "commission", "goodsSalesAmount", "categoryID", "createdAt"])
+        $goodsList = $this->goodsModel->field(["id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "goodsSalesAmount", "categoryID", "createdAt"])
             ->whereLike("goodsName", "%$keywords%");
 
         if (request()->param("categoryID", 0) > 0)
@@ -99,7 +99,7 @@ class GoodsServlet
      */
     public function getGoodsListByGoodsRecommendLimit12(array $order)
     {
-        return $this->goodsModel->where("status", 1)->where("isRecommend", 1)->field(["id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "commission", "goodsSalesAmount", "createdAt"])->order($order)->limit(12)->select();
+        return $this->goodsModel->where("status", 1)->where("isRecommend", 1)->field(["id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "goodsSalesAmount", "createdAt"])->order($order)->limit(12)->select();
     }
 
     /**
@@ -116,7 +116,7 @@ class GoodsServlet
         return $this->goodsModel->where("status", 1)
             ->where("categoryID", $categoryID)
             ->whereLike("goodsName", "%$keywords%")
-            ->field(["id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "commission", "goodsSalesAmount", "createdAt"])
+            ->field(["id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "goodsSalesAmount", "createdAt"])
             ->order($order)->paginate((int)request()->param("pageSize"));
     }
 
@@ -132,7 +132,7 @@ class GoodsServlet
         $order["goodsSalesAmount"] ??= "asc";
         return $this->goodsModel->where("status", 1)
             ->whereLike("goodsName", "%$keywords%")
-            ->field(["id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "commission", "goodsSalesAmount", "createdAt"])
+            ->field(["id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "goodsSalesAmount", "createdAt"])
             ->order($order)->paginate((int)request()->param("pageSize"));
     }
 
@@ -155,7 +155,7 @@ class GoodsServlet
     {
         return $this->goodsModel->where("id", $goodsID)->where("status", 1)
             ->field(["id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice",
-                "commission", "goodsSalesAmount", "goodsContent", "goodsStock", "goodsSalesAmount", "createdAt"])
+                "goodsSalesAmount", "goodsContent", "goodsStock", "goodsSalesAmount", "createdAt"])
             ->with(["goodsSku" => function ($query) {
                 $query->field(["id", "goodsID", "skuName", "sku", "skuImg", "skuStock", "saleAmount", "skuDiscountPrice", "skuPrice"]);
             }])->find();
