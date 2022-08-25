@@ -50,7 +50,7 @@ class OrdersServlet
             $orderList->where("userID", $condition["userID"]);
 
         if (isset($condition["userEmail"]))
-            $orderList->where("userEmail", $condition["userEmail"]);
+            $orderList->whereLike("userEmail", "%" . $condition["userEmail"] . "%");
 
         if (isset($condition["startAt"]))
             $orderList->where("createdAt", ">=", $condition["startAt"]);
