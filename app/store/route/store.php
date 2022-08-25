@@ -8,6 +8,7 @@ Route::post(":version/create/captcha", ":version.Entry/createCaptcha")->allowCro
 
 //  店铺登录的接口
 Route::post(":version/launch", ":version.Entry/storeLaunch")->allowCrossDomain();
+Route::post(":version/upload-file", ":version.FileSystem/uploadFile");
 
 // 店铺后台的基本接口
 Route::group(":version", function () {

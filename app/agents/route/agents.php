@@ -9,6 +9,8 @@ use think\facade\Route;
 Route::get(":version/create/captcha", ":version.Entry/createCaptcha")->allowCrossDomain();
 // 代理商登录的接口
 Route::post(":version/launch", ":version.Entry/userLaunch")->allowCrossDomain();
+//上传图片
+Route::post(":version/upload-file", ":version.FileSystem/uploadFile");
 
 // 代理商后台操作的apis
 Route::group(":version", function () {

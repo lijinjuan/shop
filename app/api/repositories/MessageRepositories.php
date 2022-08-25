@@ -30,7 +30,7 @@ class MessageRepositories extends AbstractRepositories
             throw new ParameterException(['errMessage' => '站内信不存在...']);
         }
         $message::update(['isRead' => 1], ['id' => $id]);
-        return renderResponse();
+        return renderResponse($message);
     }
 
     /**
