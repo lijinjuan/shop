@@ -33,13 +33,21 @@ class ShopRepositories extends AbstractRepositories
         $storeModel = app()->get("userProfile")->store;
         $storeInfo = $this->servletFactory->shopServ()->getStoreByBasicStatistics();
         $orderStatistics = $storeModel->orders()->field("id,orderStatus")->select();
-        $orderInfo["completeCount"] = 0;
 
-        $orderInfo["completeCount"] = $orderStatistics->where("");
-        $orderInfo["pendingReceiptCount"] = 0;
-        $orderInfo["unPayedCount"] = 0;
-        $orderInfo["pendingShipCount"] = 0;
-        return renderResponse($storeInfo);
+        // 财务统计 收入 未结算
+        $financial["totalWithdraw"] = 0;
+        $financial["totalAmount"] = 0;
+        $financial["unsetAmount"] = 0;
+        $financial["todayAmount"] = 0;
+        $financial["monthAmount"] = 0;
+        $financial["todayIncome"] = 0;
+        $financial["todayIncome"] = 0;
+
+        $orderInfo["completeCount"] = $orderStatistics?->where("orderStatus", 5)->count() ?? 0;
+        $orderInfo["pendingReceiptCount"] = $orderStatistics?->where("orderStatus", 3)->count() ?? 0;
+        $orderInfo["unPayedCount"] = $orderStatistics?->where("orderStatus", 1)->count() ?? 0;
+        $orderInfo["pendingShipCount"] = $orderStatistics?->where("orderStatus", 2)->count() ?? 0;
+        return renderResponse(compact("storeInfo", "financial", "orderInfo"));
     }
 
     /**
