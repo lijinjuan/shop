@@ -8,6 +8,8 @@ Route::get(":version/create/captcha", ":version.Entry/createCaptcha");
 // 总后台登录的接口
 Route::post(":version/launch", ":version.Entry/admin2Launch");
 
+Route::post(":version/upload-file", ":version.FileSystem/uploadFile");
+
 // 总后台的操作
 Route::group(":version", function () {
     // 获取商品列表的接口

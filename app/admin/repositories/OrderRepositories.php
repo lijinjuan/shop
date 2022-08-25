@@ -6,6 +6,7 @@ use app\common\model\OrdersDetailModel;
 use app\common\model\RefundModel;
 use app\lib\exception\ParameterException;
 use think\facade\Db;
+use think\model\Collection;
 
 /**
  * \app\admin\repositories\OrderRepositories
@@ -214,6 +215,23 @@ class OrderRepositories extends AbstractRepositories
 
     public function confirm2CommissionOrderDetails(string $orderNo)
     {
+        /**
+         * @var $masterOrder \app\common\model\OrdersModel
+         */
+        $masterOrder = $this->servletFactory->orderServ()->getOrderEntityByOrderNo($orderNo);
+        // 待分佣的订单
+        $toBeCommissionOrders = $masterOrder->goodsDetail()->where("status", 4)->select();
+        if ($toBeCommissionOrders->isEmpty())
+            throw new ParameterException(["errMessage" => "不存在推广分佣的订单..."]);
+
+        // 待分佣的金额
+        $toBeCommissionAmount = (float)array_sum(array_column($toBeCommissionOrders->toArray(), "goodsTotalPrice"));
+
+
+
+
+
+
         return $orderNo;
     }
 
