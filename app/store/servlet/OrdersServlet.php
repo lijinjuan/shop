@@ -33,7 +33,12 @@ class OrdersServlet
     {
         $condition = request()->only(["orderStatus", "orderNo", "userID", "userEmail", "startAt", "endAt"]);
 
-        $orderList = $this->ordersModel->where("storeID", $storeID)->field(["id", "orderNo", "userID", "userEmail", "goodsTotalPrice", "orderStatus", "orderCommission", "userPayAt", "createdAt"])
+        if (isset($condition["userEmail"]))
+            $orderList = $this->ordersModel::hasWhere("user", ["email", "LIKE", "%" . $condition['userEmail'] . "%"]);
+        else
+            $orderList = $this->ordersModel;
+
+        $orderList = $orderList->where("storeID", $storeID)->field(["id", "orderNo", "userID", "goodsTotalPrice", "orderStatus", "orderCommission", "userPayAt", "createdAt"])
             ->with(["user" => function ($query) {
                 $query->field(["id", "userName", "email"]);
             }, "goodsDetail" => function ($query) {
@@ -48,9 +53,6 @@ class OrdersServlet
 
         if (isset($condition["userID"]))
             $orderList->where("userID", $condition["userID"]);
-
-        if (isset($condition["userEmail"]))
-            $orderList->whereLike("userEmail", "%" . $condition["userEmail"] . "%");
 
         if (isset($condition["startAt"]))
             $orderList->where("createdAt", ">=", $condition["startAt"]);
