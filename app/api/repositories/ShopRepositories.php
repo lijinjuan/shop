@@ -63,7 +63,6 @@ class ShopRepositories extends AbstractRepositories
     {
         // 默认一级分类
         $upperInfo = ["agentsID" => ",", "parentsID" => ","];
-
         // 上级的邀请码
         $input2InviteCode = $shopInfo["inviteCode"] ?? "";
         // 获取上级
@@ -82,6 +81,7 @@ class ShopRepositories extends AbstractRepositories
         $shopInfo["inviteCode"] = app()->get(InviteServiceInterface::class)->storeInviteCode();
         $shopInfo["agentID"] = $upperInfo["agentsID"];
         $shopInfo["parentStoreID"] = $upperInfo["parentsID"];
+        $shopInfo["userEmail"] = app()->get("userProfile")->email;
 
         // 创建店铺
         $this->servletFactory->shopServ()->apply2CreateStore($shopInfo);

@@ -45,6 +45,7 @@ class WithdrawalController
     }
 
     /**
+     * withdrawalList
      * @param int $type
      * @return \think\response\Json
      */
