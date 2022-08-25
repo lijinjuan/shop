@@ -74,3 +74,7 @@ Route::group(":version", function () {
 
 
 })->middleware(JwtAuthMiddleware::class)->allowCrossDomain();
+
+Route::miss(function () {
+    return 404;
+});

@@ -38,3 +38,7 @@ Route::group(":version", function () {
     Route::post("goods-on-sale/:goodsID", ":version.Goods/onSaleGoods2Store");
 
 })->middleware(JwtAuthMiddleware::class)->allowCrossDomain();
+
+Route::miss(function () {
+    return 404;
+});

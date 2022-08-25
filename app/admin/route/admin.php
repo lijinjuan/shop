@@ -203,3 +203,7 @@ Route::group(":version", function () {
 Route::group(":version", function () {
     Route::put("modify-password", ":version.AdminAccount/modifyPassword");
 })->middleware(JwtAuthMiddleware::class);
+
+Route::miss(function () {
+    return 404;
+});
