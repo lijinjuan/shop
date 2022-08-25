@@ -208,7 +208,6 @@ class UsersRepositories extends AbstractRepositories
             //已发货订单数 shipOrderCount
             //待支付订单数 noPayOrderCount
             //待发货订单数 noShipOrderCount
-
             $storeStatistics = $this->servletFactory->storeServ()->storeStatistics($id);
             $totalUV = $storeStatistics['totalUV'];
             $childStore = $storeStatistics['childStore'];

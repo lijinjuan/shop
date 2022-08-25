@@ -9,23 +9,23 @@ class WithdrawalRepositories extends AbstractRepositories
     /**
      * @param array $data
      * @return \think\response\Json
+     * @throws ParameterException
      */
     public function addWithdrawal(array $data)
     {
-        if ($data['withdrawalMoney'] > app()->get('userProfile')->balance){
-            throw new ParameterException(['errMessage'=>'提现金额不得超过账户余额...']);
+        if ($data['withdrawalMoney'] > app()->get('userProfile')->balance) {
+            throw new ParameterException(['errMessage' => '提现金额不得超过账户余额...']);
         }
-        //Todo 判断提现账号是否存在
         $res = $this->servletFactory->userAmountServ()->getOneByTypeID($data['withdrawalType']);
-        if (!$res){
-            throw new ParameterException(['errMessage'=>'提现账号不存在...']);
+        if (!$res) {
+            throw new ParameterException(['errMessage' => '提现账号不存在...']);
         }
-        //Todo 判断安全密码是否正确
-        if (!password_verify($data['payPassword'],app()->get("userProfile")->payPassword)){
-            throw new ParameterException(['errMessage'=>'安全密码错误...']);
+        if (!password_verify($data['payPassword'], app()->get("userProfile")->payPassword)) {
+            throw new ParameterException(['errMessage' => '安全密码错误...']);
         }
         $data['orderNo'] = makeOrderNo();
         $data['userID'] = app()->get('userProfile')->id;
+        $data['withdrawalAmount'] = $data['withdrawalType'] == 1 ? $res->bankCard : $res->walletAddress;
         $this->servletFactory->withdrawalServ()->addWithdrawal($data);
         return renderResponse();
     }
