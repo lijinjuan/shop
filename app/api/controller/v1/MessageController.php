@@ -45,5 +45,15 @@ class MessageController
         return $this->messageRepositories->messageDetail($id);
     }
 
+    /**
+     * @param int $isRead
+     * @return \think\response\Json
+     * @throws \think\db\exception\DbException
+     */
+    public function noReadMessageCount(int $isRead = 0)
+    {
+        return $this->messageRepositories->messageCount($isRead);
+    }
+
 
 }

@@ -56,4 +56,14 @@ class MessageServlet
         }
     }
 
+    /**
+     * @param int $isRead
+     * @return int
+     * @throws \think\db\exception\DbException
+     */
+    public function noReadMessageCount(int $isRead = 0)
+    {
+        return  $this->messagesModel->where('userID',app()->get('userProfile')->id)->where('isRead',$isRead)->count();
+    }
+
 }

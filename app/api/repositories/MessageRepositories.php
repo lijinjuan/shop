@@ -2,6 +2,8 @@
 
 namespace app\api\repositories;
 
+use app\lib\exception\ParameterException;
+
 class MessageRepositories extends AbstractRepositories
 {
     /**
@@ -23,6 +25,21 @@ class MessageRepositories extends AbstractRepositories
      */
     public function messageDetail(int $id)
     {
-        return renderResponse($this->servletFactory->messageServ()->getMessageByID($id));
+        $message = $this->servletFactory->messageServ()->getMessageByID($id);
+        if (!$message) {
+            throw new ParameterException(['errMessage' => '站内信不存在...']);
+        }
+        $message::update(['isRead' => 1], ['id' => $id]);
+        return renderResponse();
+    }
+
+    /**
+     * @param int $isRead
+     * @return \think\response\Json
+     * @throws \think\db\exception\DbException
+     */
+    public function messageCount(int $isRead = 0)
+    {
+        return renderResponse($this->servletFactory->messageServ()->noReadMessageCount($isRead));
     }
 }

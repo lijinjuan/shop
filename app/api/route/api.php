@@ -160,6 +160,9 @@ Route::group(":version", function () {
     Route::post("message-list", ":version.Message/messageList");
     // 站内信详情
     Route::get("message-detail/:id", ":version.Message/messageDetail");
+    //未读消息数量
+    Route::get('message-count/[:type]',":version.Message/noReadMessageCount");
+
 })->middleware(JwtAuthMiddleware::class)->json()->allowCrossDomain();
 
 //帮助中心
