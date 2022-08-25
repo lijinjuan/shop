@@ -101,7 +101,7 @@ class OrderServlet
         if ($type) {
             $orderModel->where('orderStatus', $type);
         }
-        return round($orderModel->sum('userPayPrice'), 2);
+        return sprintf("%.2f", round($orderModel->sum('userPayPrice'), 2));
     }
 
     /**
@@ -110,12 +110,12 @@ class OrderServlet
      * @param string $endTime
      * @return float
      */
-    public function getStatisticsByStoreID2Time(int $id, string $startTime,string $endTime)
+    public function getStatisticsByStoreID2Time(int $id, string $startTime, string $endTime)
     {
         //今日订单金额 todayOrderMoney
         //月订单金额 monthOrderMoney
-        $money = $this->ordersModel->where('storeID', $id)->where('createdAt','>=',$startTime)->where('createdAt','<',$endTime)->sum('userPayPrice');
-        return $money;
+        $money = $this->ordersModel->where('storeID', $id)->where('createdAt', '>=', $startTime)->where('createdAt', '<', $endTime)->sum('userPayPrice');
+        return sprintf("%.2f",round($money,2));
 
     }
 

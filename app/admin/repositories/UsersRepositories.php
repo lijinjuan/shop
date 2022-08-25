@@ -184,7 +184,7 @@ class UsersRepositories extends AbstractRepositories
 
     /**
      * @param int $id
-     * @return array
+     * @return \think\response\Json
      * @throws ParameterException
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
@@ -225,7 +225,7 @@ class UsersRepositories extends AbstractRepositories
             $shipOrderCount = $this->servletFactory->orderServ()->getStatisticsNumByStoreID($id, 4);
             $noPayOrderCount = $this->servletFactory->orderServ()->getStatisticsNumByStoreID($id, 1);
             $noShipOrderCount = $this->servletFactory->orderServ()->getStatisticsNumByStoreID($id, 3);
-            return compact('totalUV', 'childStore', 'todayCommission', 'totalCommission', 'extensionMoney', 'withdrawal', 'totalOrderMoney', 'noReceivedMoney', 'todayOrderMoney', 'monthOrderMoney', 'finishedOrderCount', 'shipOrderCount', 'noPayOrderCount', 'noShipOrderCount');
+            return renderResponse(compact('totalUV', 'childStore', 'todayCommission', 'totalCommission', 'extensionMoney', 'withdrawal', 'totalOrderMoney', 'noReceivedMoney', 'todayOrderMoney', 'monthOrderMoney', 'finishedOrderCount', 'shipOrderCount', 'noPayOrderCount', 'noShipOrderCount'));
         }
         throw  new ParameterException(['errMessage' => '店铺不存在...']);
 

@@ -84,11 +84,11 @@ class WithdrawalServlet
 
     /**
      * @param int $storeID
-     * @return float
+     * @return string
      */
     public function getStatisticsByID(int $storeID)
     {
-        return $this->withdrawalModel->where('storeID',$storeID)->where('status',1)->sum('withdrawalMoney');
+        return sprintf('%.2f',round($this->withdrawalModel->where('storeID',$storeID)->where('status',1)->sum('withdrawalMoney'),2));
     }
 
 

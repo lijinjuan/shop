@@ -53,10 +53,10 @@ class StoreAccountServlet
     {
         $commission = $this->storeAccountModel->where('storeID', $id)->where('type', $type);
         if ($startTime && $endTime) {
-            $commission->where('createdAt', '>=', $startTime)->where('endTime', '<', $endTime);
+            $commission->where('createdAt', '>=', $startTime)->where('createdAt', '<', $endTime);
         }
         $commissionRes = $commission->sum('changeBalance');
-        return round($commissionRes, 2);
+        return sprintf('%.2f',round($commissionRes, 2));
     }
 
 
