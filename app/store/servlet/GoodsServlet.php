@@ -29,7 +29,7 @@ class GoodsServlet
      */
     public function getGoodsList(array $condition)
     {
-        $goodsList = $this->goodsModel->field(["id", "goodsName", "goodsCover", "goodsPrice", "goodsDiscountPrice", "goodsStock", "goodsSalesAmount", "commission", "createdAt"]);
+        $goodsList = $this->goodsModel->field(["id", "goodsName", "goodsCover", "goodsPrice", "goodsDiscountPrice", "goodsStock", "goodsSalesAmount", "createdAt"]);
 
         if (isset($condition["goodsName"]))
             $goodsList->whereLike("goodsName", "%" . $condition["goodsName"] . "%");

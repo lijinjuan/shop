@@ -3,6 +3,7 @@
 namespace app\api\repositories;
 
 use app\common\service\InviteServiceInterface;
+use think\Collection;
 
 /**
  * \app\api\repositories\ShopRepositories
@@ -26,7 +27,18 @@ class ShopRepositories extends AbstractRepositories
      */
     public function getBasicStatisticsByStore()
     {
+        /**
+         * @var $storeModel \app\common\model\StoresModel
+         */
+        $storeModel = app()->get("userProfile")->store;
         $storeInfo = $this->servletFactory->shopServ()->getStoreByBasicStatistics();
+        $orderStatistics = $storeModel->orders()->field("id,orderStatus")->select();
+        $orderInfo["completeCount"] = 0;
+
+        $orderInfo["completeCount"] = $orderStatistics->where("");
+        $orderInfo["pendingReceiptCount"] = 0;
+        $orderInfo["unPayedCount"] = 0;
+        $orderInfo["pendingShipCount"] = 0;
         return renderResponse($storeInfo);
     }
 
