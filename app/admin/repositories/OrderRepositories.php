@@ -3,7 +3,9 @@
 namespace app\admin\repositories;
 
 use app\common\model\OrdersDetailModel;
+use app\common\model\OrdersModel;
 use app\common\model\RefundModel;
+use app\common\model\UsersModel;
 use app\lib\exception\ParameterException;
 use think\facade\Db;
 use think\model\Collection;
@@ -53,14 +55,40 @@ class OrderRepositories extends AbstractRepositories
         $orderDetailArr = $this->servletFactory->orderServ()->getOrderMultiEntities($orderNoArr);
 
         foreach ($orderDetailArr as $orderDetail) {
+            /**
+             * @var $orderDetail OrdersDetailModel
+             */
             if ($orderDetail->orderStatus != 2)
                 continue;
 
             $orderDetail->orderStatus = 3;
             $orderDetail->save();
+
+            $this->assertMessageTemplate($orderDetail->user, $orderDetail, $this->formatMessageContent());
         }
 
         return renderResponse();
+    }
+
+    /**
+     * assertMessageTemplate
+     * @param int $userID
+     * @param string $content
+     * @return \app\common\model\MessagesModel|\think\Model
+     */
+    protected function assertMessageTemplate(UsersModel $usersModel, OrdersDetailModel $ordersDetailModel, \Closure $getMessageContent)
+    {
+        $message = ["title" => "发货通知", "content" => $getMessageContent($usersModel, $ordersDetailModel), "userID" => $usersModel->id];
+        return $this->servletFactory->messageServ()->addMessage($message);
+    }
+
+    /**
+     * formatMessageContent
+     * @return \Closure
+     */
+    protected function formatMessageContent(): \Closure
+    {
+        return fn($user, $ordersDetailModel) => sprintf("尊敬的用户：%s,订单号：%d已发货，请注意查收", $user->userName, $ordersDetailModel->orderNo);
     }
 
     /**
@@ -226,10 +254,6 @@ class OrderRepositories extends AbstractRepositories
 
         // 待分佣的金额
         $toBeCommissionAmount = (float)array_sum(array_column($toBeCommissionOrders->toArray(), "goodsTotalPrice"));
-
-
-
-
 
 
         return $orderNo;
