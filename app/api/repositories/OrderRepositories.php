@@ -361,7 +361,7 @@ class OrderRepositories extends AbstractRepositories
         if (empty($detail)) {
             throw new ParameterException(['errMessage' => '订单不存在...']);
         }
-        Db::transaction(function ($detail) {
+        Db::transaction(function () use ($detail,$refundData) {
             $refundData['userID'] = app()->get('userProfile')->id;
             $refundData['orderSn'] = makeOrderNo();
             $refundData['goodsName'] = $detail->goodsName;
