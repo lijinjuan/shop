@@ -35,7 +35,7 @@ class StoreAccountServlet
         if ($type){
             $model->where('type',$type);
         }
-        $data = $model->append(['monthTime'])->select()->toArray();
+        $data = $model->append(['monthTime'])->select()->order('createdAt','desc')->toArray();
         foreach ($data as $key =>$item){
             $fmtData[$item['monthTime']][$key] = $item;
         }
