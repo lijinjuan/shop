@@ -85,7 +85,6 @@ Route::group(":version", function () {
     Route::post("goods", ":version.Goods/getPlatformGoods");
     //获取店铺邀请码
     Route::get("get-inviteCode", ":version.Entry/getInviteCode");
-
     // 商家上架商品
     Route::post("goods-take-down", ":version.Goods/takeDownStoreGoods");
     // 商家下架商品

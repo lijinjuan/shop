@@ -131,15 +131,29 @@ class GoodsRepositories extends AbstractRepositories
         return renderResponse($recommendList);
     }
 
+    /**
+     * takeDownStoreGoods
+     * @param int $goodsID
+     * @return \think\response\Json
+     */
     public function takeDownStoreGoods(int $goodsID)
     {
+        app()->get("userProfile")?->store->goods()->detach($goodsID);
         return renderResponse();
     }
 
+    /**
+     * onSaleGoods2Store
+     * @param int $goodsID
+     * @return \think\response\Json
+     */
     public function onSaleGoods2Store(int $goodsID)
     {
+        /**
+         * @var \app\common\model\StoresModel $storeModel
+         */
+        $storeModel = app()->get("userProfile")->store;
+        $storeModel->goods()->sync([$goodsID => ["agentID" => $storeModel->agentID]], false);
         return renderResponse();
     }
-
-
 }
