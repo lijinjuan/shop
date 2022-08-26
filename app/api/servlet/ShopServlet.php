@@ -80,7 +80,7 @@ class ShopServlet
         $order = request()->only(["goodsDiscountPrice", "goodsSalesAmount", "commission"]);
         $order["goodsDiscountPrice"] ??= "asc";
         $order["goodsSalesAmount"] ??= "asc";
-        $order["commission"] ??= "asc";
+        $order["goodsDiscountPrice"] ??= $order["commission"];
 
         $goodsList = $storeModel->goods()->where("s_goods.status", 1)
             ->field(["s_goods.id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "goodsSalesAmount", "s_goods.createdAt"])
