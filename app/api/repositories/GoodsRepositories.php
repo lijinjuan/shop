@@ -131,5 +131,15 @@ class GoodsRepositories extends AbstractRepositories
         return renderResponse($recommendList);
     }
 
+    public function takeDownStoreGoods(int $goodsID)
+    {
+        return renderResponse();
+    }
+
+    public function onSaleGoods2Store(int $goodsID)
+    {
+        return renderResponse();
+    }
+
 
 }
