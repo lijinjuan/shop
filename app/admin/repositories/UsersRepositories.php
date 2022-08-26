@@ -315,11 +315,12 @@ class UsersRepositories extends AbstractRepositories
      */
     public function getRechargeInfoByID(int $id)
     {
-        $user = $this->servletFactory->userServ()->getUserInfoByID($id);
-        if ($user) {
-            return renderResponse($this->servletFactory->rechargeServ()->getRechargeInfoByID($id));
+        $recharge = $this->servletFactory->rechargeServ()->getRechargeInfoByID($id);
+        if (!$recharge) {
+            throw new ParameterException(['errMessage' => '用户不存在...']);
         }
-        throw new ParameterException(['errMessage' => '用户不存在...']);
+        return renderResponse($recharge);
+
     }
 
     public function checkRecharge(int $id, array $data)

@@ -71,7 +71,7 @@ class RechargeServet
         if ($keywords) {
             $model->where('userEmail','like','%'.$keywords.'%');
         }
-        return $model->with(['store.user'])->paginate($pageSize);
+        return $model->with(['store.user'])->append(['rechargeName'])->order('createdAt','desc')->paginate($pageSize);
     }
 
 }
