@@ -29,6 +29,7 @@ class OrderRepositories extends AbstractRepositories
         if (!$isValid) {
             throw  new ParameterException();
         }
+        $storeInfo = '';
         if ($storeID) {
             $storeInfo = $this->checkStore($storeID);
             if (is_null($storeInfo)) {
@@ -141,7 +142,8 @@ class OrderRepositories extends AbstractRepositories
             $par_goods_info[$item['id']] = $item;
         }
         //子订单信息
-        $trade_order_info = $this->makeGoodsOrder($goodsInfo, $par_goods_info, $orderSn);
+        $storeID = !empty($storeInfo) ? $storeInfo->id : 0;
+        $trade_order_info = $this->makeGoodsOrder($goodsInfo, $par_goods_info, $orderSn, $storeID);
         //总订单信息
         $order_info = $this->makeOrderInfo($orderSn, $trade_order_info, $addressInfo, $storeInfo);
         Db::transaction(function () use ($order_info, $trade_order_info) {
@@ -187,9 +189,9 @@ class OrderRepositories extends AbstractRepositories
         //总订单数据
         $order_info['orderNo'] = $orderSn;
         $order_info['userID'] = app()->get('userProfile')->id;
-        $order_info['storeID'] = $storeInfo->id;
-        $order_info['agentID'] = $storeInfo->agentID;
-        $order_info['agentAmount'] = $storeInfo->agentName;
+        $order_info['storeID'] = !empty($storeInfo) ? $storeInfo->id : 0;
+        $order_info['agentID'] = !empty($storeInfo) ? $storeInfo->agentID : '';
+        $order_info['agentAmount'] = !empty($storeInfo) ? $storeInfo->agentName : '';
         $order_info['goodsTotalPrice'] = sprintf('%.2f', round(array_sum(array_column($orderInfo, 'goodsTotalPrice')), 2));
         $order_info['orderStatus'] = 0;
         $order_info['goodsNum'] = array_sum(array_column($orderInfo, 'goodsNum'));
@@ -247,11 +249,11 @@ class OrderRepositories extends AbstractRepositories
                 'userPayStyle' => '余额支付',
             ];
             $order::update($updateData, ['id' => $order->id]);
-            foreach ($order->goodsDetail as $detail){
+            foreach ($order->goodsDetail as $detail) {
                 /**
-                 * @var OrdersDetailModel $detail;
+                 * @var OrdersDetailModel $detail ;
                  */
-                $detail->where('id',$detail->id)->update(['status'=> !empty($order->storeID) ? 1 : 2,'goodsCommission'=>sprintf('%.2f', round($detail->goodsTotalPrice * ($goodsCommission / 100), 2))]);
+                $detail->where('id', $detail->id)->update(['status' => !empty($order->storeID) ? 1 : 2, 'goodsCommission' => sprintf('%.2f', round($detail->goodsTotalPrice * ($goodsCommission / 100), 2))]);
             }
             //减库存 增销量
             $order->goodsSku?->each($this->addSalesAmount());
