@@ -96,6 +96,18 @@ class OrderController
     }
 
     /**
+     * @param int $id
+     * @return \think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function orderDetailByID(int $id)
+    {
+        return $this->orderRepositories->orderDetailByID($id);
+    }
+
+    /**
      * @param Request $request
      * @return \think\response\Json
      */

@@ -130,6 +130,9 @@ Route::group(":version", function () {
     Route::get('store-order-list/:type',":version.Order/storeOrderList");
     //店铺订单统计信息
     Route::get('store-order-count',':version.Order/storeOrderCount');
+    //退款订单详情
+    Route::get('refund-order-detail/:id',':version.Order/orderDetailByID');
+
 
 
 })->middleware(JwtAuthMiddleware::class)->json()->allowCrossDomain();
