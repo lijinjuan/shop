@@ -127,7 +127,7 @@ class OrderRepositories extends AbstractRepositories
      * @param StoresModel $storeInfo
      * @return string
      */
-    protected function makeOrderData(array $newGoodsInfo, array $goodsInfo, UserAddressModel $addressInfo, StoresModel $storeInfo)
+    protected function makeOrderData(array $newGoodsInfo, array $goodsInfo, UserAddressModel $addressInfo, StoresModel|null $storeInfo)
     {
         $order_info = $par_goods_info = [];
         $orderSn = $order_info['orderSn'] = makeOrderNo();
@@ -184,7 +184,7 @@ class OrderRepositories extends AbstractRepositories
         return $goods_order_info;
     }
 
-    protected function makeOrderInfo(string $orderSn, array $orderInfo, UserAddressModel $addressInfo, StoresModel $storeInfo)
+    protected function makeOrderInfo(string $orderSn, array $orderInfo, UserAddressModel $addressInfo, StoresModel|null $storeInfo)
     {
         //总订单数据
         $order_info['orderNo'] = $orderSn;
