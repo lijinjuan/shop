@@ -237,13 +237,13 @@ class OrderRepositories extends AbstractRepositories
             }
             $updateData = [
                 'userPayPrice' => $order->goodsTotalPrice,
-                'orderStatus' => 1,
+                'orderStatus' => !empty($order->storeID) ? 1 : 2,
                 'orderCommission' => $order->storeID ?? sprintf('%.2f', round($order->goodsTotalPrice * ($goodsCommission / 100), 2)),
                 'userPayAt' => date('Y-m-d H:i:s'),
                 'userPayStyle' => '余额支付',
             ];
             $order::update($updateData, ['id' => $order->id]);
-            $order->goodsDetail()->where('orderNo', $order->orderNo)->update(['status' => 1]);
+            $order->goodsDetail()->where('orderNo', $order->orderNo)->update(['status' => !empty($order->storeID) ? 1 : 2]);
             //减库存 增销量
             $order->goodsSku?->each($this->addSalesAmount());
             $order->save();
@@ -361,7 +361,7 @@ class OrderRepositories extends AbstractRepositories
         if (empty($detail)) {
             throw new ParameterException(['errMessage' => '订单不存在...']);
         }
-        Db::transaction(function () use ($detail,$refundData) {
+        Db::transaction(function () use ($detail, $refundData) {
             $refundData['userID'] = app()->get('userProfile')->id;
             $refundData['orderSn'] = makeOrderNo();
             $refundData['goodsName'] = $detail->goodsName;
