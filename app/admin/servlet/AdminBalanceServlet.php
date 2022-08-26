@@ -3,6 +3,7 @@
 namespace app\admin\servlet;
 
 use app\common\model\AdminBalanceModel;
+use think\facade\Db;
 
 class AdminBalanceServlet
 {
@@ -30,4 +31,13 @@ class AdminBalanceServlet
         return $this->adminBalanceModel->where('id', 1)->field(['balance'])->find();
     }
 
+    /**
+     * updateBalance
+     * @param float $balance
+     * @return \app\common\model\AdminBalanceModel
+     */
+    public function updateBalance(float $balance)
+    {
+        return $this->adminBalanceModel->where('id', 1)->update(["balance" => $balance]);
+    }
 }

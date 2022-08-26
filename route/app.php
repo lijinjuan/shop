@@ -22,4 +22,4 @@ Route::miss(function () {
     return 404;
 });
 
-Route::post('upload','commom/service/uploadFile');
+Route::post('upload', 'commom/service/uploadFile');

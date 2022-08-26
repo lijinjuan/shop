@@ -43,6 +43,16 @@ class StoreAccountServlet
     }
 
     /**
+     * batchSaveStoreAccount
+     * @param array $storeAccount
+     * @return \think\Collection
+     */
+    public function batchSaveStoreAccount(array $storeAccount)
+    {
+        return $this->storeAccountModel->saveAll($storeAccount);
+    }
+
+    /**
      * @param int $id
      * @param int $type
      * @param string $startTime
@@ -56,7 +66,7 @@ class StoreAccountServlet
             $commission->where('createdAt', '>=', $startTime)->where('createdAt', '<', $endTime);
         }
         $commissionRes = $commission->sum('changeBalance');
-        return sprintf('%.2f',round($commissionRes, 2));
+        return sprintf('%.2f', round($commissionRes, 2));
     }
 
     /**
@@ -66,9 +76,9 @@ class StoreAccountServlet
      */
     public function getTotalCommissionByID(int $id)
     {
-        $commission = $this->storeAccountModel->where('storeID', $id)->whereIn('type',[3,4]);
+        $commission = $this->storeAccountModel->where('storeID', $id)->whereIn('type', [3, 4]);
         $commissionRes = $commission->sum('changeBalance');
-        return sprintf('%.2f',round($commissionRes, 2));
+        return sprintf('%.2f', round($commissionRes, 2));
     }
 
 
