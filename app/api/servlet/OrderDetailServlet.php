@@ -32,9 +32,9 @@ class OrderDetailServlet
      * @param array $updateData
      * @return OrdersDetailModel
      */
-    public function editOrderByOrderSn(string $orderSn,array $updateData)
+    public function editOrderByOrderSn(string $orderSn, array $updateData)
     {
-        return $this->detailModel::update($updateData,['orderSn'=>$orderSn]);
+        return $this->detailModel::update($updateData, ['orderSn' => $orderSn]);
     }
 
     /**
@@ -46,9 +46,12 @@ class OrderDetailServlet
      */
     public function getDetailByID(int $orderID)
     {
-        return $this->detailModel->where('id',$orderID)->where('userID',app()->get('userProfile')->id)->find();
+        return $this->detailModel->where('id', $orderID)->where('userID', app()->get('userProfile')->id)->with(['orders' => function ($query) {
+            $query->field(['id', 'orderNo', 'receiver', 'receiverMobile', 'receiverAddress']);
+        }, 'refundOrder' => function ($query) {
+            $query->field(['id', 'orderID', 'remark']);
+        }])->find();
     }
-
 
 
 }

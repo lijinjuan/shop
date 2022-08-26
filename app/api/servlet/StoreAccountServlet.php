@@ -31,12 +31,20 @@ class StoreAccountServlet
     {
         $fmtData = [];
         $id = app()->get('userProfile')->id;
-        $model = $this->storeAccountModel->field(['id','title','changeBalance','action','type','createdAt'])->where('userID',$id);
-        if ($type){
-            $model->where('type',$type);
+        $model = $this->storeAccountModel->field(['id', 'title', 'changeBalance', 'action', 'type', 'createdAt'])->where('userID', $id);
+        if ($type) {
+            //1->充值 2->提现 3->佣金 4->推广 5->消费
+            $type = match ($type) {
+                1 => 5,
+                2 => 1,
+                3 => 2,
+                4 => 3,
+                5 => 4
+            };
+            $model->where('type', $type);
         }
-        $data = $model->append(['monthTime'])->select()->toArray();
-        foreach ($data as $key =>$item){
+        $data = $model->append(['monthTime'])->select()->order('createdAt', 'desc')->toArray();
+        foreach ($data as $key => $item) {
             $fmtData[$item['monthTime']][$key] = $item;
         }
         return $fmtData;
@@ -48,7 +56,7 @@ class StoreAccountServlet
      */
     public function addAccount(array $data)
     {
-       return  $this->storeAccountModel::create($data);
+        return $this->storeAccountModel::create($data);
 
     }
 }

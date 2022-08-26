@@ -2,6 +2,8 @@
 
 namespace app\api\repositories;
 
+use app\common\model\OrdersDetailModel;
+use app\common\model\StoresModel;
 use app\common\model\UserAddressModel;
 use app\lib\exception\ParameterException;
 use think\db\concern\Transaction;
@@ -27,8 +29,10 @@ class OrderRepositories extends AbstractRepositories
         if (!$isValid) {
             throw  new ParameterException();
         }
+        $storeInfo = null;
         if ($storeID) {
-            if (!$this->checkStore($storeID)) {
+            $storeInfo = $this->checkStore($storeID);
+            if (is_null($storeInfo)) {
                 throw  new ParameterException(['errMessage' => '店铺不存在...']);
             }
         }
@@ -36,8 +40,7 @@ class OrderRepositories extends AbstractRepositories
         $newGoodsInfo = $this->checkGoods($goodsInfo);
         //检测库存
         $this->checkStock($goodsInfo);
-        $orderSn = $this->makeOrderData($newGoodsInfo, $goodsInfo, $isValid, $storeID);
-        //计算店铺佣金，店铺入账记录
+        $orderSn = $this->makeOrderData($newGoodsInfo, $goodsInfo, $isValid, $storeInfo);
         return renderResponse($orderSn);
 
     }
@@ -121,10 +124,10 @@ class OrderRepositories extends AbstractRepositories
      * @param array $newGoodsInfo
      * @param array $goodsInfo
      * @param UserAddressModel $addressInfo
-     * @param int $storeID
+     * @param StoresModel $storeInfo
      * @return string
      */
-    protected function makeOrderData(array $newGoodsInfo, array $goodsInfo, UserAddressModel $addressInfo, int $storeID)
+    protected function makeOrderData(array $newGoodsInfo, array $goodsInfo, UserAddressModel $addressInfo, StoresModel|null $storeInfo)
     {
         $order_info = $par_goods_info = [];
         $orderSn = $order_info['orderSn'] = makeOrderNo();
@@ -139,9 +142,10 @@ class OrderRepositories extends AbstractRepositories
             $par_goods_info[$item['id']] = $item;
         }
         //子订单信息
-        $trade_order_info = $this->makeGoodsOrder($goodsInfo, $par_goods_info, $orderSn);
+        $storeID = !empty($storeInfo) ? $storeInfo->id : 0;
+        $trade_order_info = $this->makeGoodsOrder($goodsInfo, $par_goods_info, $orderSn, $storeID);
         //总订单信息
-        $order_info = $this->makeOrderInfo($orderSn, $trade_order_info, $addressInfo, $storeID);
+        $order_info = $this->makeOrderInfo($orderSn, $trade_order_info, $addressInfo, $storeInfo);
         Db::transaction(function () use ($order_info, $trade_order_info) {
             $orderModel = $this->servletFactory->orderServ()->addOrder($order_info);
             $orderModel->goodsDetail()->saveAll($trade_order_info);
@@ -173,19 +177,21 @@ class OrderRepositories extends AbstractRepositories
             $goodsPrice = $par_goods_info[$val['goodsID']]['goodsSku'][$val['skuID']]['skuDiscountPrice'];
             $goods_order_info[$key2]['goodsPrice'] = (string)$goodsPrice;
             $goods_order_info[$key2]['goodsNum'] = $val['number'];
-            $goods_order_info[$key2]['goodsTotalPrice'] = bcmul($goodsPrice, (string)$val['number'], 2);
+            $totalPrice = bcmul($goodsPrice, (string)$val['number'], 2);
+            $goods_order_info[$key2]['goodsTotalPrice'] = $totalPrice;
+            $goods_order_info[$key2]['goodsCommission'] = 0.00;
         }
         return $goods_order_info;
     }
 
-    protected function makeOrderInfo(string $orderSn, array $orderInfo, UserAddressModel $addressInfo, int $storeID)
+    protected function makeOrderInfo(string $orderSn, array $orderInfo, UserAddressModel $addressInfo, StoresModel|null $storeInfo)
     {
         //总订单数据
         $order_info['orderNo'] = $orderSn;
         $order_info['userID'] = app()->get('userProfile')->id;
-        $order_info['storeID'] = $storeID;
-        $order_info['agentID'] = 'dd';
-        $order_info['agentAmount'] = '代理商';
+        $order_info['storeID'] = !empty($storeInfo) ? $storeInfo->id : 0;
+        $order_info['agentID'] = !empty($storeInfo) ? $storeInfo->agentID : '';
+        $order_info['agentAmount'] = !empty($storeInfo) ? $storeInfo->agentName : '';
         $order_info['goodsTotalPrice'] = sprintf('%.2f', round(array_sum(array_column($orderInfo, 'goodsTotalPrice')), 2));
         $order_info['orderStatus'] = 0;
         $order_info['goodsNum'] = array_sum(array_column($orderInfo, 'goodsNum'));
@@ -231,19 +237,24 @@ class OrderRepositories extends AbstractRepositories
             $commission = $this->servletFactory->commissionServ()->getCommissionByType(2);
             $goodsCommission = json_decode($commission->content, true);
             if ($goodsCommission) {
-                $goodsCommission = $goodsCommission[0]['goodsCommission'];
+                $goodsCommission = $goodsCommission['goodsCommission'];
             } else {
                 $goodsCommission = 0;
             }
             $updateData = [
                 'userPayPrice' => $order->goodsTotalPrice,
-                'orderStatus' => 1,
+                'orderStatus' => !empty($order->storeID) ? 1 : 2,
                 'orderCommission' => $order->storeID ?? sprintf('%.2f', round($order->goodsTotalPrice * ($goodsCommission / 100), 2)),
                 'userPayAt' => date('Y-m-d H:i:s'),
                 'userPayStyle' => '余额支付',
             ];
             $order::update($updateData, ['id' => $order->id]);
-            $order->goodsDetail()->where('orderNo', $order->orderNo)->update(['status' => 1]);
+            foreach ($order->goodsDetail as $detail) {
+                /**
+                 * @var OrdersDetailModel $detail ;
+                 */
+                $detail->where('id', $detail->id)->update(['status' => !empty($order->storeID) ? 1 : 2, 'goodsCommission' => sprintf('%.2f', round($detail->goodsTotalPrice * ($goodsCommission / 100), 2))]);
+            }
             //减库存 增销量
             $order->goodsSku?->each($this->addSalesAmount());
             $order->save();
@@ -361,7 +372,7 @@ class OrderRepositories extends AbstractRepositories
         if (empty($detail)) {
             throw new ParameterException(['errMessage' => '订单不存在...']);
         }
-        Db::transaction(function ($detail) {
+        Db::transaction(function () use ($detail, $refundData) {
             $refundData['userID'] = app()->get('userProfile')->id;
             $refundData['orderSn'] = makeOrderNo();
             $refundData['goodsName'] = $detail->goodsName;
