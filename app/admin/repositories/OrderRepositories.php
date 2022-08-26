@@ -342,6 +342,9 @@ class OrderRepositories extends AbstractRepositories
     protected function getDirectAgents(string $agentID)
     {
         $directAgents = trim($agentID, ",");
+        if ($directAgents == "")
+            return 0;
+
         $directAgentsArr = explode(",", $directAgents);
         return end($directAgentsArr);
     }
