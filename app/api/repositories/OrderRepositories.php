@@ -29,7 +29,7 @@ class OrderRepositories extends AbstractRepositories
         if (!$isValid) {
             throw  new ParameterException();
         }
-        $storeInfo = '';
+        $storeInfo = null;
         if ($storeID) {
             $storeInfo = $this->checkStore($storeID);
             if (is_null($storeInfo)) {
@@ -237,7 +237,7 @@ class OrderRepositories extends AbstractRepositories
             $commission = $this->servletFactory->commissionServ()->getCommissionByType(2);
             $goodsCommission = json_decode($commission->content, true);
             if ($goodsCommission) {
-                $goodsCommission = $goodsCommission[0]['goodsCommission'];
+                $goodsCommission = $goodsCommission['goodsCommission'];
             } else {
                 $goodsCommission = 0;
             }
