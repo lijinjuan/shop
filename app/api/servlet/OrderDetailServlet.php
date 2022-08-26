@@ -49,7 +49,7 @@ class OrderDetailServlet
         return $this->detailModel->where('id', $orderID)->where('userID', app()->get('userProfile')->id)->with(['orders' => function ($query) {
             $query->field(['id', 'orderNo', 'receiver', 'receiverMobile', 'receiverAddress']);
         }, 'refundOrder' => function ($query) {
-            $query->field(['id', 'orderID', 'remark']);
+            $query->field(['id', 'orderID', 'remark','orderSn']);
         }])->find();
     }
 
