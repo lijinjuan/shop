@@ -490,4 +490,17 @@ class OrderRepositories extends AbstractRepositories
     }
 
 
+    /**
+     * @param int $type
+     * @return \think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function refundType(int $type)
+    {
+        return renderResponse($this->servletFactory->refundConfigServ()->getConfigByID($type));
+    }
+
+
 }

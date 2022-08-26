@@ -126,7 +126,7 @@ class OrderController
      */
     public function orderRefundType()
     {
-        return $this->orderRepositories->refundList(1);
+        return $this->orderRepositories->refundType(1);
     }
 
     /**
