@@ -294,14 +294,12 @@ class OrderRepositories extends AbstractRepositories
         // 分配的比例
         $propertyAlloc = $this->servletFactory->commissionServ()->getCommissionByType(1);
 
-        $propertyAlloc =
-
 
         return $orderNo;
     }
 
     // 获取父级店铺分佣的金额
-    protected function getAmountOfCommission2Parents(string $parentsID,CommissionCo)
+    protected function getAmountOfCommission2Parents(string $parentsID)
     {
 
     }

@@ -104,4 +104,26 @@ class GoodsController
     {
         return $this->goodsRepositories->getGoodsListByExcellent();
     }
+
+    /**
+     * takeDownStoreGoods
+     * @param \think\Request $request
+     * @return \think\response\Json
+     */
+    public function takeDownStoreGoods(Request $request)
+    {
+        $goodsID = (int)$request->param("goodsID");
+        return $this->goodsRepositories->takeDownStoreGoods($goodsID);
+    }
+
+    /**
+     * onSaleGoods2Store
+     * @param \think\Request $request
+     * @return \think\response\Json
+     */
+    public function onSaleGoods2Store(Request $request)
+    {
+        $goodsID = (int)$request->param("goodsID");
+        return $this->goodsRepositories->onSaleGoods2Store($goodsID);
+    }
 }
