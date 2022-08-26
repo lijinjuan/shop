@@ -460,7 +460,8 @@ class OrderRepositories extends AbstractRepositories
         if (!$orderDetail || $orderDetail->status != 7) {
             throw new ParameterException(['errMessage' => '订单不存在或不能被删除...']);
         }
-        Db::transaction(function () use ($orderDetail) {
+        Db::transaction(function () use ($orderDetail, $order) {
+            $order::update(['status' => -1], ['id' => $order->id]);
             $orderDetail::update(['status' => -1], ['id' => $orderDetail->id]);
             $orderDetail->orders()->update(['orderStatus' => -1]);
         });
