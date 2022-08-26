@@ -274,35 +274,35 @@ class OrderRepositories extends AbstractRepositories
          * @var $masterOrder \app\common\model\OrdersModel
          */
         $masterOrder = $this->servletFactory->orderServ()->getOrderEntityByOrderNo($orderNo);
-
         if ($masterOrder->orderStatus != 4) {
             throw new ParameterException(["errMessage" => "订单状态异常..."]);
         }
 
         // 待分佣的订单
         $toBeCommissionOrders = $masterOrder->goodsDetail()->where("status", 4)->select();
-
         if ($toBeCommissionOrders->isEmpty())
             throw new ParameterException(["errMessage" => "不存在推广分佣的订单..."]);
 
         // 待分佣的金额
         $toBeCommissionAmount = (float)array_sum(array_column($toBeCommissionOrders->toArray(), "goodsTotalPrice"));
-
         // 分佣金额为 0
-        if ($toBeCommissionAmount <= 0)
+        if ($toBeCommissionAmount <= 0) {
+            $this->updateCompleteOrderStatus($masterOrder);
             return renderResponse();
+        }
 
         // 待分佣的店铺
         $masterOrderStore = $masterOrder?->store;
         $toBeCommissionStores = $masterOrderStore?->parentStoreID;
 
         // 不存在店铺或者店铺本身为根节点
-        if (is_null($toBeCommissionStores) || $toBeCommissionStores == ",")
+        if (is_null($toBeCommissionStores) || $toBeCommissionStores == ",") {
+            $this->updateCompleteOrderStatus($masterOrder);
             return renderResponse();
+        }
 
         // 分配的比例
         $propertyAlloc = $this->servletFactory->commissionServ()->getCommissionByType(1);
-
         if (is_null($propertyAlloc) && $propertyAlloc->content == "")
             throw new ParameterException(["errMessage" => "推广分佣的设置出错了..."]);
 
