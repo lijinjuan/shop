@@ -3,6 +3,7 @@
 namespace app\admin\repositories;
 
 use app\lib\exception\ParameterException;
+use think\facade\Db;
 
 /**
  * \app\admin\repositories\UsersRepositories
@@ -327,27 +328,29 @@ class UsersRepositories extends AbstractRepositories
     {
         $model = $this->servletFactory->rechargeServ()->getRechargeInfoByID($id);
         if ($model) {
-            $data['checkID'] = app()->get("adminProfile")->id;
-            $data['checkName'] = app()->get("adminProfile")->adminName;
-            $data['checkAt'] = date('Y-m-d H:i:s');
-            $model::update($data, ['id' => $model->id]);
-            //充值成功 写入用户账变表
-            if ($data['status'] == 1) {
-                $userInfo = $this->servletFactory->userServ()->getUserInfoByID($model->userID);
-                $currentBalance = $userInfo->balance;
-                $data = [
-                    'title' => '充值',
-                    'storeID' => $model->storeID ? $model->storeID : 0,
-                    'userID' => $model->userID,
-                    'balance' => $currentBalance + $model->rechargeMoney,
-                    'changeBalance' => $model->rechargeMoney ? $model->rechargeMoney : 0.00,
-                    'action' => 1,
-                    'remark' => '会员充值',
-                    'type' => 1
-                ];
-                $this->servletFactory->storeAccountServ()->addStoreAccount($data);
-            }
-
+            Db::transaction(function () use ($model) {
+                $data['checkID'] = app()->get("adminProfile")->id;
+                $data['checkName'] = app()->get("adminProfile")->adminName;
+                $data['checkAt'] = date('Y-m-d H:i:s');
+                $model::update($data, ['id' => $model->id]);
+                //充值成功 写入用户账变表
+                if ($data['status'] == 1) {
+                    $userInfo = $this->servletFactory->userServ()->getUserInfoByID($model->userID);
+                    $userInfo::update(['balance' => $userInfo->balance + $model->rechargeMoney], ['id' => $userInfo->id]);
+                    $currentBalance = $userInfo->balance;
+                    $data = [
+                        'title' => '充值',
+                        'storeID' => !empty($model->storeID) ? $model->storeID : 0,
+                        'userID' => $model->userID,
+                        'balance' => $currentBalance + $model->rechargeMoney,
+                        'changeBalance' => !empty($model->rechargeMoney) ? $model->rechargeMoney : 0.00,
+                        'action' => 1,
+                        'remark' => '会员充值',
+                        'type' => 1
+                    ];
+                    $this->servletFactory->storeAccountServ()->addStoreAccount($data);
+                }
+            });
             return renderResponse();
         }
         throw new ParameterException(['errMessage' => '充值记录不存在...']);
@@ -392,24 +395,29 @@ class UsersRepositories extends AbstractRepositories
     {
         $model = $this->servletFactory->withdrawalServ()->getOneWithdrawal($id);
         if ($model) {
-            //Todo 当前登录用户
             $data['checkID'] = app()->get("adminProfile")->id;
             $data['checkName'] = app()->get("adminProfile")->adminName;
             $data['checkAt'] = date('Y-m-d H:i:s');
-            $model::update($data, ['id' => $model->id]);
-            $userInfo = $this->servletFactory->userServ()->getUserInfoByID($model->userID);
-            $currentBalance = $userInfo->balance;
-            $data = [
-                'title' => '提现值',
-                'storeID' => $model->storeID,
-                'userID' => $model->userID,
-                'balance' => $currentBalance - $model->balance,
-                'changeBalance' => $model->balance ? $model->balance : 0,
-                'action' => 2,
-                'remark' => '会员提现',
-                'type' => 2
-            ];
-            $this->servletFactory->storeAccountServ()->addStoreAccount($data);
+            Db::transaction(function () use ($model, $data) {
+                $model::update($data, ['id' => $model->id]);
+                $userInfo = $this->servletFactory->userServ()->getUserInfoByID($model->userID);
+                if ($data['status'] == 1) {
+                    $userInfo::update(['balance' => $userInfo->balance - $model->withdrawalMoney], ['id' => $userInfo->id]);
+                    $currentBalance = $userInfo->balance;
+                    $changeData = [
+                        'title' => '提现值',
+                        'storeID' => $model->storeID,
+                        'userID' => $model->userID,
+                        'balance' => $currentBalance - $model->withdrawalMoney,
+                        'changeBalance' => !empty($model->withdrawalMoney) ? $model->withdrawalMoney : 0,
+                        'action' => 2,
+                        'remark' => '会员提现',
+                        'type' => 2
+                    ];
+                    $this->servletFactory->storeAccountServ()->addStoreAccount($changeData);
+                }
+            });
+
             return renderResponse();
         }
         throw new ParameterException(['errMessage' => '提现记录不存在...']);
