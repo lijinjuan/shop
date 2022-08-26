@@ -328,17 +328,17 @@ class UsersRepositories extends AbstractRepositories
     {
         $model = $this->servletFactory->rechargeServ()->getRechargeInfoByID($id);
         if ($model) {
-            Db::transaction(function () use ($model) {
-                $data['checkID'] = app()->get("adminProfile")->id;
-                $data['checkName'] = app()->get("adminProfile")->adminName;
-                $data['checkAt'] = date('Y-m-d H:i:s');
+            $data['checkID'] = app()->get("adminProfile")->id;
+            $data['checkName'] = app()->get("adminProfile")->adminName;
+            $data['checkAt'] = date('Y-m-d H:i:s');
+            Db::transaction(function () use ($model, $data) {
                 $model::update($data, ['id' => $model->id]);
                 //充值成功 写入用户账变表
                 if ($data['status'] == 1) {
                     $userInfo = $this->servletFactory->userServ()->getUserInfoByID($model->userID);
                     $userInfo::update(['balance' => $userInfo->balance + $model->rechargeMoney], ['id' => $userInfo->id]);
                     $currentBalance = $userInfo->balance;
-                    $data = [
+                    $changeData = [
                         'title' => '充值',
                         'storeID' => !empty($model->storeID) ? $model->storeID : 0,
                         'userID' => $model->userID,
@@ -348,7 +348,7 @@ class UsersRepositories extends AbstractRepositories
                         'remark' => '会员充值',
                         'type' => 1
                     ];
-                    $this->servletFactory->storeAccountServ()->addStoreAccount($data);
+                    $this->servletFactory->storeAccountServ()->addStoreAccount($changeData);
                 }
             });
             return renderResponse();
