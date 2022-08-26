@@ -5,6 +5,7 @@ namespace app\api\controller\v1;
 
 use app\api\repositories\UsersRepositories;
 use app\api\validate\UsersValidate;
+use app\lib\exception\ParameterException;
 use think\Request;
 use think\Response;
 
@@ -46,7 +47,11 @@ class EntryController
     {
         (new UsersValidate())->goCheck();
         $userProfile = $request->only(["email", "password", "payPassword"]);
-        return $this->usersRepositories->registerNewUser($userProfile);
+        try {
+            return $this->usersRepositories->registerNewUser($userProfile);
+        } catch (\Throwable) {
+            throw new ParameterException(["errMessage" => "注册失败，请稍后重试..."]);
+        }
     }
 
     /**
