@@ -35,7 +35,7 @@ class UsersServlet
     {
         //1->普通会员 2->店铺
         $select = [
-            'id', 'userName', 'email', 'userAvatar', 'status', 'lastIP','lastLoginTime','loginNum','remark','isRealPeople'
+            'id', 'userName', 'email', 'userAvatar', 'status', 'lastIP', 'lastLoginTime', 'loginNum', 'remark', 'isRealPeople'
         ];
         $model = $this->usersModel->where('isStore', 0)->field($select);
         if (!empty($userAccount)) {
@@ -57,5 +57,27 @@ class UsersServlet
         return $this->usersModel->where('id', $id)->with(['store'])->hidden(['deletedAt'])->find();
     }
 
+    /**
+     * getUserConnectionByStoreID
+     * @param array $parentsArr
+     * @return array|\think\Collection|\think\db\BaseQuery[]
+     */
+    public function getUserConnectionByStoreID(array $parentsArr)
+    {
+        return $this->usersModel::hasWhere("store", function ($query) use ($parentsArr) {
+            $query->whereIn("id", $parentsArr);
+        })->with(["store" => fn($query) => $query->field(["id", "userID"])])->select();
+    }
+
+    /**
+     * batchUpdateUserBalance
+     * @param array $userBalance
+     * @return \think\Collection
+     */
+    public function batchUpdateUserBalance(array $userBalance)
+    {
+        array_walk($userBalance, fn(&$item) => $item["id"] = $item["userID"]);
+        return $this->usersModel->allowField(["id", "balance"])->saveAll($userBalance);
+    }
 
 }
