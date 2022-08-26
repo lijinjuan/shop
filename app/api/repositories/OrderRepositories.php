@@ -456,7 +456,7 @@ class OrderRepositories extends AbstractRepositories
         if (!$order) {
             throw new ParameterException(['errMessage' => '订单不存在...']);
         }
-        $orderDetail = $this->servletFactory->orderDetailServ()->getDetailByID($order->id);
+        $orderDetail = $this->servletFactory->orderDetailServ()->getDetailByID($order->orderID);
         if (!$orderDetail || $orderDetail->status != 7) {
             throw new ParameterException(['errMessage' => '订单不存在或不能被删除...']);
         }
