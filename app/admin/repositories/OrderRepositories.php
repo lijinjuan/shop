@@ -2,6 +2,7 @@
 
 namespace app\admin\repositories;
 
+use app\api\servlet\CommissionConfigServlet;
 use app\common\model\OrdersDetailModel;
 use app\common\model\OrdersModel;
 use app\common\model\RefundModel;
@@ -266,6 +267,12 @@ class OrderRepositories extends AbstractRepositories
     public function confirm2CommissionOrderDetails(string $orderNo)
     {
         /**
+         * @1 待分配的订单
+         * @2 待分配的金额
+         * @3 待分配的店铺
+         */
+
+        /**
          * @var $masterOrder \app\common\model\OrdersModel
          */
         $masterOrder = $this->servletFactory->orderServ()->getOrderEntityByOrderNo($orderNo);
@@ -273,12 +280,30 @@ class OrderRepositories extends AbstractRepositories
         $toBeCommissionOrders = $masterOrder->goodsDetail()->where("status", 4)->select();
         if ($toBeCommissionOrders->isEmpty())
             throw new ParameterException(["errMessage" => "不存在推广分佣的订单..."]);
-
         // 待分佣的金额
         $toBeCommissionAmount = (float)array_sum(array_column($toBeCommissionOrders->toArray(), "goodsTotalPrice"));
+        // 分佣金额为 0
+        if ($toBeCommissionAmount <= 0)
+            return true;
+        // 待分佣的店铺
+        $toBeCommissionStores = $masterOrder?->store->parentStoreID;
+        // 不存在店铺或者店铺本身为根节点
+        if (is_null($toBeCommissionStores) || $toBeCommissionStores == ",")
+            return true;
+
+        // 分配的比例
+        $propertyAlloc = $this->servletFactory->commissionServ()->getCommissionByType(1);
+
+        $propertyAlloc =
 
 
         return $orderNo;
+    }
+
+    // 获取父级店铺分佣的金额
+    protected function getAmountOfCommission2Parents(string $parentsID,CommissionCo)
+    {
+
     }
 
     /**

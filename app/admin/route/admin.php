@@ -7,7 +7,7 @@ use think\facade\Route;
 Route::get(":version/create/captcha", ":version.Entry/createCaptcha");
 // 总后台登录的接口
 Route::post(":version/launch", ":version.Entry/admin2Launch");
-
+// 总后台上传文件
 Route::post(":version/upload-file", ":version.FileSystem/uploadFile");
 
 // 总后台的操作

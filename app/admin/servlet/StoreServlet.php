@@ -42,7 +42,6 @@ class StoreServlet
         $totalUV = $this->storesModel->where('id', $id)->field(['totalUV'])->count();
         $childStore = $this->storesModel->where('parentStoreID', 'like', '%,' . $id . ',%')->count();
         return compact('totalUV', 'childStore');
-
     }
 
 

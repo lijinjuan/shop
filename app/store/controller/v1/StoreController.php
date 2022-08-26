@@ -2,6 +2,7 @@
 
 namespace app\store\controller\v1;
 
+use app\admin\servlet\contract\ServletFactoryInterface;
 use app\store\repositories\StoreRepositories;
 use think\Request;
 
@@ -91,5 +92,14 @@ class StoreController
     public function takeDownStoreGoods(int $goodsID)
     {
         return $this->storeRepositories->takeDownStoreGoodsByGoodsID($goodsID);
+    }
+
+    /**
+     * getStoreStatistics
+     * @return mixed
+     */
+    public function getStoreStatistics(ServletFactoryInterface $adminServletFactory)
+    {
+        return $this->storeRepositories->getStoreStatistics($adminServletFactory);
     }
 }
