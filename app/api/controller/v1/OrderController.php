@@ -130,6 +130,17 @@ class OrderController
     }
 
     /**
+     * @param int $orderID
+     * @return \think\Response
+     * @throws \app\lib\exception\ParameterException
+     */
+    public function cancelOrderRefund(int $orderID)
+    {
+        return $this->orderRepositories->cancelRefundOrder($orderID);
+    }
+
+
+    /**
      * @return \think\response\Json
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException

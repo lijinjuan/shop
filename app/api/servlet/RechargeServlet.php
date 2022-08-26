@@ -56,5 +56,17 @@ class RechargeServlet
         return $this->rechargeModel->where('id', $id)->field(['id', 'orderNo', 'rechargeMoney', 'createdAt', 'status', 'rechargeVoucher'])->append(['rechargeName', 'orderStatus'])->find();
     }
 
+    /**
+     * @param int $orderID
+     * @return RechargeModel|array|mixed|\think\Model|null
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function getRechargeDetailByOrderID(int $orderID)
+    {
+        return $this->rechargeModel->where('orderID',$orderID)->where('userID', app()->get('userProfile')->id)->find();
+    }
+
 
 }

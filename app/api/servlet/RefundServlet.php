@@ -56,6 +56,18 @@ class RefundServlet
         return $model->field($select)->select();
     }
 
+    /**
+     * @param string $orderSn
+     * @return RefundModel|array|mixed|\think\Model|null
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function getRefundDetail(string $orderSn)
+    {
+        return $this->refundModel->where('orderSn',$orderSn)->find();
+    }
+
 
 
 }
