@@ -83,7 +83,7 @@ class ShopServlet
         $order["commission"] ??= "asc";
 
         $goodsList = $storeModel->goods()->where("s_goods.status", 1)
-            ->field(["s_goods.id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "commission", "goodsSalesAmount", "s_goods.createdAt"])
+            ->field(["s_goods.id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "goodsSalesAmount", "s_goods.createdAt"])
             ->whereLike("s_goods.goodsName", "%$keywords%")
             ->hidden(["pivot", "updatedAt", "deletedAt", "brandID", "goodsContent", "goodsStock", "isRank", "isNew", "isItem"]);
 
