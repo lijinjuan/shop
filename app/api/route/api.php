@@ -126,7 +126,7 @@ Route::group(":version", function () {
     //获取退款类型
     Route::post('order-refund-type',":version.Order/orderRefundType");
     //取消申请退款
-    Route::post('cancel-order-refund',":version.Order/cancelOrderRefund");
+    Route::post('cancel-order-refund/:orderID',":version.Order/cancelOrderRefund");
     //获取退款原因
     Route::get('order-refund-reason',":version.Order/getRefundReason");
     //确认收获

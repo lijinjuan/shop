@@ -505,7 +505,7 @@ class OrderRepositories extends AbstractRepositories
 
     public function cancelRefundOrder(int $orderID)
     {
-        $refundOrder = $this->servletFactory->rechargeServ()->getRechargeDetailByOrderID($orderID);
+        $refundOrder = $this->servletFactory->refundServ()->getRechargeDetailByOrderID($orderID);
         if (!$refundOrder) {
             throw new ParameterException(['errMessage' => '退款订单不存在...']);
         }
@@ -519,7 +519,7 @@ class OrderRepositories extends AbstractRepositories
             $orderDetail::update(['status' => $orderDetail->orders->orderStatus], ['id' => $refundOrder->orderID]);
         });
 
-        return response();
+        return renderResponse();
     }
 
 

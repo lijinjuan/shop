@@ -68,6 +68,18 @@ class RefundServlet
         return $this->refundModel->where('orderSn',$orderSn)->find();
     }
 
+    /**
+     * @param int $orderID
+     * @return RefundModel|array|mixed|\think\Model|null
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function getRechargeDetailByOrderID(int $orderID)
+    {
+        return $this->refundModel->where('orderID',$orderID)->where('userID', app()->get('userProfile')->id)->find();
+    }
+
 
 
 }
