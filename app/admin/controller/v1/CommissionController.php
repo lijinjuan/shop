@@ -27,14 +27,18 @@ class CommissionController
      */
     public function addCommission(Request $request)
     {
-//        {"firstLevel":5},
-//        {"secondLevel":6},
-//        {"thirdLevel":7},
-//        {"fourthLevel":8}
         //1->推广佣金 2->商品佣金
         $type = $request->post('type', 1);
-        $content = $request->post('content');
-        return $this->commissionRepositories->addCommission($content, $type);
+        $goodsCommission = $request->post('goodsCommission');
+        $firstLevel = $request->post('firstLevel');
+        $thirdLevel = $request->post('thirdLevel');
+        $secondLevel = $request->post('secondLevel');
+        $fourthLevel = $request->post('fourthLevel');
+        $content = match ($type) {
+            2 => ['goodsCommission' => $goodsCommission],
+            1 => ['firstLevel' => $firstLevel, 'secondLevel' => $secondLevel, 'thirdLevel' => $thirdLevel, 'fourthLevel' => $fourthLevel]
+        };
+        return $this->commissionRepositories->addCommission($content, (int)$type);
     }
 
     /**
