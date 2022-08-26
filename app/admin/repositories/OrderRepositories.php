@@ -293,15 +293,26 @@ class OrderRepositories extends AbstractRepositories
 
         // 分配的比例
         $propertyAlloc = $this->servletFactory->commissionServ()->getCommissionByType(1);
+        if (is_null($propertyAlloc) && $propertyAlloc->content == "")
+            throw new ParameterException(["errMessage" => "推广分佣的设置出错..."]);
 
 
         return $orderNo;
     }
 
     // 获取父级店铺分佣的金额
-    protected function getAmountOfCommission2Parents(string $parentsID)
+    protected function getAmountOfCommission2Parents(string $parentsID, string $propertyAllocJson)
     {
+        $propertyAlloc = json_decode($propertyAllocJson, true);
 
+        if (json_last_error() != JSON_ERROR_NONE)
+            throw new ParameterException(["errMessage" => "推广分佣的设置出错..."]);
+
+        $parentsArr = explode(",", trim($parentsID, ","));
+
+        foreach (array_reverse($parentsArr) as $key => $parentID) {
+
+        }
     }
 
     /**
