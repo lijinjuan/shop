@@ -232,7 +232,7 @@ class OrderRepositories extends AbstractRepositories
             $goodsCommission = json_decode($commission->content, true);
             if ($goodsCommission) {
                 $goodsCommission = $goodsCommission[0]['goodsCommission'];
-            }else{
+            } else {
                 $goodsCommission = 0;
             }
             $updateData = [
@@ -338,6 +338,18 @@ class OrderRepositories extends AbstractRepositories
         return renderResponse($this->servletFactory->orderServ()->orderDetail($orderNo));
     }
 
+    /**
+     * @param int $id
+     * @return \think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function orderDetailByID(int $id)
+    {
+        return renderResponse($this->servletFactory->orderDetailServ()->getDetailByID($id));
+    }
+
 
     /**
      * @param array $refundData
@@ -349,15 +361,19 @@ class OrderRepositories extends AbstractRepositories
         if (empty($detail)) {
             throw new ParameterException(['errMessage' => '订单不存在...']);
         }
-        $refundData['userID'] = app()->get('userProfile')->id;
-        $refundData['orderSn'] = makeOrderNo();
-        $refundData['goodsName'] = $detail->goodsName;
-        $refundData['goodsPrice'] = $detail->goodsPrice;
-        $refundData['goodsCover'] = $detail->skuImage;
-        $refundData['goodsNum'] = $detail->goodsNum;
-        $refundData['goodsTotalPrice'] = sprintf('%.2f', round($detail->goodsPrice * $detail->goodsNum, 2));
-        $refundData['goodsSku'] = $detail->skuName;
-        $this->servletFactory->refundServ()->addRefund(array_filter($refundData));
+        Db::transaction(function ($detail) {
+            $refundData['userID'] = app()->get('userProfile')->id;
+            $refundData['orderSn'] = makeOrderNo();
+            $refundData['goodsName'] = $detail->goodsName;
+            $refundData['goodsPrice'] = $detail->goodsPrice;
+            $refundData['goodsCover'] = $detail->skuImage;
+            $refundData['goodsNum'] = $detail->goodsNum;
+            $refundData['goodsTotalPrice'] = sprintf('%.2f', round($detail->goodsPrice * $detail->goodsNum, 2));
+            $refundData['goodsSku'] = $detail->skuName;
+            $this->servletFactory->refundServ()->addRefund(array_filter($refundData));
+            $detail::update(['status' => 6], ['id' => $detail->id]);
+            $detail->orders()->update(['orderStatus' => 6]);
+        });
         return renderResponse();
     }
 

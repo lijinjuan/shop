@@ -44,7 +44,7 @@ class RefundServlet
      */
     public function refundList(int $type)
     {
-        $select = ['id', 'orderSn', 'goodsName', 'goodsPrice', 'goodsCover', 'goodsNum', 'goodsTotalPrice', 'goodsSku'];
+        $select = ['id', 'orderSn', 'orderID','goodsName', 'goodsPrice', 'goodsCover', 'goodsNum', 'goodsTotalPrice', 'goodsSku'];
         $model = $this->refundModel->where('userID', app()->get('userProfile')->id);
         if ($type == 1) {
             $model->whereIn('status', [0, 1]);
