@@ -383,7 +383,6 @@ class OrderRepositories extends AbstractRepositories
             $refundData['goodsSku'] = $detail->skuName;
             $this->servletFactory->refundServ()->addRefund(array_filter($refundData));
             $detail::update(['status' => 6], ['id' => $detail->id]);
-            $detail->orders()->update(['orderStatus' => 6]);
         });
         return renderResponse();
     }

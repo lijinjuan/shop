@@ -110,11 +110,23 @@ class OrderController
     /**
      * @param Request $request
      * @return \think\response\Json
+     * @throws \app\lib\exception\ParameterException
      */
     public function orderRefund(Request $request)
     {
-        $refundData = $request->post(['orderID','storeID','goodsID','goodsNum','reasonID','remark','voucherImg']);
+        $refundData = $request->post(['orderID','storeID','goodsID','goodsNum','reasonID','remark','voucherImg','refundType']);
         return $this->orderRepositories->orderRefund($refundData);
+    }
+
+    /**
+     * @return \think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function orderRefundType()
+    {
+        return $this->orderRepositories->refundList(1);
     }
 
     /**
