@@ -148,7 +148,7 @@ class GoodsServlet
         $order["goodsSalesAmount"] = $condition["goodsSalesAmount"] ?? "desc";
         $goodsList = $this->goodsModel->whereIn("categoryID", $categories)->where("status", 1)->field(["id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "goodsSalesAmount", "createdAt"]);
         if (isset($condition["keywords"]) && trim($condition["keywords"]) != "")
-            $goodsList->whereLike("googsName", "%" . $condition["keywords"] . "%");
+            $goodsList->whereLike("goodsName", "%" . $condition["keywords"] . "%");
 
         return $goodsList->order($order)->paginate((int)request()->param("pageSize"));
     }
