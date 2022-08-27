@@ -5,6 +5,9 @@ namespace app\api\controller\v1;
 use app\api\repositories\OrderRepositories;
 use think\Request;
 
+/**
+ * \app\api\controller\v1\OrderController
+ */
 class OrderController
 {
     /**
@@ -115,7 +118,7 @@ class OrderController
      */
     public function orderRefund(Request $request)
     {
-        $refundData = $request->post(['orderID','storeID','goodsID','goodsNum','reasonID','remark','voucherImg','refundType']);
+        $refundData = $request->post(['orderID', 'storeID', 'goodsID', 'goodsNum', 'reasonID', 'remark', 'voucherImg', 'refundType']);
         return $this->orderRepositories->orderRefund($refundData);
     }
 
@@ -197,7 +200,6 @@ class OrderController
     {
         return $this->orderRepositories->getRefundReason();
     }
-
 
 
 }

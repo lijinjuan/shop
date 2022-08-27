@@ -133,8 +133,8 @@ class ShopRepositories extends AbstractRepositories
     {
         $shopModel = $this->servletFactory->shopServ()->getShopInfoByShopID($shopID);
         $shopList = $shopModel->goods()->where("s_goods.status", 1)
-            ->field(["s_goods.id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "commission", "goodsSalesAmount", "s_goods.createdAt"])
-            ->hidden(["pivot", "updatedAt", "deletedAt", "brandID", "goodsContent", "goodsStock", "isRank", "isNew", "isItem"])->paginate((int)request()->param("pageSize"));
+            ->field(["s_goods.id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "goodsSalesAmount", "s_goods.createdAt"])
+            ->hidden(["pivot", "updatedAt", "deletedAt", "brandID", "goodsContent", "goodsStock", "isRank", "isNew", "isItem"])->paginate((int)request()->param("pageSize", 20));
 
         return renderPaginateResponse($shopList);
     }
