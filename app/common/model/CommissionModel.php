@@ -4,6 +4,9 @@ namespace app\common\model;
 
 use think\Model;
 
+/**
+ * \app\common\model\CommissionModel
+ */
 class CommissionModel extends Model
 {
     /**

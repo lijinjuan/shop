@@ -3,6 +3,7 @@
 namespace app\store\servlet\contract;
 
 
+use app\store\servlet\CommissionServlet;
 use app\store\servlet\GoodsServlet;
 use app\store\servlet\OrdersServlet;
 use app\store\servlet\StoreServlet;
@@ -37,4 +38,10 @@ interface ServletFactoryInterface
      * @return \app\store\servlet\GoodsServlet
      */
     public function goodsServ(): GoodsServlet;
+
+    /**
+     * commissionServ
+     * @return \app\store\servlet\CommissionServlet
+     */
+    public function commissionServ(): CommissionServlet;
 }

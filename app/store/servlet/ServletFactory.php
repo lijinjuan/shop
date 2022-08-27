@@ -45,4 +45,13 @@ class ServletFactory implements ServletFactoryInterface
     {
         return invoke(GoodsServlet::class);
     }
+
+    /**
+     * commissionServ
+     * @return \app\store\servlet\CommissionServlet
+     */
+    public function commissionServ(): CommissionServlet
+    {
+        return invoke(CommissionServlet::class);
+    }
 }

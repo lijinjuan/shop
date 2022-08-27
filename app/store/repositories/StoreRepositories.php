@@ -162,6 +162,17 @@ class StoreRepositories extends AbstractRepositories
             ->hidden(["pivot"])
             ->paginate((int)\request()->param("pageSize", 20));
 
+        $commissionRate = $this->servletFactory->commissionServ()->getCommissionByType(2);
+
+        $rateArr = json_decode($commissionRate, true);
+
+        $rate = $rateArr["goodsCommission"] ?? 0;
+
+        $goodsList = $goodsList->each(function ($item) use ($rate) {
+            $item->commission = bcmul($item->goodsDiscountPrice, $rate / 100, 2);
+            return $item;
+        });
+
         return renderPaginateResponse($goodsList);
     }
 
