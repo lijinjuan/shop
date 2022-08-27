@@ -2,6 +2,8 @@
 
 namespace app\api\repositories;
 
+use app\lib\exception\ParameterException;
+
 class RechargeRepositories extends AbstractRepositories
 {
     /**
@@ -38,10 +40,17 @@ class RechargeRepositories extends AbstractRepositories
     /**
      * @param int $id
      * @return \think\response\Json
+     * @throws ParameterException
+     * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     public function rechargeDetail(int $id)
     {
-        return renderResponse($this->servletFactory->rechargeServ()->rechargeDetail($id));
+        $model = $this->servletFactory->rechargeServ()->rechargeDetail($id);
+        if (!$model){
+            throw  new ParameterException(['errMessage'=>'充值详情不存在...']);
+        }
+        return renderResponse($model);
     }
 }

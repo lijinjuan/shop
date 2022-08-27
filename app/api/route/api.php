@@ -123,6 +123,10 @@ Route::group(":version", function () {
     Route::get("order-count", ":version.Order/orderCount");
     //申请退款
     Route::post('order-refund',":version.Order/orderRefund");
+    //获取退款类型
+    Route::post('order-refund-type',":version.Order/orderRefundType");
+    //取消申请退款
+    Route::post('cancel-order-refund/:orderID',":version.Order/cancelOrderRefund");
     //获取退款原因
     Route::get('order-refund-reason',":version.Order/getRefundReason");
     //确认收获

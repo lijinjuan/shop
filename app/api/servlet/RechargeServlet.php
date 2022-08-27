@@ -53,8 +53,10 @@ class RechargeServlet
      */
     public function rechargeDetail(int $id)
     {
-        return $this->rechargeModel->where('id', $id)->field(['id', 'orderNo', 'rechargeMoney', 'createdAt', 'status', 'rechargeVoucher'])->append(['rechargeName', 'orderStatus'])->find();
+        return $this->rechargeModel->where('id', $id)->where('userID',app()->get('userProfile')->id)->field(['id', 'orderNo', 'rechargeMoney', 'createdAt', 'status', 'rechargeVoucher'])->append(['rechargeName', 'orderStatus'])->find();
     }
+
+
 
 
 }

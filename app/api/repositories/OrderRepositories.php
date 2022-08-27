@@ -235,12 +235,14 @@ class OrderRepositories extends AbstractRepositories
             $cartData = $order->goodsDetail()->where('orderNo', $order->orderNo)->field(['id', 'goodsID', 'skuID'])->select()->toArray();
             $this->servletFactory->usersShoppingCartServ()->clearChoppingCart(app()->get('userProfile')->id, $cartData);
             $commission = $this->servletFactory->commissionServ()->getCommissionByType(2);
-            $goodsCommission = json_decode($commission->content, true);
-            if ($goodsCommission) {
-                $goodsCommission = $goodsCommission['goodsCommission'];
-            } else {
-                $goodsCommission = 0;
+            $goodsCommission = 0;
+            if (!empty($commission)) {
+                $goodsCommission = json_decode($commission->content, true);
+                if ($goodsCommission) {
+                    $goodsCommission = $goodsCommission['goodsCommission'];
+                }
             }
+
             $updateData = [
                 'userPayPrice' => $order->goodsTotalPrice,
                 'orderStatus' => !empty($order->storeID) ? 1 : 2,
@@ -383,7 +385,6 @@ class OrderRepositories extends AbstractRepositories
             $refundData['goodsSku'] = $detail->skuName;
             $this->servletFactory->refundServ()->addRefund(array_filter($refundData));
             $detail::update(['status' => 6], ['id' => $detail->id]);
-            $detail->orders()->update(['orderStatus' => 6]);
         });
         return renderResponse();
     }
@@ -453,16 +454,18 @@ class OrderRepositories extends AbstractRepositories
      */
     public function delOrderByOrderSn(string $orderSn)
     {
-        $order = $this->servletFactory->orderServ()->getOrderDetailByID($orderSn);
+        $order = $this->servletFactory->refundServ()->getRefundDetail($orderSn);
         if (!$order) {
             throw new ParameterException(['errMessage' => '订单不存在...']);
         }
-        if ($order->orderStatus != 5) {
-            throw new ParameterException(['errMessage' => '当前状态不能删除订单...']);
+        $orderDetail = $this->servletFactory->orderDetailServ()->getDetailByID($order->orderID);
+        if (!$orderDetail || $orderDetail->status != 7) {
+            throw new ParameterException(['errMessage' => '订单不存在或不能被删除...']);
         }
-        Db::transaction(function () use ($order, $orderSn) {
-            $order::update(['orderStatus' => -1], ['orderNo' => $orderSn]);
-            $order->goodsDetail()->update(['status' => -1]);
+        Db::transaction(function () use ($orderDetail, $order) {
+            $order::update(['status' => -1], ['id' => $order->id]);
+            $orderDetail::update(['status' => -1], ['id' => $orderDetail->id]);
+            $orderDetail->orders()->update(['orderStatus' => -1]);
         });
         return renderResponse();
     }
@@ -488,6 +491,38 @@ class OrderRepositories extends AbstractRepositories
     public function refundList(int $type)
     {
         return renderResponse($this->servletFactory->refundServ()->refundList($type));
+    }
+
+
+    /**
+     * @param int $type
+     * @return \think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function refundType(int $type)
+    {
+        return renderResponse($this->servletFactory->refundConfigServ()->getConfigByID($type));
+    }
+
+    public function cancelRefundOrder(int $orderID)
+    {
+        $refundOrder = $this->servletFactory->refundServ()->getRechargeDetailByOrderID($orderID);
+        if (!$refundOrder) {
+            throw new ParameterException(['errMessage' => '退款订单不存在...']);
+        }
+        $orderDetail = $this->servletFactory->orderDetailServ()->getDetailByID($orderID);
+        if (!$orderDetail || $orderDetail->status != 6) {
+            throw new ParameterException(['errMessage' => '当前订单不存在或者不能取消退款申请...']);
+        }
+
+        Db::transaction(function () use ($refundOrder, $orderDetail) {
+            $refundOrder::update(['status' => 3], ['orderID' => $refundOrder->orderID]);
+            $orderDetail::update(['status' => $orderDetail->orders->orderStatus], ['id' => $refundOrder->orderID]);
+        });
+
+        return renderResponse();
     }
 
 
