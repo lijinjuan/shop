@@ -235,12 +235,14 @@ class OrderRepositories extends AbstractRepositories
             $cartData = $order->goodsDetail()->where('orderNo', $order->orderNo)->field(['id', 'goodsID', 'skuID'])->select()->toArray();
             $this->servletFactory->usersShoppingCartServ()->clearChoppingCart(app()->get('userProfile')->id, $cartData);
             $commission = $this->servletFactory->commissionServ()->getCommissionByType(2);
-            $goodsCommission = json_decode($commission->content, true);
-            if ($goodsCommission) {
-                $goodsCommission = $goodsCommission['goodsCommission'];
-            } else {
-                $goodsCommission = 0;
+            $goodsCommission = 0;
+            if (!empty($commission)) {
+                $goodsCommission = json_decode($commission->content, true);
+                if ($goodsCommission) {
+                    $goodsCommission = $goodsCommission['goodsCommission'];
+                }
             }
+
             $updateData = [
                 'userPayPrice' => $order->goodsTotalPrice,
                 'orderStatus' => !empty($order->storeID) ? 1 : 2,

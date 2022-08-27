@@ -28,6 +28,7 @@ class OrderController
      */
     public function placeOrder(Request $request)
     {
+
         $addressID = $request->post('addressID');
         $storeID = $request->post('storeID', 0);
         $goodsInfo = $request->post('goodsInfo', []);
