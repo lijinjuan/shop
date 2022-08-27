@@ -168,7 +168,7 @@ class OrderRepositories extends AbstractRepositories
                 $storeID = $payUser->store->id;
             }
             $changeLog = $this->update2ChangeAccountLog($storeID, (int)$payUser->id, $balance, $amount);
-            $payUser->store->storeAccount()->save($changeLog);
+            $payUser->storeAccount()->save($changeLog);
         }
 
         $payUser->save();
