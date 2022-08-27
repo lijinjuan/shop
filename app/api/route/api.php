@@ -52,7 +52,7 @@ Route::group(":version", function () {
     // 获取所有的一级分类的接口
     Route::get("category-parent-list", ":version.Category/getParentCategories");
     // 根据一级分类获取商品的列表的接口
-    Route::get(":categoryID/home-goods-list", ":version.Goods/getGoodsListByHomeCategoryID");
+    Route::post(":categoryID/home-goods-list", ":version.Goods/getGoodsListByHomeCategoryID");
     // 根据二级分类获取商品的列表的接口
     Route::post("category/:categoryID/goods-list", ":version.Goods/getGoodsListByCategoryID");
     // 根据关键字搜索商品列表的接口
