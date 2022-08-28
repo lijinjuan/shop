@@ -8,7 +8,7 @@ return [
     'private_key' => env('JWT_PRIVATE_KEY'),
     'password' => env('JWT_PASSWORD'),
     //JWT time to live minute
-    'ttl' => env('JWT_TTL', 60 * 60 * 60 * 365),
+    'ttl' => env('JWT_TTL', 60 * 60 * 24 * 365),
     //Refresh time to live seconds
     'refresh_ttl' => env('JWT_REFRESH_TTL', 20160),
     //JWT hashing algorithm
