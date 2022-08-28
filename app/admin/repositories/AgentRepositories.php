@@ -14,7 +14,16 @@ class AgentRepositories extends AbstractRepositories
      */
     public function agentList(int $pageSize, string $keywords)
     {
-        return renderPaginateResponse($this->servletFactory->agentServ()->agentList($pageSize, $keywords));
+        $list = $this->servletFactory->agentServ()->agentList($pageSize, $keywords);
+        $list->each(function($query) use($list){
+            $query->parentAgentName = '';
+            if ($query->parentID){
+                $agent = $this->servletFactory->agentServ()->getAgentsProfileByFields(['id'=>$query->parentID]);
+                $query->parentAgentName = $agent->agentName;
+            }
+        });
+
+        return renderPaginateResponse($list);
     }
 
     /**

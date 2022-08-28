@@ -3,6 +3,7 @@
 namespace app\api\controller\v1;
 
 use app\api\repositories\OrderRepositories;
+use app\common\service\InviteServiceInterface;
 use think\Request;
 
 /**
@@ -31,7 +32,8 @@ class OrderController
      */
     public function placeOrder(Request $request)
     {
-
+        var_dump(app()->get(InviteServiceInterface::class)->agentInviteCode());
+        die();
         $addressID = $request->post('addressID');
         $storeID = $request->post('storeID', 0);
         $goodsInfo = $request->post('goodsInfo', []);

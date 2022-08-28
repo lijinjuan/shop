@@ -23,7 +23,7 @@ class InviteCodeService implements InviteServiceInterface
      */
     public function agentInviteCode(): string
     {
-        return "A" . $this->enCode(6);
+        return "A" . $this->enCode(4);
     }
 
     /**
@@ -32,6 +32,6 @@ class InviteCodeService implements InviteServiceInterface
      */
     public function storeInviteCode(): string
     {
-        return "M" . $this->enCode(6);
+        return "M" . $this->enCode(4);
     }
 }

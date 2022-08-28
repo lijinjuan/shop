@@ -22,17 +22,20 @@ class AgentsServlet
 
     /**
      * @param int $pageSize
+     * @param string $keywords
      * @return \think\Paginator
      * @throws \think\db\exception\DbException
      */
     public function agentList(int $pageSize, string $keywords = '')
     {
-        $select = ['id', 'agentAccount', 'agentName', 'loginIP', 'lastLoginAt', 'loginNum', 'status', 'createdAt'];
+        $select = ['id', 'agentAccount', 'agentName', 'loginIP', 'lastLoginAt', 'loginNum', 'status', 'createdAt', 'agentParentID'];
         $model = $this->agentsModel->where('id', '>', 0);
         if ($keywords) {
             $model->where('agentAccount', 'like', '%' . $keywords . '%');
         }
-        return $model->field($select)->append(['statusName'])->order('createdAt', 'desc')->paginate($pageSize);
+        return $model->field($select)->append(['statusName'])->order('createdAt', 'desc')->append(['parentID'])->paginate($pageSize);
+
+
     }
 
     /**

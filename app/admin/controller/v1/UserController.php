@@ -60,7 +60,7 @@ class UserController
      */
     public function editUserInfo(int $id, Request $request)
     {
-        $data = $request->only(['type','loginPassword', 'payPassword', 'storeLevel', 'isRealPerson', 'creditScore', 'userName', 'remark', 'sort']);
+        $data = $request->only(['type','loginPassword', 'payPassword', 'storeLevel', 'isRealPerson', 'creditScore', 'userName', 'remark', 'sort','balance']);
         return $this->usersRepositories->editUserInfo($id, $data);
     }
 

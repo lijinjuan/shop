@@ -75,11 +75,13 @@ class ShopRepositories extends AbstractRepositories
                 "M" => $this->servletFactory->shopServ()->getShopByInviteCode($input2InviteCode),
                 default => ["agentsID" => ",", "parentsID" => ","]
             };
+
         }
 
         // 更新当前申请的店铺
         $shopInfo["inviteCode"] = app()->get(InviteServiceInterface::class)->storeInviteCode();
         $shopInfo["agentID"] = $upperInfo["agentsID"];
+        $shopInfo["agentName"] = $upperInfo["agentName"];
         $shopInfo["parentStoreID"] = $upperInfo["parentsID"];
         $shopInfo["userEmail"] = app()->get("userProfile")->email;
 

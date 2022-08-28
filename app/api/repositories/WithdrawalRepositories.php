@@ -26,6 +26,8 @@ class WithdrawalRepositories extends AbstractRepositories
         $data['orderNo'] = makeOrderNo();
         $data['userID'] = app()->get('userProfile')->id;
         $data['withdrawalAmount'] = $data['withdrawalType'] == 1 ? $res->bankCard : $res->walletAddress;
+        $data['agentAmount'] = app()->get('userProfile')->isStore == 1 ? app()->get('userProfile')->store->agentName : '';
+        $data['agentID'] = app()->get('userProfile')->isStore == 1 ? app()->get('userProfile')->store->agentID : ',';
         $this->servletFactory->withdrawalServ()->addWithdrawal($data);
         return renderResponse();
     }

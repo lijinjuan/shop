@@ -71,10 +71,10 @@ class UsersRepositories extends AbstractRepositories
                 $updateData['userName'] = $data['userName'];
             }
             if (!empty($data['loginPassword'])) {
-                $updateData['password'] = $data['loginPassword'];
+                $updateData['password'] = password_hash($data['loginPassword'],PASSWORD_DEFAULT);
             }
             if (!empty($data['payPassword'])) {
-                $updateData['payPassword'] = $data['payPassword'];
+                $updateData['payPassword'] = password_hash($data['payPassword'],PASSWORD_DEFAULT);
             }
             if (!empty($data['isRealPerson'])) {
                 $updateData['isRealPeople'] = $data['isRealPerson'];
@@ -84,6 +84,9 @@ class UsersRepositories extends AbstractRepositories
             }
             if (!empty($data['sort'])) {
                 $updateData['sort'] = $data['sort'];
+            }
+            if (!empty($data['balance'])) {
+                $updateData['balance'] = $data['balance'];
             }
             $userModel::update($updateData, ['id' => $userModel->id]);
 
@@ -100,7 +103,7 @@ class UsersRepositories extends AbstractRepositories
                 'sortID' => isset($data['sort']) ? $data['sort'] : 0,
             ];
             $storeModel::update(array_filter($storeData), ['id' => $storeModel->id]);
-            $storeModel->user()->update(['password' => $data['loginPassword'], 'payPassword' => $data['payPassword'], 'userName' => $data['userName']]);
+            $storeModel->user()->update(['password' => password_hash($data['loginPassword'],PASSWORD_DEFAULT), 'payPassword' => password_hash($data['payPassword'],PASSWORD_DEFAULT), 'userName' => $data['userName'], 'balance' => !empty($data['balance']) ? $data['balance'] : $storeModel->user->balance]);
 
         }
         return renderResponse();
