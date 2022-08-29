@@ -4,6 +4,7 @@ namespace app\admin\servlet;
 
 use app\common\model\OrdersModel;
 use app\lib\exception\ParameterException;
+use thans\jwt\claim\IssuedAt;
 
 /**
  * \app\admin\servlet\OrderServlet
@@ -69,6 +70,12 @@ class OrderServlet
             }
         } else {
             $orderList = $this->ordersModel;
+        }
+
+        if (isset($conditions["userAccount"]) && $conditions["userAccount"] != "") {
+            $orderList = $orderList::hasWhere("user", function ($query) use ($conditions) {
+                $query->where("userName", $conditions["userAccount"]);
+            });
         }
 
         $orderList = $orderList->with(["user" => function ($query) {
