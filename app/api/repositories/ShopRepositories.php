@@ -81,7 +81,7 @@ class ShopRepositories extends AbstractRepositories
         $shopInfo["inviteCode"] = app()->get(InviteServiceInterface::class)->storeInviteCode();
         $shopInfo["agentID"] = $upperInfo["agentsID"];
         $shopInfo["parentStoreID"] = $upperInfo["parentsID"];
-        $shopInfo["agentName"] = $upperInfo["agentName"];
+        $shopInfo["agentName"] = $upperInfo["agentsName"];
         $shopInfo["userEmail"] = app()->get("userProfile")->email;
 
         // 创建店铺
