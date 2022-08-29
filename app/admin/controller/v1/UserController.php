@@ -33,7 +33,9 @@ class UserController
         $pageSize = $request->post('pageSize', 20);
         $userAccount = $request->post('keywords', '');
         $status = $request->post('status', 0);
-        return $this->usersRepositories->userList($type, $pageSize, $userAccount, $status);
+        $agentName = $request->post('agentName', 0);
+        $storeName = $request->post('storeName', 0);
+        return $this->usersRepositories->userList($type, $pageSize, $userAccount, $status, $agentName, $storeName);
     }
 
 
@@ -44,10 +46,10 @@ class UserController
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function userDetail(int $id,Request $request)
+    public function userDetail(int $id, Request $request)
     {
-        $type = $request->post('type',1);
-        return $this->usersRepositories->userDetail($id,$type);
+        $type = $request->post('type', 1);
+        return $this->usersRepositories->userDetail($id, $type);
     }
 
     /**
@@ -60,7 +62,7 @@ class UserController
      */
     public function editUserInfo(int $id, Request $request)
     {
-        $data = $request->only(['type','loginPassword', 'payPassword', 'storeLevel', 'isRealPerson', 'creditScore', 'userName', 'remark', 'sort','balance']);
+        $data = $request->only(['type', 'loginPassword', 'payPassword', 'storeLevel', 'isRealPerson', 'creditScore', 'userName', 'remark', 'sort', 'balance']);
         return $this->usersRepositories->editUserInfo($id, $data);
     }
 
@@ -177,9 +179,11 @@ class UserController
      */
     public function rechargeList(Request $request)
     {
+        //Todo 缺少storeName搜索
         $keywords = $request->post('keywords', '');
+        $agentAccount = $request->post('agentAccount', '');
         $pageSize = $request->post('pageSize', 20);
-        return $this->usersRepositories->rechargeList($keywords, $pageSize);
+        return $this->usersRepositories->rechargeList($keywords, $agentAccount, $pageSize);
 
     }
 

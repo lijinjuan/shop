@@ -27,8 +27,9 @@ class AdminAccountController
      */
     public function accountList(Request $request)
     {
+        //Todo 缺少会员账号，代理账号搜索
         $pageSize = $request->post('pageSize',20);
-        $search = $request->only(['storeName','startTime','endTime']);
+        $search = $request->only(['storeName','startTime','endTime','ID']);
         return $this->adminAccountRepositories->accountList($search,$pageSize);
 
     }

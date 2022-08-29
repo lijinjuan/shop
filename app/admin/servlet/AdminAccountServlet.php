@@ -39,6 +39,9 @@ class AdminAccountServlet
     public function accountList(array $search,int $pageSize = 20)
     {
         $model = $this->adminsAccountModel->where('type','>',0);
+        if (!empty($search['ID'])){
+            $model->where('id','like','%'.$search['ID'].'%');
+        }
         if (!empty($search['storeName'])){
             $model->where('storeName','like','%'.$search['storeName'].'%');
         }
