@@ -34,14 +34,14 @@ class CategoryServlet
 
     /**
      * getCategoryListByPaginate
-     * @return \think\Paginator
+     * @return \app\common\model\CategoryModel[]|array|\think\Collection
      */
     public function getCategoryListByPaginate()
     {
-        return $this->categoryModel->field(["id", "categoryName", "categoryImgUrl", "status", "sort", "createdAt"])
+        return $this->categoryModel->field(["id", "categoryName", "parentID", "categoryImgUrl", "status", "sort", "createdAt"])
             ->order("sort", "desc")
             ->order("createdAt", "desc")
-            ->paginate((int)request()->param("pageSize", 20));
+            ->select();
     }
 
     /**
