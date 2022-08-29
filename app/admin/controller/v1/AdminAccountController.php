@@ -28,7 +28,7 @@ class AdminAccountController
     public function accountList(Request $request)
     {
         $pageSize = $request->post('pageSize',20);
-        $search = $request->only(['storeName','startTime','endTime']);
+        $search = $request->only(['storeName','startTime','endTime','ID','userAccount','agentAccount']);
         return $this->adminAccountRepositories->accountList($search,$pageSize);
 
     }

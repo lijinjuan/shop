@@ -2,6 +2,7 @@
 
 namespace app\admin\repositories;
 
+use app\common\service\InviteServiceInterface;
 use app\lib\exception\ParameterException;
 use think\facade\Db;
 
@@ -16,11 +17,13 @@ class UsersRepositories extends AbstractRepositories
      * @param int $pageSize
      * @param string $userAccount
      * @param int $status
+     * @param string $agentName
+     * @param string $storeName
      * @return \think\response\Json
      * @throws ParameterException
      * @throws \think\db\exception\DbException
      */
-    public function userList(int $type, int $pageSize, string $userAccount, int $status)
+    public function userList(int $type, int $pageSize, string $userAccount, int $status, string $agentName = '', string $storeName = '')
     {
         if (!in_array($type, [1, 2])) {
             throw new ParameterException(['errMessage' => '参数错误...']);
@@ -29,7 +32,7 @@ class UsersRepositories extends AbstractRepositories
         if ($type == 1) {
             $list = $this->servletFactory->userServ()->userList($pageSize, $userAccount);
         } else {
-            $list = $this->servletFactory->storeServ()->storeList($pageSize, $status, $userAccount);
+            $list = $this->servletFactory->storeServ()->storeList($pageSize, $status, $userAccount, $agentName, $storeName);
         }
         return renderPaginateResponse($list);
     }
@@ -71,10 +74,10 @@ class UsersRepositories extends AbstractRepositories
                 $updateData['userName'] = $data['userName'];
             }
             if (!empty($data['loginPassword'])) {
-                $updateData['password'] = password_hash($data['loginPassword'],PASSWORD_DEFAULT);
+                $updateData['password'] = password_hash($data['loginPassword'], PASSWORD_DEFAULT);
             }
             if (!empty($data['payPassword'])) {
-                $updateData['payPassword'] = password_hash($data['payPassword'],PASSWORD_DEFAULT);
+                $updateData['payPassword'] = password_hash($data['payPassword'], PASSWORD_DEFAULT);
             }
             if (!empty($data['isRealPerson'])) {
                 $updateData['isRealPeople'] = $data['isRealPerson'];
@@ -103,7 +106,7 @@ class UsersRepositories extends AbstractRepositories
                 'sortID' => isset($data['sort']) ? $data['sort'] : 0,
             ];
             $storeModel::update(array_filter($storeData), ['id' => $storeModel->id]);
-            $storeModel->user()->update(['password' => password_hash($data['loginPassword'],PASSWORD_DEFAULT), 'payPassword' => password_hash($data['payPassword'],PASSWORD_DEFAULT), 'userName' => $data['userName'], 'balance' => !empty($data['balance']) ? $data['balance'] : $storeModel->user->balance]);
+            $storeModel->user()->update(['password' => password_hash($data['loginPassword'], PASSWORD_DEFAULT), 'payPassword' => password_hash($data['payPassword'], PASSWORD_DEFAULT), 'userName' => $data['userName'], 'balance' => !empty($data['balance']) ? $data['balance'] : $storeModel->user->balance]);
 
         }
         return renderResponse();
@@ -178,14 +181,29 @@ class UsersRepositories extends AbstractRepositories
         $update = [
             'storeRemark' => $checkData['remark'] ?? '',
             'status' => $checkData['status'],
-            'checkID' => app()->get("adminProfile")->id,
+            'checkID' => app()->get("agentProfile")->id,
             'checkAt' => date('Y-m-d H:i:s'),
         ];
         $update['reason'] = $checkData['status'] == 2 ? $checkData['reason'] : '';
-        $store::update($update, ['id' => $id]);
+        //审核成功之后生成邀请码
         if ($update['status'] == 1) {
-            $store->user()->update(['isStore' => 1]);
+            $update['inviteCode'] = app()->get(InviteServiceInterface::class)->agentInviteCode();;
         }
+        Db::transaction(function () use ($store, $update, $id) {
+            $store::update($update, ['id' => $id]);
+            $store->user()->update(['isStore' => 1]);
+            //发送站内信
+            //$content = sprintf('您的店铺申请%s', '已通过');
+            $content = $title = 'Store approval notice';
+            if ($update['status'] == 2) {
+                //$content .= sprintf(',驳回理由%s。', !empty($update['reason']) ? $update['reason'] : '');
+                $content = $title = 'Store review rejection notice';
+
+            }
+            $this->servletFactory->messageServ()->addMessage(['title' => $title, 'content' => $content, 'userID' => $store->user->id]);
+
+        });
+
         return renderResponse();
     }
 
@@ -302,12 +320,15 @@ class UsersRepositories extends AbstractRepositories
 
     /**
      * @param string $keywords
+     * @param string $agentAccount
      * @param int $pageSize
+     * @param string $storeName
      * @return \think\response\Json
+     * @throws \think\db\exception\DbException
      */
-    public function rechargeList(string $keywords, int $pageSize)
+    public function rechargeList(string $keywords, string $agentAccount, int $pageSize,string $storeName)
     {
-        return renderPaginateResponse($this->servletFactory->rechargeServ()->rechargeList($keywords, $pageSize));
+        return renderPaginateResponse($this->servletFactory->rechargeServ()->rechargeList($keywords, $agentAccount, $pageSize,$storeName));
     }
 
     /**

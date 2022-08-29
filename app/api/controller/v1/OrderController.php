@@ -32,8 +32,6 @@ class OrderController
      */
     public function placeOrder(Request $request)
     {
-        var_dump(app()->get(InviteServiceInterface::class)->agentInviteCode());
-        die();
         $addressID = $request->post('addressID');
         $storeID = $request->post('storeID', 0);
         $goodsInfo = $request->post('goodsInfo', []);

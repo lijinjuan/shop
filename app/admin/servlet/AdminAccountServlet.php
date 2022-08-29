@@ -36,26 +36,45 @@ class AdminAccountServlet
      * @return \think\Paginator
      * @throws \think\db\exception\DbException
      */
-    public function accountList(array $search,int $pageSize = 20)
+    public function accountList(array $search, int $pageSize = 20)
     {
-        $model = $this->adminsAccountModel->where('type','>',0);
-        if (!empty($search['storeName'])){
-            $model->where('storeName','like','%'.$search['storeName'].'%');
+        $model = $this->adminsAccountModel;
+        if (!empty($search['userAccount'])) {
+            $email = $search['userAccount'];
+            $model = $this->adminsAccountModel::hasWhere('user', function ($query) use ($email) {
+                $query->whereLike('email', '%' . $email . '%');
+            });
         }
-        if (!empty($search['startTime'])){
-            $model->where('createdAt','>=',$search['startTime']);
+        if (!empty($search['agentAccount'])){
+            $agent = $search['agentAccount'];
+            $model = $this->adminsAccountModel::hasWhere('agent', function ($query) use ($agent) {
+                $query->whereLike('agentAccount', '%' . $agent . '%');
+            });
+        }
+        $model->where('type', '>', 0);
+        if (!empty($search['ID'])) {
+            $model->where('id', 'like', '%' . $search['ID'] . '%');
+        }
+        if (!empty($search['storeName'])) {
+            $model->where('storeName', 'like', '%' . $search['storeName'] . '%');
+        }
+        if (!empty($search['startTime'])) {
+            $model->where('createdAt', '>=', $search['startTime']);
         }
 
-        if (!empty($search['endTime'])){
-            $model->where('createdAt','<=',$search['endTime']);
+        if (!empty($search['endTime'])) {
+            $model->where('createdAt', '<=', $search['endTime']);
         }
-        return $model->with(['store'=>function($query){
-            $query->field(['id','mobile']);
-        },'user'=>function($query){
-            $query->field(['id','email']);
-        },'agent'=>function($query){
-            $query->field(['id','agentAccount']);
-        }])->order('createdAt','desc')->paginate($pageSize);
+        if (!empty($search[''])) {
+
+        }
+        return $model->with(['store' => function ($query) {
+            $query->field(['id', 'mobile']);
+        }, 'user' => function ($query) {
+            $query->field(['id', 'email']);
+        }, 'agent' => function ($query) {
+            $query->field(['id', 'agentAccount']);
+        }])->order('createdAt', 'desc')->paginate($pageSize);
     }
 
 }

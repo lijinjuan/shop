@@ -57,21 +57,32 @@ class RechargeServet
 
     /**
      * @param string $keywords
+     * @param string $agentAccount
      * @param int $pageSize
+     * @param string $storeName
      * @return \think\Paginator
      * @throws \think\db\exception\DbException
      */
-    public function rechargeList(string $keywords = '', int $pageSize = 20)
+    public function rechargeList(string $keywords = '', string $agentAccount = '', int $pageSize = 20, string $storeName = '')
     {
-        //商户账号
         $select = ['id', 'orderNo', 'storeID', 'status', 'rechargeType', 'agentAccount', 'rechargeMoney', 'createdAt'];
-        $model = $this->rechargeModel->field($select)->with(['store' => function ($query) {
+        $model = $this->rechargeModel;
+        if (!empty($storeName)) {
+            $model = $this->rechargeModel::hasWhere('store', function ($query) use ($storeName) {
+                $query->whereLike('storeName', 'like', '%' . $storeName . '%');
+            });
+        }
+        $model->field($select)->with(['store' => function ($query) {
             $query->field(['id', 'storeName', 'isRealPeople', 'userID']);
         }]);
+        //商户账号
         if ($keywords) {
-            $model->where('userEmail','like','%'.$keywords.'%');
+            $model->where('userEmail', 'like', '%' . $keywords . '%');
         }
-        return $model->with(['store.user'])->append(['rechargeName'])->order('createdAt','desc')->paginate($pageSize);
+        if ($agentAccount) {
+            $model->where('agentAccount', 'like', '%' . $agentAccount . '%');
+        }
+        return $model->with(['store.user'])->append(['rechargeName'])->order('createdAt', 'desc')->paginate($pageSize);
     }
 
 }

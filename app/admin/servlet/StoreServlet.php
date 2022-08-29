@@ -49,14 +49,22 @@ class StoreServlet
      * @param int $pageSize
      * @param int $status
      * @param string $userAccount
+     * @param string $agentName
+     * @param string $storeName
      * @return \think\Paginator
      * @throws \think\db\exception\DbException
      */
-    public function storeList(int $pageSize = 20, int $status = 0, string $userAccount = '')
+    public function storeList(int $pageSize = 20, int $status = 0, string $userAccount = '',string $agentName= '',string $storeName='')
     {
         $model = $this->storesModel->where('id', '>', 0);
         if (!empty($userAccount)) {
             $model->where('userEmail', 'like', '%' . $userAccount . '%');
+        }
+        if (!empty($storeName)){
+            $model->where('storeName','like','%'.$storeName.'%');
+        }
+        if (!empty($agentName)){
+            $model->where('agentName','like','%'.$agentName.'%');
         }
         if ($status) {
             $model->where('status', $status - 1);

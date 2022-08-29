@@ -32,7 +32,7 @@ class UsersRechargeServlet
         if ($keywords) {
             $model->where('userEmail','like','%'.$keywords.'%');
         }
-        return $this->rechargeModel->with(['store'=>function($query){
+        return $model->with(['store'=>function($query){
             $query->field(['id','isRealPeople','storeName']);
         }])->append(['RechargeName'])->paginate($pageSize);
     }
