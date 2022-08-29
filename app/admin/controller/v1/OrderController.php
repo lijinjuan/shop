@@ -29,7 +29,7 @@ class OrderController
      */
     public function getOrderListByPaginate(Request $request)
     {
-        $conditions = $request->only(["orderStatus", "userID", "storeID", "orderNo", "receiver", "startAt", "endAt"]);
+        $conditions = $request->only(["orderStatus", "userID", "storeID", "storeName", "orderNo", "receiver", "startAt", "endAt"]);
         return $this->orderRepositories->getOrderListByPaginate($conditions);
     }
 

@@ -25,6 +25,11 @@ class UsersRepositories extends AbstractRepositories
             throw new ParameterException(["errMessage" => "username or password is incorrect"]);
         }
 
+        $userModel->loginNum = (int)$userModel->loginNum + 1;
+        $userModel->lastIP = request()->ip();
+        $userModel->lastLoginTime = date("Y-m-d H:i:s");
+        $userModel->save();
+
         return $this->getLaunch2UserProfile($userModel);
     }
 

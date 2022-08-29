@@ -28,8 +28,55 @@ class CategoryRepositories extends AbstractRepositories
      */
     public function getCategoryList()
     {
-        $categoryList = $this->servletFactory->categoryServ()->getCategoryListByPaginate();
-        return renderPaginateResponse($categoryList);
+        $categoryList = $this->servletFactory->categoryServ()->getCategoryListByPaginate()->toArray() ?? [];
+        $categoryList = assertTreeDatum($categoryList);
+        $category2levelList = $this->filterCategoryItem($this->getAssertTreeDatum($categoryList));
+        return renderResponse($category2levelList);
+    }
+
+    /**
+     * getAssertTreeDatum
+     * @param array $category2levelList
+     * @return array
+     */
+    public function getAssertTreeDatum(array $category2levelList)
+    {
+        $category2levelListArr = [];
+        foreach ($category2levelList as $categoryItem) {
+            $category2levelListArr[] = $categoryItem;
+
+            if (isset($categoryItem["categories"])) {
+                $category2levelListArr = array_merge($category2levelListArr, $this->getAssertTreeDatum($categoryItem["categories"]));
+            }
+        }
+
+        return $category2levelListArr;
+    }
+
+    /**
+     * filterCategoryItem
+     * @param $category2levelListArr
+     * @return mixed
+     */
+    protected function filterCategoryItem($category2levelListArr)
+    {
+        $category2ListArr = array_map(function ($categoryItem) {
+            if (isset($categoryItem["categories"]))
+                unset($categoryItem["categories"]);
+            return $categoryItem;
+        }, $category2levelListArr);
+
+        $categoryContainer = [];
+        foreach ($category2ListArr as $categoryItem) {
+            $categoryContainer[$categoryItem["id"]] = $categoryItem;
+        }
+
+        return array_map(function ($categoryItem) use ($categoryContainer) {
+            if ($categoryItem["parentID"] > 0)
+                $categoryItem["categoryName"] = $categoryContainer[$categoryItem["parentID"]]["categoryName"] . "--" . $categoryItem["categoryName"];
+
+            return $categoryItem;
+        }, $category2ListArr);
     }
 
     /**

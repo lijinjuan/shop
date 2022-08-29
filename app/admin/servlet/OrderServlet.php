@@ -57,11 +57,27 @@ class OrderServlet
      */
     public function getOrderListByPaginate(array $conditions)
     {
-        $orderList = $this->ordersModel->with(["user" => function ($query) {
+        if (isset($conditions["storeName"]) && $conditions["storeName"] != "") {
+            $storeName = $conditions["storeName"];
+
+            if ($storeName != "总平台订单") {
+                $orderList = $this->ordersModel::hasWhere("store", function ($query) use ($storeName) {
+                    $query->whereLike("storeName", "%" . $storeName . "%");
+                });
+            } else {
+                $orderList = $this->ordersModel;
+            }
+        } else {
+            $orderList = $this->ordersModel;
+        }
+
+        $orderList = $orderList->with(["user" => function ($query) {
             $query->field("id,userName");
         }, "goodsDetail" => function ($query) {
             $query->field("id,orderNo,goodsName,goodsPrice,skuImage,goodsNum,status");
-        }])->field(["id", "orderNo", "userID", "storeID", "userPayPrice", "storePayPrice", "orderStatus", "agentAmount", "receiver", "receiverMobile", "receiverAddress", "createdAt"]);
+        }, "store" => function ($query) {
+            $query->field("id,storeName");
+        }])->field(["s_orders.id", "orderNo", "s_orders.userID", "storeID", "userPayPrice", "storePayPrice", "orderStatus", "agentAmount", "receiver", "receiverMobile", "receiverAddress", "s_orders.createdAt"]);
 
         if (isset($conditions["orderStatus"]))
             $orderList->where("orderStatus", (int)$conditions["orderStatus"]);
@@ -79,7 +95,10 @@ class OrderServlet
             $orderList->where("orderNo", $conditions["orderNo"]);
 
         if (isset($conditions["storeID"]))
-            $orderList->where("storeID", $conditions["storeID"]);
+            $orderList->where("s_orders.storeID", $conditions["storeID"]);
+
+        if (isset($conditions["storeName"]) && $conditions["storeName"] == "总平台订单")
+            $orderList->where("s_orders.storeID", 0);
 
         if (isset($conditions["receiver"]))
             $orderList->whereLike("receiver", "%" . $conditions["receiver"] . "%");
