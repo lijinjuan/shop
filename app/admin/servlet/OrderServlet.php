@@ -57,11 +57,23 @@ class OrderServlet
      */
     public function getOrderListByPaginate(array $conditions)
     {
-        $orderList = $this->ordersModel->with(["user" => function ($query) {
+        // todo storeName search
+        if (isset($conditions["storeName"]) && $conditions["storeName"] != "") {
+            $storeName = $conditions["storeName"];
+            $orderList = $this->ordersModel::hasWhere("store", function ($query) use ($storeName) {
+                $query->whereLike("storeName", "%" . $storeName . "%");
+            });
+        } else {
+            $orderList = $this->ordersModel;
+        }
+
+        $orderList = $orderList->with(["user" => function ($query) {
             $query->field("id,userName");
         }, "goodsDetail" => function ($query) {
             $query->field("id,orderNo,goodsName,goodsPrice,skuImage,goodsNum,status");
-        }])->field(["id", "orderNo", "userID", "storeID", "userPayPrice", "storePayPrice", "orderStatus", "agentAmount", "receiver", "receiverMobile", "receiverAddress", "createdAt"]);
+        }, "store" => function ($query) {
+            $query->field("id,storeName");
+        }])->field(["s_orders.id", "orderNo", "s_orders.userID", "storeID", "userPayPrice", "storePayPrice", "orderStatus", "agentAmount", "receiver", "receiverMobile", "receiverAddress", "s_orders.createdAt"]);
 
         if (isset($conditions["orderStatus"]))
             $orderList->where("orderStatus", (int)$conditions["orderStatus"]);
