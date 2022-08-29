@@ -68,7 +68,7 @@ class OrdersServlet
      * @param string $orderNo
      * @return mixed
      */
-    public function merchant2PlatformOrderPay(string $orderNo)
+    public function merchant2PlatformOrderPay(string $orderNo, \Closure $updateAdminAccount)
     {
         /**
          * @var \app\common\model\StoresModel $storeModel
@@ -79,7 +79,7 @@ class OrdersServlet
         if (is_null($orderModel))
             throw new ParameterException(["errMessage" => "订单不存在或状态异常..."]);
 
-        return Db::transaction(function () use ($storeModel, $orderModel) {
+        return Db::transaction(function () use ($storeModel, $orderModel, $updateAdminAccount) {
             // 减去订单金额
             $payAmount = max((float)bcsub($orderModel->goodsTotalPrice, $orderModel->orderCommission, 2), 0);
 
@@ -98,6 +98,8 @@ class OrdersServlet
             $orderModel->goodsDetail()->where("orderNo", $orderModel->orderNo)->update(["status" => 2, "updatedAt" => date("Y-m-d H:i:s")]);
             // 添加账变记录
             $storeModel->storeAccount()->save(["userID" => $storeModel->userID, "balance" => $preBalance, "changeBalance" => $payAmount, "action" => 2, "type" => 5, "title" => "商家支付订单"]);
+            // 总平台账户变动
+            $updateAdminAccount($payAmount, $storeModel, $orderModel);
 
             return true;
         });

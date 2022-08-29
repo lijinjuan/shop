@@ -65,9 +65,7 @@ class AdminAccountServlet
         if (!empty($search['endTime'])) {
             $model->where('createdAt', '<=', $search['endTime']);
         }
-        if (!empty($search[''])) {
 
-        }
         return $model->with(['store' => function ($query) {
             $query->field(['id', 'mobile']);
         }, 'user' => function ($query) {

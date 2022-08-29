@@ -54,4 +54,22 @@ class ServletFactory implements ServletFactoryInterface
     {
         return invoke(CommissionServlet::class);
     }
+
+    /**
+     * adminAccountServ
+     * @return \app\store\servlet\AdminAccountServlet
+     */
+    public function adminAccountServ(): AdminAccountServlet
+    {
+        return invoke(AdminAccountServlet::class);
+    }
+
+    /**
+     * adminBalanceServ
+     * @return \app\store\servlet\AdminBalanceServlet
+     */
+    public function adminBalanceServ(): AdminBalanceServlet
+    {
+        return invoke(AdminBalanceServlet::class);
+    }
 }

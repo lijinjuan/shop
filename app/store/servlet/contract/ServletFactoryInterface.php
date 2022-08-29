@@ -3,6 +3,8 @@
 namespace app\store\servlet\contract;
 
 
+use app\store\servlet\AdminAccountServlet;
+use app\store\servlet\AdminBalanceServlet;
 use app\store\servlet\CommissionServlet;
 use app\store\servlet\GoodsServlet;
 use app\store\servlet\OrdersServlet;
@@ -44,4 +46,16 @@ interface ServletFactoryInterface
      * @return \app\store\servlet\CommissionServlet
      */
     public function commissionServ(): CommissionServlet;
+
+    /**
+     * adminAccountServ
+     * @return \app\store\servlet\AdminAccountServlet
+     */
+    public function adminAccountServ(): AdminAccountServlet;
+
+    /**
+     * adminBalanceServ
+     * @return \app\store\servlet\AdminBalanceServlet
+     */
+    public function adminBalanceServ(): AdminBalanceServlet;
 }
