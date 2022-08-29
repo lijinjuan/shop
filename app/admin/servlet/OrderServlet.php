@@ -65,9 +65,7 @@ class OrderServlet
                     $query->whereLike("storeName", "%" . $storeName . "%");
                 });
             } else {
-                $orderList = $this->ordersModel::hasWhere("store", function ($query) use ($storeName) {
-                    $query->where("storeID", 0);
-                });
+                $orderList = $this->ordersModel;
             }
         } else {
             $orderList = $this->ordersModel;
@@ -97,7 +95,10 @@ class OrderServlet
             $orderList->where("orderNo", $conditions["orderNo"]);
 
         if (isset($conditions["storeID"]))
-            $orderList->where("storeID", $conditions["storeID"]);
+            $orderList->where("s_orders.storeID", $conditions["storeID"]);
+
+        if (isset($conditions["storeName"]) || $conditions["storeName"] == "总平台订单")
+            $orderList->where("s_orders.storeID", 0);
 
         if (isset($conditions["receiver"]))
             $orderList->whereLike("receiver", "%" . $conditions["receiver"] . "%");
