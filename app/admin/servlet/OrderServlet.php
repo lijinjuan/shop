@@ -57,12 +57,18 @@ class OrderServlet
      */
     public function getOrderListByPaginate(array $conditions)
     {
-        // todo storeName search
         if (isset($conditions["storeName"]) && $conditions["storeName"] != "") {
             $storeName = $conditions["storeName"];
-            $orderList = $this->ordersModel::hasWhere("store", function ($query) use ($storeName) {
-                $query->whereLike("storeName", "%" . $storeName . "%");
-            });
+
+            if ($storeName != "总平台订单") {
+                $orderList = $this->ordersModel::hasWhere("store", function ($query) use ($storeName) {
+                    $query->whereLike("storeName", "%" . $storeName . "%");
+                });
+            } else {
+                $orderList = $this->ordersModel::hasWhere("store", function ($query) use ($storeName) {
+                    $query->where("storeID", 0);
+                });
+            }
         } else {
             $orderList = $this->ordersModel;
         }
