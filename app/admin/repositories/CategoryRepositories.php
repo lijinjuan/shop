@@ -60,16 +60,23 @@ class CategoryRepositories extends AbstractRepositories
      */
     protected function filterCategoryItem($category2levelListArr)
     {
-        return array_map(function ($categoryItem) {
+        $category2ListArr = array_map(function ($categoryItem) {
             if (isset($categoryItem["categories"]))
                 unset($categoryItem["categories"]);
+            return $categoryItem;
+        }, $category2levelListArr);
 
+        $categoryContainer = [];
+        foreach ($category2ListArr as $categoryItem) {
+            $categoryContainer[$categoryItem["id"]] = $categoryItem;
+        }
+
+        return array_map(function ($categoryItem) use ($categoryContainer) {
             if ($categoryItem["parentID"] > 0)
-                $categoryItem["categoryName"] = "|-- " . $categoryItem["categoryName"];
+                $categoryItem["categoryName"] = $categoryContainer[$categoryItem["parentID"]]["categoryName"] . "--" . $categoryItem["categoryName"];
 
             return $categoryItem;
-            
-        }, $category2levelListArr);
+        }, $category2ListArr);
     }
 
     /**
