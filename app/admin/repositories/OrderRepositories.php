@@ -76,7 +76,7 @@ class OrderRepositories extends AbstractRepositories
      */
     protected function assertMessageTemplate(UsersModel $usersModel, OrdersModel $ordersModel, \Closure $getMessageContent)
     {
-        $message = ["title" => "发货通知", "content" => $getMessageContent($usersModel, $ordersModel), "userID" => $usersModel->id];
+        $message = ["title" => "Shipping notice", "content" => $getMessageContent($usersModel, $ordersModel), "userID" => $usersModel->id];
         return $this->servletFactory->messageServ()->addMessage($message);
     }
 
@@ -86,7 +86,7 @@ class OrderRepositories extends AbstractRepositories
      */
     protected function formatMessageContent(): \Closure
     {
-        return fn($user, $ordersModel) => sprintf("尊敬的用户：%s,订单号：%s 已发货，请注意查收", $user->userName, $ordersModel->orderNo);
+        return fn($user, $ordersModel) => sprintf("Dear user：%s,order number：%s has been shipped,please pay attention to check", $user->userName, $ordersModel->orderNo);
     }
 
     /**
@@ -185,7 +185,7 @@ class OrderRepositories extends AbstractRepositories
      */
     protected function assertRefundMessageTemplate(UsersModel $usersModel, OrdersDetailModel $ordersDetailModel, float $amount, \Closure $getMessageContent)
     {
-        $message = ["title" => "退款通知", "content" => $getMessageContent($ordersDetailModel, $amount), "userID" => $usersModel->id];
+        $message = ["title" => "Refund success notification", "content" => $getMessageContent($ordersDetailModel, $amount), "userID" => $usersModel->id];
         return $this->servletFactory->messageServ()->addMessage($message);
     }
 
@@ -195,7 +195,7 @@ class OrderRepositories extends AbstractRepositories
      */
     protected function formatRefundMessageContent(): \Closure
     {
-        return fn($ordersDetailModel, $amount) => sprintf("您的订单：%s，平台已同意退款，金额：%f。", $ordersDetailModel->orderNo, $amount);
+        return fn($ordersDetailModel, $amount) => sprintf("Your order：%s，has agreed to a refund of：%f。", $ordersDetailModel->orderNo, $amount);
     }
 
     // 商家返回用户的金额

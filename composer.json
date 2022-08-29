@@ -29,7 +29,8 @@
         "hardphp/thinkphp-snowflake": "^0.5.0",
         "topthink/think-captcha": "^3.0",
       "ext-bcmath": "*",
-        "alphasnow/aliyun-oss-appserver": "^1.0"
+        "alphasnow/aliyun-oss-appserver": "^1.0",
+        "phpmailer/phpmailer": "^6.6"
     },
     "require-dev": {
         "symfony/var-dumper": "^4.2",

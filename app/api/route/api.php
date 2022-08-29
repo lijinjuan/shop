@@ -12,6 +12,8 @@ Route::post(":version/upload-file", ":version.FileSystem/uploadFile");
 
 Route::get(":version/about-us", ":version.AboutUs/getAboutUsContent");
 
+Route::post(":version/send-email", ":version.Email/sendEmailMessage");
+
 // 用户收货地址的管理
 Route::group(":version", function () {
     // 用户修改密码
