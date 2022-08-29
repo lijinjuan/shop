@@ -141,7 +141,8 @@ class ShopServlet
 
         $agentsID = $shopInfo->agentID;
         $parentsID = $shopInfo->parentStoreID . $shopInfo->id . ",";
-        return compact("agentsID", "parentsID");
+        $agentsName = $shopInfo->agentName;
+        return compact("agentsID", "parentsID", "agentsName");
     }
 
 }

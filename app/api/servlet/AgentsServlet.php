@@ -33,7 +33,8 @@ class AgentsServlet
         $agents = $this->agentsModel->where("status", 1)->where("inviteCode", $inviteCode)->find();
         $agentsID = $agents->agentParentID . $agents->id . ",";
         $parentsID = ",";
-        return compact("agentsID", "parentsID");
+        $agentsName = $agents->agentName;
+        return compact("agentsID", "parentsID", "agentsName");
     }
 
 }
