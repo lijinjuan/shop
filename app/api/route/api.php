@@ -129,7 +129,7 @@ Route::group(":version", function () {
     Route::post('cancel-order-refund/:orderID',":version.Order/cancelOrderRefund");
     //获取退款原因
     Route::get('order-refund-reason',":version.Order/getRefundReason");
-    //确认收获
+    //确认收货
     Route::post('order-confirm',":version.Order/editOrderStatus");
     //删除订单
     Route::delete('order-delete',":version.Order/delOrder");

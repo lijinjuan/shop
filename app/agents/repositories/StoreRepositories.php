@@ -107,11 +107,13 @@ class StoreRepositories extends AbstractRepositories
             $store::update($update, ['id' => $id]);
             $store->user()->update(['isStore' => 1]);
             //发送站内信
-            $content = sprintf('您的店铺申请%s', '已通过');
+            //$content = sprintf('您的店铺申请%s', '已通过');
+            $content = $title = 'Store approval notice';
             if ($update['status'] == 2) {
-                $content .= sprintf(',驳回理由%s。', !empty($update['reason']) ? $update['reason'] : '');
+                //$content .= sprintf(',驳回理由%s。', !empty($update['reason']) ? $update['reason'] : '');
+                $content = $title = 'Store review rejection notice';
             }
-            $this->servletFactory->messageServ()->addMessage(['title' => '店铺审批通知', 'content' => $content, 'userID' => $store->user->id]);
+            $this->servletFactory->messageServ()->addMessage(['title' => $title, 'content' => $content, 'userID' => $store->user->id]);
 
         });
 
