@@ -90,16 +90,6 @@ class ShopRepositories extends AbstractRepositories
     }
 
     /**
-     * getAgentNameByAgentID
-     * @param string $agentID
-     * @return string
-     */
-    protected function getAgentNameByAgentID(string $agentID): string
-    {
-        $shopInfo["agentName"] = ;
-    }
-
-    /**
      * getGoodsListByMyStore
      * @param string $keywords
      * @return \think\response\Json
