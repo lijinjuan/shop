@@ -52,7 +52,7 @@ class OrderRepositories extends AbstractRepositories
     /**
      * getAgentIDByVarchar
      * @param string $agentsID
-     * @return false|int|string
+     * @return int
      */
     protected function getAgentIDByVarchar(string $agentsID)
     {
@@ -61,7 +61,7 @@ class OrderRepositories extends AbstractRepositories
         if ($agentsID == ",")
             return 0;
         $agentsIDArr = explode(",", $agentsID);
-        return end($agentsIDArr);
+        return (int)end($agentsIDArr);
     }
 
 }
