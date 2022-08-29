@@ -97,7 +97,7 @@ class OrderServlet
         if (isset($conditions["storeID"]))
             $orderList->where("s_orders.storeID", $conditions["storeID"]);
 
-        if (isset($conditions["storeName"]) || $conditions["storeName"] == "总平台订单")
+        if (isset($conditions["storeName"]) && $conditions["storeName"] == "总平台订单")
             $orderList->where("s_orders.storeID", 0);
 
         if (isset($conditions["receiver"]))
