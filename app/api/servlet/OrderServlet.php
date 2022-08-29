@@ -4,6 +4,7 @@ namespace app\api\servlet;
 
 use app\common\model\OrdersModel;
 use app\lib\exception\ParameterException;
+use think\facade\Db;
 
 
 class OrderServlet
@@ -135,8 +136,52 @@ class OrderServlet
         $totalOrder = $this->ordersModel->where('storeID', $storeID)->where('orderStatus', '>=', 0)->count();
         $totalOrderPrice = sprintf('%.2f', round($this->ordersModel->where('storeID', $storeID)->where('orderStatus', '>=', 0)->sum('goodsTotalPrice'), 2));
         return compact('noUserPay', 'noStorePay', 'noDelivery', 'noReceived', 'received', 'refund', 'finished', 'totalOrder', 'totalOrderPrice');
-
     }
 
+    /**
+     * merchant2PlatformOrderPay
+     * @param string $orderNo
+     * @return mixed
+     */
+    public function merchant2PlatformOrderPay(string $orderNo, \Closure $updateAdminAccount)
+    {
+        /**
+         * @var \app\common\model\StoresModel $storeModel
+         */
+        $storeModel = app()->get("userProfile")->store;
+
+        if (is_null($storeModel))
+            throw new ParameterException(["errMessage" => "店铺不存在或者被删除..."]);
+
+        $orderModel = $storeModel->orders()->where("orderNo", $orderNo)->where("orderStatus", 1)->find();
+
+        if (is_null($orderModel))
+            throw new ParameterException(["errMessage" => "订单不存在或状态异常..."]);
+
+        return Db::transaction(function () use ($storeModel, $orderModel, $updateAdminAccount) {
+            // 减去订单金额
+            $payAmount = max((float)bcsub($orderModel->goodsTotalPrice, $orderModel->orderCommission, 2), 0);
+
+            $preBalance = $storeModel->user->balance;
+            if ($preBalance < $payAmount)
+                throw new ParameterException(["errMessage" => "店铺余额不足，请充值..."]);
+
+            $storeModel->user->balance = bcsub($storeModel->user->balance, $payAmount, 2);
+            $storeModel->user->save();
+            // 更新订单状态
+            $orderModel->orderStatus = 2;
+            $orderModel->storePayAt = date("Y-m-d H:i:s");
+            $orderModel->updatedAt = date("Y-m-d H:i:s");
+            $orderModel->save();
+            // 订单详情更新状态
+            $orderModel->goodsDetail()->where("orderNo", $orderModel->orderNo)->update(["status" => 2, "updatedAt" => date("Y-m-d H:i:s")]);
+            // 添加账变记录
+            $storeModel->storeAccount()->save(["userID" => $storeModel->userID, "balance" => $preBalance, "changeBalance" => $payAmount, "action" => 2, "type" => 5, "title" => "商家支付订单"]);
+            // 总平台账户变动
+            $updateAdminAccount($payAmount, $storeModel, $orderModel);
+
+            return true;
+        });
+    }
 
 }

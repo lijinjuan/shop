@@ -89,6 +89,8 @@ Route::group(":version", function () {
     Route::post("goods-take-down", ":version.Goods/takeDownStoreGoods");
     // 商家下架商品
     Route::post("goods-on-sale", ":version.Goods/onSaleGoods2Store");
+    // 商户支付的接口
+    Route::get("merchant-pay", ":version.Order/merchant2pay");
 
 })->middleware(JwtAuthMiddleware::class)->json()->allowCrossDomain();
 
