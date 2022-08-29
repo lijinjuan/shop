@@ -179,11 +179,11 @@ class UserController
      */
     public function rechargeList(Request $request)
     {
-        //Todo 缺少storeName搜索
         $keywords = $request->post('keywords', '');
         $agentAccount = $request->post('agentAccount', '');
+        $storeName = $request->post('storeName', '');
         $pageSize = $request->post('pageSize', 20);
-        return $this->usersRepositories->rechargeList($keywords, $agentAccount, $pageSize);
+        return $this->usersRepositories->rechargeList($keywords, $agentAccount, $pageSize,$storeName);
 
     }
 

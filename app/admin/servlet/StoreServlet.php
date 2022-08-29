@@ -56,7 +56,6 @@ class StoreServlet
      */
     public function storeList(int $pageSize = 20, int $status = 0, string $userAccount = '',string $agentName= '',string $storeName='')
     {
-        //店铺名称 代理商账号
         $model = $this->storesModel->where('id', '>', 0);
         if (!empty($userAccount)) {
             $model->where('userEmail', 'like', '%' . $userAccount . '%');

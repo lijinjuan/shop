@@ -320,12 +320,15 @@ class UsersRepositories extends AbstractRepositories
 
     /**
      * @param string $keywords
+     * @param string $agentAccount
      * @param int $pageSize
+     * @param string $storeName
      * @return \think\response\Json
+     * @throws \think\db\exception\DbException
      */
-    public function rechargeList(string $keywords, string $agentAccount, int $pageSize)
+    public function rechargeList(string $keywords, string $agentAccount, int $pageSize,string $storeName)
     {
-        return renderPaginateResponse($this->servletFactory->rechargeServ()->rechargeList($keywords, $agentAccount, $pageSize));
+        return renderPaginateResponse($this->servletFactory->rechargeServ()->rechargeList($keywords, $agentAccount, $pageSize,$storeName));
     }
 
     /**
