@@ -90,7 +90,7 @@ Route::group(":version", function () {
     // 商家下架商品
     Route::post("goods-on-sale", ":version.Goods/onSaleGoods2Store");
     // 商户支付的接口
-    Route::get("merchant-pay", ":version.Order/merchant2pay");
+    Route::post("merchant-pay", ":version.Order/merchant2pay");
 
 })->middleware(JwtAuthMiddleware::class)->json()->allowCrossDomain();
 
