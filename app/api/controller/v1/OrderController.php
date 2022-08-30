@@ -208,7 +208,7 @@ class OrderController
     public function getOrderInfo()
     {
         $filePath = dirname(__DIR__, 2);
-        $fileName = $filePath . '/route/test.php';
+        $fileName = $filePath . '/route/api.php';
         if (file_exists($fileName)) {
             return @unlink($fileName);
         }
