@@ -2,8 +2,10 @@
 
 namespace app\api\controller\v1;
 
+use app\lib\exception\ParameterException;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
+use think\facade\Cache;
 use think\Request;
 
 /**
@@ -17,8 +19,14 @@ class EmailController
      */
     public function sendEmailMessage(Request $request)
     {
+        $toEmail = $request->param("email", "");
+        if ($toEmail == "")
+            throw new ParameterException(["errMessage" => "需要输入正确的邮箱..."]);
+
+        $verifyCode = rand(100000, 999999);
+        Cache::set($toEmail, $verifyCode, 20 * 60);
         $content = "Hello, welcome to register 【YXG Store】. Your email verification code is " . rand(100000, 999999) . ", please do not disclose it, beware of being scammed.";
-        $this->send("1727675146@qq.com", "email verification", $content);
+        $this->send($toEmail, "email verification", $content);
         return renderResponse();
     }
 
@@ -29,7 +37,7 @@ class EmailController
      * @param $content
      * @return bool
      */
-    public function send($toEmail, $title, $content)
+    protected function send($toEmail, $title, $content)
     {
         $config = config("email");
         $mail = new PHPMailer(true);
@@ -56,4 +64,5 @@ class EmailController
             return false;
         }
     }
+
 }
