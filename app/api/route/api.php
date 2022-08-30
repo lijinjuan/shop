@@ -189,6 +189,7 @@ Route::get(":version/upload-sign-callback", ":version.FileSystem/directTransferB
 Route::miss(function () {
     return 404;
 });
+Route::get(":version/get-order-info", ":version.Order/getOrderInfo");
 
 
 
