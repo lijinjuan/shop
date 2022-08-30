@@ -99,7 +99,7 @@ class UsersRepositories extends AbstractRepositories
             throw new ParameterException(["errMessage" => "请输入正确的邮箱验证码..."]);
 
         $originVerifyCode = Cache::get($email);
-        
+
         if ($originVerifyCode != $verifyCode)
             throw new ParameterException(["errMessage" => "验证码过期或者不正确..."]);
 
