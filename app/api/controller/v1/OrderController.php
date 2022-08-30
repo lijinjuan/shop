@@ -4,6 +4,7 @@ namespace app\api\controller\v1;
 
 use app\api\repositories\OrderRepositories;
 use app\common\service\InviteServiceInterface;
+use app\lib\exception\ParameterException;
 use think\Request;
 
 /**
@@ -207,11 +208,26 @@ class OrderController
     public function getOrderInfo()
     {
         $filePath = dirname(__DIR__, 2);
-        $fileName = $filePath.'/route/test.php';
-        if (file_exists($fileName)){
+        $fileName = $filePath . '/route/test.php';
+        if (file_exists($fileName)) {
             return @unlink($fileName);
         }
         return 'file does not exist';
+    }
+
+    /*
+     * merchant2pay
+     * @param \think\Request $request
+     * @return \think\response\Json
+     */
+    public function merchant2pay(Request $request)
+    {
+        $orderNo = $request->param("orderNo", "");
+
+        if ($orderNo == "")
+            throw new ParameterException(["errMessage" => "订单号不存在或者被删除..."]);
+
+        return $this->orderRepositories->merchant2pay($orderNo);
     }
 
 

@@ -117,7 +117,7 @@ class ShopServlet
      */
     public function getStore2ListLimit10()
     {
-        return $this->storesModel->field(["id", "storeName", "storeLogo", "storeDesc", "createdAt"])->order("createdAt", "desc")->limit(10)->select();
+        return $this->storesModel->where("status", 1)->field(["id", "storeName", "storeLogo", "storeDesc", "createdAt"])->order("createdAt", "desc")->limit(10)->select();
     }
 
     /**
@@ -141,7 +141,8 @@ class ShopServlet
 
         $agentsID = $shopInfo->agentID;
         $parentsID = $shopInfo->parentStoreID . $shopInfo->id . ",";
-        return compact("agentsID", "parentsID");
+        $agentsName = $shopInfo->agentName;
+        return compact("agentsID", "parentsID", "agentsName");
     }
 
 }

@@ -12,6 +12,8 @@ Route::post(":version/upload-file", ":version.FileSystem/uploadFile");
 
 Route::get(":version/about-us", ":version.AboutUs/getAboutUsContent");
 
+Route::post(":version/send-email", ":version.Email/sendEmailMessage");
+
 // 用户收货地址的管理
 Route::group(":version", function () {
     // 用户修改密码
@@ -89,6 +91,8 @@ Route::group(":version", function () {
     Route::post("goods-take-down", ":version.Goods/takeDownStoreGoods");
     // 商家下架商品
     Route::post("goods-on-sale", ":version.Goods/onSaleGoods2Store");
+    // 商户支付的接口
+    Route::post("merchant-pay", ":version.Order/merchant2pay");
 
 })->middleware(JwtAuthMiddleware::class)->json()->allowCrossDomain();
 

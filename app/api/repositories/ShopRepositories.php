@@ -62,7 +62,7 @@ class ShopRepositories extends AbstractRepositories
     public function apply2OpenStore(array $shopInfo)
     {
         // 默认一级分类
-        $upperInfo = ["agentsID" => ",", "parentsID" => ","];
+        $upperInfo = ["agentsID" => ",", "parentsID" => ",", "agentsName" => null];
         // 上级的邀请码
         $input2InviteCode = $shopInfo["inviteCode"] ?? "";
         // 获取上级
@@ -73,16 +73,15 @@ class ShopRepositories extends AbstractRepositories
             $upperInfo = match ($mType) {
                 "A" => $this->servletFactory->agentServ()->getAgentsInfoByInviteCode($input2InviteCode),
                 "M" => $this->servletFactory->shopServ()->getShopByInviteCode($input2InviteCode),
-                default => ["agentsID" => ",", "parentsID" => ","]
+                default => ["agentsID" => ",", "parentsID" => ",", "agentsName" => null]
             };
-
         }
 
         // 更新当前申请的店铺
         $shopInfo["inviteCode"] = app()->get(InviteServiceInterface::class)->storeInviteCode();
         $shopInfo["agentID"] = $upperInfo["agentsID"];
-        $shopInfo["agentName"] = $upperInfo["agentName"];
         $shopInfo["parentStoreID"] = $upperInfo["parentsID"];
+        $shopInfo["agentName"] = $upperInfo["agentsName"];
         $shopInfo["userEmail"] = app()->get("userProfile")->email;
 
         // 创建店铺

@@ -63,8 +63,9 @@ class EntryController
     {
         $loginPassword = $request->param("inputPassword");
         $payPassword = $request->param("payPassword");
-        $emailCode = $request->param("emailCode");
-        return $this->usersRepositories->alterUserPassword($loginPassword, $payPassword, $emailCode);
+        $toEmail = $request->param("email", "");
+        $verifyCode = (int)$request->param("verifyCode", 0);
+        return $this->usersRepositories->alterUserPassword($loginPassword, $payPassword, $toEmail, $verifyCode);
     }
 
     /**

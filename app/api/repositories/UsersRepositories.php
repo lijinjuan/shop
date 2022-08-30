@@ -5,6 +5,7 @@ namespace app\api\repositories;
 use app\common\model\UsersModel;
 use app\lib\exception\ParameterException;
 use thans\jwt\facade\JWTAuth;
+use think\facade\Cache;
 use think\Model;
 
 /**
@@ -89,8 +90,19 @@ class UsersRepositories extends AbstractRepositories
      * @param string $payPassword
      * @param string $emailCode
      */
-    public function alterUserPassword(string $loginPassword, string $payPassword, string $emailCode)
+    public function alterUserPassword(string $loginPassword, string $payPassword, string $email, int $verifyCode)
     {
+        if ($email == "")
+            throw new ParameterException(["errMessage" => "请输入正确的邮箱..."]);
+
+        if (!$verifyCode)
+            throw new ParameterException(["errMessage" => "请输入正确的邮箱验证码..."]);
+
+        $originVerifyCode = Cache::get($email);
+
+        if ($originVerifyCode != $verifyCode)
+            throw new ParameterException(["errMessage" => "验证码过期或者不正确..."]);
+
         $this->servletFactory->userServ()->alterUserPassword($loginPassword, $payPassword);
         return renderResponse();
     }
