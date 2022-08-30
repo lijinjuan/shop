@@ -7,5 +7,5 @@ return [
     'port' => '25', // 服务器端口
     'fromEmail' => 'zihuang2010@126.com', // 邮箱
     'fromUserName' => 'Iris'
-    
+
 ];

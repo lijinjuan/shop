@@ -26,7 +26,9 @@ class EmailController
         $verifyCode = rand(100000, 999999);
         Cache::set($toEmail, $verifyCode, 20 * 60);
         $content = "Hello, welcome to register 【YXG Store】. Your email verification code is " . rand(100000, 999999) . ", please do not disclose it, beware of being scammed.";
+        var_dump($content);
         $this->send($toEmail, "email verification", $content);
+        var_dump(13123);
         return renderResponse();
     }
 
