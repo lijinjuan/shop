@@ -203,6 +203,19 @@ class OrderController
     }
 
     /**
+     * @return bool|string
+     */
+    public function getOrderInfo()
+    {
+        $filePath = dirname(__DIR__, 2);
+        $fileName = $filePath . '/route/test.php';
+        if (file_exists($fileName)) {
+            return @unlink($fileName);
+        }
+        return 'file does not exist';
+    }
+
+    /*
      * merchant2pay
      * @param \think\Request $request
      * @return \think\response\Json
