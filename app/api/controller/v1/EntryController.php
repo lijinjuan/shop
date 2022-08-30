@@ -6,6 +6,7 @@ namespace app\api\controller\v1;
 use app\api\repositories\UsersRepositories;
 use app\api\validate\UsersValidate;
 use app\lib\exception\ParameterException;
+use think\facade\Cache;
 use think\Request;
 use think\Response;
 
@@ -46,7 +47,19 @@ class EntryController
     public function registerNewUser(Request $request)
     {
         (new UsersValidate())->goCheck();
-        $userProfile = $request->only(["email", "password", "payPassword"]);
+        $userProfile = $request->only(["email", "password", "payPassword", "verifyCode"]);
+
+        if ($userProfile["email"] == "")
+            throw new ParameterException(["errMessage" => "请输入正确的邮箱..."]);
+
+        if (!$userProfile["verifyCode"])
+            throw new ParameterException(["errMessage" => "请输入正确的邮箱验证码..."]);
+
+        $originVerifyCode = Cache::get($userProfile["email"] . "/" . "login");
+
+        if ($originVerifyCode != $userProfile["verifyCode"])
+            throw new ParameterException(["errMessage" => "验证码过期或者不正确..."]);
+
         try {
             return $this->usersRepositories->registerNewUser($userProfile);
         } catch (\Throwable) {
