@@ -52,7 +52,7 @@ class EntryController
         if ($userProfile["email"] == "")
             throw new ParameterException(["errMessage" => "请输入正确的邮箱..."]);
 
-        if (!$userProfile["verifyCode"])
+        if (isset($userProfile["verifyCode"]) && !$userProfile["verifyCode"])
             throw new ParameterException(["errMessage" => "请输入正确的邮箱验证码..."]);
 
         $originVerifyCode = Cache::get($userProfile["email"] . "/" . "login");
