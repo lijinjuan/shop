@@ -8,6 +8,7 @@ use app\api\servlet\AgentsServlet;
 use app\api\servlet\BannersServlet;
 use app\api\servlet\BrandsServlet;
 use app\api\servlet\CategoryServlet;
+use app\api\servlet\ChatMessageServlet;
 use app\api\servlet\CommissionConfigServlet;
 use app\api\servlet\GoodsServlet;
 use app\api\servlet\GoodsSkuServlet;
@@ -166,5 +167,10 @@ interface ServletFactoryInterface
      * @return MessageServlet
      */
     public function messageServ():MessageServlet;
+
+    /**
+     * @return ChatMessageServlet
+     */
+    public function chatMessageServ():ChatMessageServlet;
 
 }

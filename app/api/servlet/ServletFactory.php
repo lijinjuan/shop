@@ -212,4 +212,12 @@ class ServletFactory implements ServletFactoryInterface
     {
         return invoke(MessageServlet::class);
     }
+
+    /**
+     * @return ChatMessageServlet
+     */
+    public function chatMessageServ(): ChatMessageServlet
+    {
+        return invoke(ChatMessageServlet::class);
+    }
 }
