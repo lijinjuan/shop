@@ -45,18 +45,6 @@ class ChatMessageController
     }
 
     /**
-     * @param int $userID
-     * @return \think\response\Json
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
-     */
-    public function getLastMessageByUserID(int $userID)
-    {
-        return renderResponse($this->chatMessageRepositories->getLastChatMessage($userID));
-    }
-
-    /**
      * @param Request $request
      * @return \think\response\Json
      */

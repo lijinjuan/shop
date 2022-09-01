@@ -190,7 +190,6 @@ Route::group(":version", function () {
 //})->middleware(JwtAuthMiddleware::class)->json()->allowCrossDomain();
 Route::post(":version/send-message", ":version.ChatMessage/sendMessage");
 Route::get(":version/get-message-count/:userID", ":version.ChatMessage/getMessageCountByUserID");
-Route::get(":version/get-last-message/:userID", ":version.ChatMessage/getLastMessageByUserID");
 Route::post(":version/set-read-message", ":version.ChatMessage/setRead");
 Route::post(":version/get-message-list", ":version.ChatMessage/getMessageListByID");
 

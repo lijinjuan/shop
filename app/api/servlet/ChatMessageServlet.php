@@ -84,21 +84,15 @@ class ChatMessageServlet
     /**
      * @param int $fromUserID
      * @param int $toUserID
-     * @param bool $isLimit
-     * @return ChatMessageModel|ChatMessageModel[]|array|\think\Collection
+     * @param int $limit
+     * @return ChatMessageModel[]|array|\think\Collection
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function getLastMessage(int $fromUserID, int $toUserID, bool $isLimit = false)
+    public function getLastMessage(int $fromUserID, int $toUserID, int $limit = 10)
     {
-        $model = $this->chatMessageModel->where('toUserID', $toUserID)->where('isRead', 0)->where('fromUserID', $fromUserID);
-        if ($isLimit) {
-            $res = $model->limit(10)->select();
-        } else {
-            $res = $model->select();
-        }
-        return $res;
+        return $this->chatMessageModel->where('toUserID', $toUserID)->where('isRead', 0)->where('fromUserID', $fromUserID)->limit($limit)->select();
 
     }
 

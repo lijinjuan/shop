@@ -76,24 +76,15 @@ class ChatMessageRepositories extends AbstractRepositories
      */
     public function getMessageCountByUserID(int $id)
     {
-        return $this->servletFactory->chatMessageServ()->getMessageCountByUserID($id);
-
-    }
-
-    /**
-     * @param int $toUserID
-     * @return \app\common\model\ChatMessageModel|\app\common\model\ChatMessageModel[]|array|\think\Collection
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
-     */
-    public function getLastChatMessage(int $toUserID)
-    {
-        $model = $this->servletFactory->chatMessageServ()->getLastConnect($toUserID);
-        if ($model) {
-            $data = $this->servletFactory->chatMessageServ()->getLastMessage($model->fromUserID, $toUserID, true);
+        $message = [];
+        $messageCount = $this->servletFactory->chatMessageServ()->getMessageCountByUserID($id);
+        if ($messageCount) {
+            $message = $messageCount->toArray();
+            $fromUserID = $message[0]['fromUserID'];
+            $toUserID = $message[0]['toUserID'];
+            $data = $this->servletFactory->chatMessageServ()->getLastMessage($fromUserID, $toUserID);
         }
-        return !empty($data) ? $data : [];
+        return ['messageCount' => $message, 'messageLast' => !empty($data) ? $data : ''];
     }
 
     /**
@@ -104,9 +95,9 @@ class ChatMessageRepositories extends AbstractRepositories
      * @return \think\response\Json
      * @throws \think\db\exception\DbException
      */
-    public function getMessageList(int $fromUserID,int $toUserID,int $pageSize)
+    public function getMessageList(int $fromUserID, int $toUserID, int $pageSize)
     {
-        return renderPaginateResponse($this->servletFactory->chatMessageServ()->getMessageList($fromUserID,$toUserID,$pageSize));
+        return renderPaginateResponse($this->servletFactory->chatMessageServ()->getMessageList($fromUserID, $toUserID, $pageSize));
     }
 
     /**
@@ -114,9 +105,9 @@ class ChatMessageRepositories extends AbstractRepositories
      * @param int $toUserID
      * @return \app\common\model\ChatMessageModel
      */
-    public function setRead(int $fromUserID,int $toUserID)
+    public function setRead(int $fromUserID, int $toUserID)
     {
-        return $this->servletFactory->chatMessageServ()->setRead($fromUserID,$toUserID);
+        return $this->servletFactory->chatMessageServ()->setRead($fromUserID, $toUserID);
     }
 
 
