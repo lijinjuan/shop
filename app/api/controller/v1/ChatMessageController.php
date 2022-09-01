@@ -3,8 +3,6 @@
 namespace app\api\controller\v1;
 
 use app\api\repositories\ChatMessageRepositories;
-use app\lib\exception\ParameterException;
-use GuzzleHttp\Client;
 use think\Request;
 
 
@@ -68,6 +66,19 @@ class ChatMessageController
         $toUserID = $request->post('toUserID');
         $this->chatMessageRepositories->setRead($fromUserID, $toUserID);
         return renderResponse();
+    }
+
+    /**
+     * @param Request $request
+     * @return \think\response\Json
+     * @throws \think\db\exception\DbException
+     */
+    public function getMessageListByID(Request $request)
+    {
+        $fromUserID = $request->post('fromUserID');
+        $toUserID = $request->post('toUserID');
+        $pageSize = $request->post('pageSize',20);
+        return $this->chatMessageRepositories->getMessageList($fromUserID,$toUserID,$pageSize);
     }
 
 }

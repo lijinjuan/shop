@@ -192,6 +192,7 @@ Route::post(":version/send-message", ":version.ChatMessage/sendMessage");
 Route::get(":version/get-message-count/:userID", ":version.ChatMessage/getMessageCountByUserID");
 Route::get(":version/get-last-message/:userID", ":version.ChatMessage/getLastMessageByUserID");
 Route::post(":version/set-read-message", ":version.ChatMessage/setRead");
+Route::post(":version/get-message-list", ":version.ChatMessage/getMessageListByID");
 
 //帮助中心
 Route::post(":version/help-list", ":version.Help/helpList")->json()->allowCrossDomain();

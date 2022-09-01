@@ -105,6 +105,19 @@ class ChatMessageServlet
     /**
      * @param int $fromUserID
      * @param int $toUserID
+     * @param int $pageSize
+     * @return \think\Paginator
+     * @throws \think\db\exception\DbException
+     */
+    public function getMessageList(int $fromUserID, int $toUserID,int $pageSize=20)
+    {
+        return  $this->chatMessageModel->where('toUserID', $toUserID)->where('isRead', 0)->where('fromUserID', $fromUserID)->where('isRead',0)->paginate($pageSize);
+
+    }
+
+    /**
+     * @param int $fromUserID
+     * @param int $toUserID
      * @return ChatMessageModel
      */
     public function setRead(int $fromUserID,int $toUserID)

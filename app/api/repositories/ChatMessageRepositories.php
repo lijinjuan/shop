@@ -97,6 +97,19 @@ class ChatMessageRepositories extends AbstractRepositories
     }
 
     /**
+     * no read message list
+     * @param int $fromUserID
+     * @param int $toUserID
+     * @param int $pageSize
+     * @return \think\response\Json
+     * @throws \think\db\exception\DbException
+     */
+    public function getMessageList(int $fromUserID,int $toUserID,int $pageSize)
+    {
+        return renderPaginateResponse($this->servletFactory->chatMessageServ()->getMessageList($fromUserID,$toUserID,$pageSize));
+    }
+
+    /**
      * @param int $fromUserID
      * @param int $toUserID
      * @return \app\common\model\ChatMessageModel
