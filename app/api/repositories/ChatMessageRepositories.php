@@ -80,11 +80,13 @@ class ChatMessageRepositories extends AbstractRepositories
         $messageCount = $this->servletFactory->chatMessageServ()->getMessageCountByUserID($id);
         if ($messageCount) {
             $message = $messageCount->toArray();
-            $fromUserID = $message[0]['fromUserID'];
-            $toUserID = $message[0]['toUserID'];
-            $data = $this->servletFactory->chatMessageServ()->getLastMessage($fromUserID, $toUserID);
+            $fromUserID = !empty($message)?$message[0]['fromUserID']:0;
+            $toUserID = !empty($message)?$message[0]['toUserID']:0;
+            if ($fromUserID && $toUserID){
+                $data = $this->servletFactory->chatMessageServ()->getLastMessage($fromUserID, $toUserID);
+            }
         }
-        return ['messageCount' => $message, 'messageLast' => !empty($data) ? $data : ''];
+        return ['messageCount' => $message, 'messageLast' => !empty($data) ? $data : []];
     }
 
     /**

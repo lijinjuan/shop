@@ -105,7 +105,7 @@ class ChatMessageServlet
      */
     public function getMessageList(int $fromUserID, int $toUserID,int $pageSize=20)
     {
-        return  $this->chatMessageModel->where('toUserID', $toUserID)->where('isRead', 0)->where('fromUserID', $fromUserID)->where('isRead',0)->paginate($pageSize);
+        return  $this->chatMessageModel->where('toUserID', $toUserID)->where('isRead', 0)->where('fromUserID', $fromUserID)->where('isRead',0)->order('createdAt','desc')->paginate($pageSize);
 
     }
 

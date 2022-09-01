@@ -182,11 +182,11 @@ Route::group(":version", function () {
 
 })->middleware(JwtAuthMiddleware::class)->json()->allowCrossDomain();
 
-//客服聊天
+////客服聊天
 //Route::group(":version", function () {
 //    Route::post("send-message", ":version.ChatMessage/sendMessage");
 //    Route::get("get-message-count/:userID", ":version.ChatMessage/getMessageCountByUserID");
-//    Route::get("get-last-message/:userID", ":version.ChatMessage/getLastMessageByUserID");
+//    Route::get("set-read-message", ":version.ChatMessage/setRead");
 //})->middleware(JwtAuthMiddleware::class)->json()->allowCrossDomain();
 Route::post(":version/send-message", ":version.ChatMessage/sendMessage");
 Route::get(":version/get-message-count/:userID", ":version.ChatMessage/getMessageCountByUserID");
