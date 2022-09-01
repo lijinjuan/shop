@@ -3,6 +3,8 @@
 namespace app\api\controller\v1;
 
 use app\api\repositories\ChatMessageRepositories;
+use app\lib\exception\ParameterException;
+use GuzzleHttp\Client;
 use think\Request;
 
 
@@ -10,30 +12,61 @@ class ChatMessageController
 {
 
     protected ChatMessageRepositories $chatMessageRepositories;
+
+    /**
+     * @param ChatMessageRepositories $chatMessageRepositories
+     */
+    public function __construct(ChatMessageRepositories $chatMessageRepositories)
+    {
+        $this->chatMessageRepositories = $chatMessageRepositories;
+    }
+
+
     /**
      * @param Request $request
-     * @return void
+     * @return \think\response\Json
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \app\lib\exception\ParameterException
      */
-    public function isOnline(Request $request)
+    public function sendMessage(Request $request)
     {
-        $userID = $request->get('id');
+        $message = $request->post(['fromUserID', 'fromUserAvatar', 'fromUserName', 'fromUserRoleID', 'toUserID', 'toUserAvatar', 'toUserName', 'toUserRoleID', 'messageBody', 'messageType']);
+        $this->chatMessageRepositories->addChatMessage(array_filter($message));
+        $this->chatMessageRepositories->sendMessage($message);
+        return renderResponse();
+    }
 
+
+    /**
+     * @param int $userID
+     * @return \think\response\Json
+     */
+    public function getMessageCountByUserID(int $userID)
+    {
+        return renderResponse($this->chatMessageRepositories->getMessageCountByUserID($userID));
+    }
+
+    /**
+     * @param int $userID
+     * @return \think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function getLastMessageByUserID(int $userID)
+    {
+        return renderResponse($this->chatMessageRepositories->getLastChatMessage($userID));
     }
 
     /**
      * @param Request $request
      * @return \think\response\Json
-     * @throws \app\lib\exception\ParameterException
      */
-    public function sendMessage(Request $request)
+    public function setRead(Request $request)
     {
-        $message = $request->input(['fromUserID','fromUserAvatar','fromUserName','toUserID','toUserAvatar','toUserName','messageBody','isRead']);
-        $this->chatMessageRepositories->addChatMessage(array_filter($message));
-        $isOnline = 1;
-//        if ($isOnline){
-//            //请求老梁接口转发消息
-//
-//        }
+        $fromUserID = $request->post('fromUserID');
+        $toUserID = $request->post('toUserID');
+        $this->chatMessageRepositories->setRead($fromUserID, $toUserID);
         return renderResponse();
     }
 

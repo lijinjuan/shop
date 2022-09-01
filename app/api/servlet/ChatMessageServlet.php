@@ -30,7 +30,7 @@ class ChatMessageServlet
         try {
             return $this->chatMessageModel::create($messageData);
         } catch (\Throwable $e) {
-            throw  new ParameterException(['errMessage' => '聊天信息添加失败...']);
+            throw  new ParameterException(['errMessage' => '聊天信息添加失败...'.$e->getMessage()]);
         }
 
     }
@@ -44,7 +44,7 @@ class ChatMessageServlet
      */
     public function getOneMessageByID(int $id)
     {
-        return $this->chatMessageModel->where('id',$id)->find();
+        return $this->chatMessageModel->where('id', $id)->find();
     }
 
     /**
@@ -56,7 +56,60 @@ class ChatMessageServlet
      */
     public function getNoReadMessageByID(int $userID)
     {
-        return $this->chatMessageModel->where('toUserID',$userID)->select();
+        return $this->chatMessageModel->where('toUserID', $userID)->select();
+    }
+
+    /**
+     * @param int $userID
+     * @return mixed
+     */
+    public function getMessageCountByUserID(int $userID)
+    {
+        $field = ['fromUserID', 'fromUserAvatar','fromUserName','toUserID', 'toUserAvatar','toUserName','count(*) as messageCount', 'createdAt'];
+        return $this->chatMessageModel->where('toUserID', $userID)->where('isRead', 0)->field($field)->group(['fromUserID'])->order('createdAt', 'desc')->select();
+    }
+
+    /**
+     * @param int $userID
+     * @return ChatMessageModel|array|mixed|\think\Model|null
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function getLastConnect(int $userID)
+    {
+        return $this->chatMessageModel->where('toUserID', $userID)->where('isRead', 0)->order('createdAt', 'desc')->find();
+    }
+
+    /**
+     * @param int $fromUserID
+     * @param int $toUserID
+     * @param bool $isLimit
+     * @return ChatMessageModel|ChatMessageModel[]|array|\think\Collection
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function getLastMessage(int $fromUserID, int $toUserID, bool $isLimit = false)
+    {
+        $model = $this->chatMessageModel->where('toUserID', $toUserID)->where('isRead', 0)->where('fromUserID', $fromUserID);
+        if ($isLimit) {
+            $res = $model->limit(10)->select();
+        } else {
+            $res = $model->select();
+        }
+        return $res;
+
+    }
+
+    /**
+     * @param int $fromUserID
+     * @param int $toUserID
+     * @return ChatMessageModel
+     */
+    public function setRead(int $fromUserID,int $toUserID)
+    {
+        return $this->chatMessageModel->where('fromUserID',$fromUserID)->where('toUserID',$toUserID)->update(['isRead' => 1]);
     }
 
 
