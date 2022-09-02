@@ -186,8 +186,7 @@ class GoodsServlet
         if (isset($condition["keywords"]) && trim($condition["keywords"]) != "")
             $goodsList->whereLike("goodsName", "%" . $condition["keywords"] . "%");
 
-        return $goodsList->order($order)
-            ->paginate((int)request()->param("pageSize", 20));
+        return $goodsList->order($order)->paginate((int)request()->param("pageSize", 20));
     }
 
 }
