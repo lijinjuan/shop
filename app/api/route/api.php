@@ -65,6 +65,8 @@ Route::group(":version", function () {
     Route::post("goods-details/:goodsID", ":version.Goods/getGoodsDetailsByGoodsID");
     // 获取优品推荐的商品列表的接口
     Route::get("excellent-goods-list", ":version.Goods/getGoodsListByExcellent");
+    // 根据brandID 获取商品的列表
+    Route::get("brands-goods-list/:brandID", ":version.Brand/getGoodsListByBrandID");
 
 })->json()->allowCrossDomain();
 

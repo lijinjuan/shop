@@ -32,4 +32,14 @@ class BrandController
         return $this->brandsRepositories->getBrandsList();
     }
 
+    /**
+     * getGoodsListByBrandID
+     * @param int $brandID
+     * @return \think\response\Json
+     */
+    public function getGoodsListByBrandID(int $brandID)
+    {
+        return $this->brandsRepositories->getGoodsListByBrandID($brandID);
+    }
+
 }
