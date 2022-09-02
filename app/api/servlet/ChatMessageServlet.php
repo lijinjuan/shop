@@ -30,7 +30,7 @@ class ChatMessageServlet
         try {
             return $this->chatMessageModel::create($messageData);
         } catch (\Throwable $e) {
-            throw  new ParameterException(['errMessage' => '聊天信息添加失败...'.$e->getMessage()]);
+            throw  new ParameterException(['errMessage' => '聊天信息添加失败...' . $e->getMessage()]);
         }
 
     }
@@ -59,14 +59,19 @@ class ChatMessageServlet
         return $this->chatMessageModel->where('toUserID', $userID)->select();
     }
 
-    /**
-     * @param int $userID
-     * @return mixed
-     */
-    public function getMessageCountByUserID(int $userID)
+
+    public function getMessageCountByUserID(int $userID,int $toUserRoleID)
     {
-        $field = ['fromUserID', 'fromUserAvatar','fromUserName','toUserID', 'toUserAvatar','toUserName','count(*) as messageCount', 'createdAt'];
-        return $this->chatMessageModel->where('toUserID', $userID)->where('isRead', 0)->field($field)->group(['fromUserID'])->order('createdAt', 'desc')->select();
+        $chatList = $this->chatMessageModel->where('toUserID', $userID)->where('toUserRoleID',$toUserRoleID)->field(['fromUserID', 'fromUserAvatar', 'fromUserName', 'toUserID', 'toUserAvatar', 'toUserName', 'isRead', 'createdAt'])->select();
+        $indexKey = "fromUserID";
+        $userList = $chatList->dictionary($chatList, $indexKey);
+
+        foreach ($userList as $userID => &$userItem) {
+            $userIsNotReadCount = $chatList->where("fromUserID", $userID)->where("isRead", 0)->count();
+            $userItem["messageCount"] = $userIsNotReadCount;
+        }
+
+        return array_values($userList);
     }
 
     /**
@@ -92,7 +97,7 @@ class ChatMessageServlet
      */
     public function getLastMessage(int $fromUserID, int $toUserID, int $limit = 10)
     {
-        return $this->chatMessageModel->where('toUserID', $toUserID)->where('isRead', 0)->where('fromUserID', $fromUserID)->limit($limit)->select();
+        return $this->chatMessageModel->where('toUserID', $toUserID)->where('fromUserID', $fromUserID)->limit($limit)->select();
 
     }
 
@@ -103,9 +108,17 @@ class ChatMessageServlet
      * @return \think\Paginator
      * @throws \think\db\exception\DbException
      */
-    public function getMessageList(int $fromUserID, int $toUserID,int $pageSize=20)
+    public function getMessageList(int $fromUserID, int $toUserID, int $pageSize = 20)
     {
-        return  $this->chatMessageModel->where('toUserID', $toUserID)->where('isRead', 0)->where('fromUserID', $fromUserID)->where('isRead',0)->order('createdAt','desc')->paginate($pageSize);
+        $map1 = [
+            ['fromUserID', '=', $fromUserID],
+            ['toUserID', '=', $toUserID],
+        ];
+        $map2 = [
+            ['fromUserID', '=', $toUserID],
+            ['toUserID', '=', $fromUserID],
+        ];
+        return $this->chatMessageModel->whereOr([$map1, $map2])->paginate($pageSize);
 
     }
 
@@ -114,9 +127,19 @@ class ChatMessageServlet
      * @param int $toUserID
      * @return ChatMessageModel
      */
-    public function setRead(int $fromUserID,int $toUserID)
+    public function setRead(int $fromUserID, int $toUserID)
     {
-        return $this->chatMessageModel->where('fromUserID',$fromUserID)->where('toUserID',$toUserID)->update(['isRead' => 1]);
+        return $this->chatMessageModel->where('fromUserID', $fromUserID)->where('toUserID', $toUserID)->update(['isRead' => 1]);
+    }
+
+    /**
+     * @param int $pageSize
+     * @return \think\Paginator
+     * @throws \think\db\exception\DbException
+     */
+    public function getChatMessageListByToUserID(int $pageSize = 20)
+    {
+        return $this->chatMessageModel->where('toUserID',app()->get("userProfile")->id)->order('createdAt','desc')->paginate($pageSize);
     }
 
 

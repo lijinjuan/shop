@@ -42,4 +42,14 @@ class MessageRepositories extends AbstractRepositories
     {
         return renderResponse($this->servletFactory->messageServ()->noReadMessageCount($isRead));
     }
+
+    /**
+     * @param int $pageSize
+     * @return \think\response\Json
+     * @throws \think\db\exception\DbException
+     */
+    public function chatMessageList(int $pageSize)
+    {
+        return renderPaginateResponse($this->servletFactory->chatMessageServ()->getChatMessageListByToUserID($pageSize));
+    }
 }

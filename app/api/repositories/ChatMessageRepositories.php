@@ -3,6 +3,7 @@
 namespace app\api\repositories;
 
 use GuzzleHttp\Client;
+use think\Request;
 
 class ChatMessageRepositories extends AbstractRepositories
 {
@@ -72,17 +73,21 @@ class ChatMessageRepositories extends AbstractRepositories
 
     /**
      * @param int $id
-     * @return mixed
+     * @param int $toUserRoleID
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
-    public function getMessageCountByUserID(int $id)
+    public function getMessageCountByUserID(int $id, int $toUserRoleID)
     {
         $message = [];
-        $messageCount = $this->servletFactory->chatMessageServ()->getMessageCountByUserID($id);
+        $messageCount = $this->servletFactory->chatMessageServ()->getMessageCountByUserID($id, $toUserRoleID);
         if ($messageCount) {
-            $message = $messageCount->toArray();
-            $fromUserID = !empty($message)?$message[0]['fromUserID']:0;
-            $toUserID = !empty($message)?$message[0]['toUserID']:0;
-            if ($fromUserID && $toUserID){
+            $message = $messageCount;
+            $fromUserID = !empty($message) ? $message[0]['fromUserID'] : 0;
+            $toUserID = !empty($message) ? $message[0]['toUserID'] : 0;
+            if ($fromUserID && $toUserID) {
                 $data = $this->servletFactory->chatMessageServ()->getLastMessage($fromUserID, $toUserID);
             }
         }

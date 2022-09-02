@@ -55,5 +55,16 @@ class MessageController
         return $this->messageRepositories->messageCount($isRead);
     }
 
+    /**
+     * @param Request $request
+     * @return \think\response\Json
+     * @throws \think\db\exception\DbException
+     */
+    public function chatMessageList(Request $request)
+    {
+        $pageSize = $request->post('pageSize', 20);
+        return $this->messageRepositories->chatMessageList($pageSize);
+    }
+
 
 }

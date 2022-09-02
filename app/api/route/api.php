@@ -181,19 +181,18 @@ Route::group(":version", function () {
     Route::get("message-detail/:id", ":version.Message/messageDetail");
     //未读消息数量
     Route::get('message-count/[:type]', ":version.Message/noReadMessageCount");
+    //聊天记录列表
+    Route::post('chat-message-list',':version.Message/chatMessageList');
 
 })->middleware(JwtAuthMiddleware::class)->json()->allowCrossDomain();
 
 ////客服聊天
-//Route::group(":version", function () {
-//    Route::post("send-message", ":version.ChatMessage/sendMessage");
-//    Route::get("get-message-count/:userID", ":version.ChatMessage/getMessageCountByUserID");
-//    Route::get("set-read-message", ":version.ChatMessage/setRead");
-//})->middleware(JwtAuthMiddleware::class)->json()->allowCrossDomain();
-Route::post(":version/send-message", ":version.ChatMessage/sendMessage");
-Route::get(":version/get-message-count/:userID", ":version.ChatMessage/getMessageCountByUserID");
-Route::post(":version/set-read-message", ":version.ChatMessage/setRead");
-Route::post(":version/get-message-list", ":version.ChatMessage/getMessageListByID");
+Route::group(":version", function () {
+    Route::post("send-message", ":version.ChatMessage/sendMessage");
+    Route::post("get-message-count/:userID", ":version.ChatMessage/getMessageCountByUserID");
+    Route::post("set-read-message", ":version.ChatMessage/setRead");
+    Route::post("get-message-list", ":version.ChatMessage/getMessageListByID");
+})->middleware(JwtAuthMiddleware::class)->json()->allowCrossDomain();
 
 //帮助中心
 Route::post(":version/help-list", ":version.Help/helpList")->json()->allowCrossDomain();
