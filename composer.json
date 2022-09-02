@@ -30,7 +30,8 @@
         "topthink/think-captcha": "^3.0",
       "ext-bcmath": "*",
         "alphasnow/aliyun-oss-appserver": "^1.0",
-        "phpmailer/phpmailer": "^6.6"
+        "phpmailer/phpmailer": "^6.6",
+        "guzzlehttp/guzzle": "^7.5"
     },
     "require-dev": {
         "symfony/var-dumper": "^4.2",

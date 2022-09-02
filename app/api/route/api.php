@@ -184,6 +184,17 @@ Route::group(":version", function () {
 
 })->middleware(JwtAuthMiddleware::class)->json()->allowCrossDomain();
 
+////客服聊天
+//Route::group(":version", function () {
+//    Route::post("send-message", ":version.ChatMessage/sendMessage");
+//    Route::get("get-message-count/:userID", ":version.ChatMessage/getMessageCountByUserID");
+//    Route::get("set-read-message", ":version.ChatMessage/setRead");
+//})->middleware(JwtAuthMiddleware::class)->json()->allowCrossDomain();
+Route::post(":version/send-message", ":version.ChatMessage/sendMessage");
+Route::get(":version/get-message-count/:userID", ":version.ChatMessage/getMessageCountByUserID");
+Route::post(":version/set-read-message", ":version.ChatMessage/setRead");
+Route::post(":version/get-message-list", ":version.ChatMessage/getMessageListByID");
+
 //帮助中心
 Route::post(":version/help-list", ":version.Help/helpList")->json()->allowCrossDomain();
 //帮助中心详情
@@ -195,6 +206,8 @@ Route::miss(function () {
     return 404;
 });
 Route::get(":version/get-order-info", ":version.Order/getOrderInfo");
+
+
 
 
 
