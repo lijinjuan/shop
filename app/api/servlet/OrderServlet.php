@@ -103,7 +103,9 @@ class OrderServlet
         if (!$orderModel) {
             throw new ParameterException(['errMessage' => '订单不存在...']);
         }
-        return $this->ordersModel->where('orderNo', $orderNo)->with(['goodsDetail'])->field(['id', 'orderNo', 'orderStatus', 'goodsNum', 'createdAt'])->hidden(['goodsDetail.createdAt', 'goodsDetail.updatedAt', 'goodsDetail.userID', 'goodsDetail.storeID', 'goodsDetail.skuID', 'goodsDetail.skuName'])->find();
+        return $this->ordersModel->where('orderNo', $orderNo)->field(['id', 'orderNo', 'orderStatus', 'goodsNum', 'storeID','createdAt'])->with(['goodsDetail','store'=>function($query){
+            $query->field(['id','storeName','storeLogo','storeDesc','storeRemark','mobile']);
+        }])->hidden(['goodsDetail.createdAt', 'goodsDetail.updatedAt', 'goodsDetail.userID', 'goodsDetail.storeID', 'goodsDetail.skuID', 'goodsDetail.skuName'])->find();
     }
 
     /**

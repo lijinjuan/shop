@@ -37,11 +37,16 @@ class ChatMessageController
 
     /**
      * @param int $userID
+     * @param Request $request
      * @return \think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
-    public function getMessageCountByUserID(int $userID)
+    public function getMessageCountByUserID(int $userID,Request $request)
     {
-        return renderResponse($this->chatMessageRepositories->getMessageCountByUserID($userID));
+        $toUserRoleID = $request->post('toUserRoleID');
+        return renderResponse($this->chatMessageRepositories->getMessageCountByUserID($userID,$toUserRoleID));
     }
 
     /**
@@ -68,5 +73,6 @@ class ChatMessageController
         $pageSize = $request->post('pageSize',20);
         return $this->chatMessageRepositories->getMessageList($fromUserID,$toUserID,$pageSize);
     }
+
 
 }
