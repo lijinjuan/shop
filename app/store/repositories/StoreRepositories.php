@@ -35,6 +35,7 @@ class StoreRepositories extends AbstractRepositories
         $accessToken = JWTAuth::builder(["storeID" => $storeModel->id]);
 
         $storeProfile = [
+            "storeID" => $storeModel->id,
             "storeName" => $storeModel->storeName,
             "email" => $storeModel->user->email,
             "logo" => $storeModel->storeLogo,

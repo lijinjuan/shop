@@ -65,6 +65,8 @@ Route::group(":version", function () {
     Route::post("goods-details/:goodsID", ":version.Goods/getGoodsDetailsByGoodsID");
     // 获取优品推荐的商品列表的接口
     Route::get("excellent-goods-list", ":version.Goods/getGoodsListByExcellent");
+    // 根据brandID 获取商品的列表
+    Route::get("brands-goods-list/:brandID", ":version.Brand/getGoodsListByBrandID");
 
 })->json()->allowCrossDomain();
 
@@ -126,24 +128,23 @@ Route::group(":version", function () {
     //普通用户订单统计数据
     Route::get("order-count", ":version.Order/orderCount");
     //申请退款
-    Route::post('order-refund',":version.Order/orderRefund");
+    Route::post('order-refund', ":version.Order/orderRefund");
     //获取退款类型
-    Route::post('order-refund-type',":version.Order/orderRefundType");
+    Route::post('order-refund-type', ":version.Order/orderRefundType");
     //取消申请退款
-    Route::post('cancel-order-refund/:orderID',":version.Order/cancelOrderRefund");
+    Route::post('cancel-order-refund/:orderID', ":version.Order/cancelOrderRefund");
     //获取退款原因
-    Route::get('order-refund-reason',":version.Order/getRefundReason");
+    Route::get('order-refund-reason', ":version.Order/getRefundReason");
     //确认收货
-    Route::post('order-confirm',":version.Order/editOrderStatus");
+    Route::post('order-confirm', ":version.Order/editOrderStatus");
     //删除订单
-    Route::delete('order-delete',":version.Order/delOrder");
+    Route::delete('order-delete', ":version.Order/delOrder");
     //店铺订单列表
-    Route::get('store-order-list/:type',":version.Order/storeOrderList");
+    Route::get('store-order-list/:type', ":version.Order/storeOrderList");
     //店铺订单统计信息
-    Route::get('store-order-count',':version.Order/storeOrderCount');
+    Route::get('store-order-count', ':version.Order/storeOrderCount');
     //退款订单详情
-    Route::get('refund-order-detail/:id',':version.Order/orderDetailByID');
-
+    Route::get('refund-order-detail/:id', ':version.Order/orderDetailByID');
 
 
 })->middleware(JwtAuthMiddleware::class)->json()->allowCrossDomain();
@@ -161,13 +162,13 @@ Route::group(":version", function () {
     //用户充值订单
     Route::post("recharge-list/[:status]", ":version.Recharge/rechargeList");
     //用户绑定提现方式
-    Route::post("binding-withdrawal-amount",":version.UserAmount/addAmount");
+    Route::post("binding-withdrawal-amount", ":version.UserAmount/addAmount");
     //获取提现账户
-    Route::get("get-withdrawal-amount/:type",":version.Withdrawal/getWithdrawalAmount");
+    Route::get("get-withdrawal-amount/:type", ":version.Withdrawal/getWithdrawalAmount");
     //用户提现
-    Route::post("add-withdrawal",":version.Withdrawal/addWithdrawal");
+    Route::post("add-withdrawal", ":version.Withdrawal/addWithdrawal");
     //提现列表
-    Route::post("withdrawal-list/[:type]",":version.Withdrawal/withdrawalList");
+    Route::post("withdrawal-list/[:type]", ":version.Withdrawal/withdrawalList");
 
 
 })->middleware(JwtAuthMiddleware::class)->json()->allowCrossDomain();
@@ -179,7 +180,7 @@ Route::group(":version", function () {
     // 站内信详情
     Route::get("message-detail/:id", ":version.Message/messageDetail");
     //未读消息数量
-    Route::get('message-count/[:type]',":version.Message/noReadMessageCount");
+    Route::get('message-count/[:type]', ":version.Message/noReadMessageCount");
 
 })->middleware(JwtAuthMiddleware::class)->json()->allowCrossDomain();
 

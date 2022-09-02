@@ -16,4 +16,15 @@ class BrandsRepositories extends AbstractRepositories
         $brandsList = $this->servletFactory->brandsServ()->getBrandsList();
         return renderResponse($brandsList);
     }
+
+    /**
+     * getGoodsListByBrandID
+     * @param int $brandID
+     * @return \think\response\Json
+     */
+    public function getGoodsListByBrandID(int $brandID)
+    {
+        $goodsList = $this->servletFactory->goodsServ()->getGoodsListByBrandID($brandID);
+        return renderPaginateResponse($goodsList);
+    }
 }
