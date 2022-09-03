@@ -176,10 +176,17 @@ class GoodsServlet
      */
     public function getGoodsListByBrandID(int $brandID)
     {
-        return $this->goodsModel->whereIn("brandID", $brandID)->where("status", 1)
-            ->field(["id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "goodsSalesAmount", "createdAt"])
-            ->order("createdAt", "desc")
-            ->paginate((int)request()->param("pageSize", 20));
+        $condition = request()->only(["keywords", "goodsDiscountPrice", "goodsSalesAmount"]);
+        $order["goodsPrice"] = $condition["goodsDiscountPrice"] ?? "desc";
+        $order["goodsSalesAmount"] = $condition["goodsSalesAmount"] ?? "desc";
+
+        $goodsList = $this->goodsModel->whereIn("brandID", $brandID)->where("status", 1)
+            ->field(["id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "goodsSalesAmount", "createdAt"]);
+
+        if (isset($condition["keywords"]) && trim($condition["keywords"]) != "")
+            $goodsList->whereLike("goodsName", "%" . $condition["keywords"] . "%");
+
+        return $goodsList->order($order)->paginate((int)request()->param("pageSize", 20));
     }
 
 }
