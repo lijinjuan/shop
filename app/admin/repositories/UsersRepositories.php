@@ -181,9 +181,10 @@ class UsersRepositories extends AbstractRepositories
         $update = [
             'storeRemark' => $checkData['remark'] ?? '',
             'status' => $checkData['status'],
-            'checkID' => app()->get("agentProfile")->id,
+            'checkID' => app()->get("adminProfile")->id,
             'checkAt' => date('Y-m-d H:i:s'),
         ];
+        
         $update['reason'] = $checkData['status'] == 2 ? $checkData['reason'] : '';
         //审核成功之后生成邀请码
         if ($update['status'] == 1) {

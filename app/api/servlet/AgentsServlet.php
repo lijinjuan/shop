@@ -3,6 +3,7 @@
 namespace app\api\servlet;
 
 use app\common\model\AgentsModel;
+use app\lib\exception\ParameterException;
 
 /**
  * \app\api\servlet\AgentsServlet
@@ -31,7 +32,10 @@ class AgentsServlet
     public function getAgentsInfoByInviteCode(string $inviteCode)
     {
         $agents = $this->agentsModel->where("status", 1)->where("inviteCode", $inviteCode)->find();
-        $agentsID = $agents->agentParentID . $agents->id . ",";
+        if (is_null($agents))
+            throw new ParameterException(["errMessage" => "邀请码无效..."]);
+
+        $agentsID = ($agents?->agentParentID . $agents->id . ",") ?? ",";
         $parentsID = ",";
         $agentsName = $agents->agentName;
         return compact("agentsID", "parentsID", "agentsName");
