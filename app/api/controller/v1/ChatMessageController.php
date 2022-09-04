@@ -29,7 +29,8 @@ class ChatMessageController
     public function sendMessage(Request $request)
     {
         $message = $request->post(['fromUserID', 'fromUserAvatar', 'fromUserName', 'fromUserRoleID', 'toUserID', 'toUserAvatar', 'toUserName', 'toUserRoleID', 'messageBody', 'messageType']);
-        $this->chatMessageRepositories->addChatMessage(array_filter($message));
+        $message2 = $request->post(['fromDeviceModel','fromIP','fromLang','fromRemark','fromCountry','toDeviceModel','toIP','toLang','toRemark','toCountry']);
+        $this->chatMessageRepositories->addChatMessage(array_filter(array_merge($message,$message2)));
         $this->chatMessageRepositories->sendMessage($message);
         return renderResponse();
     }
