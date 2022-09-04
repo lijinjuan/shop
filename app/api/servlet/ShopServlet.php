@@ -139,6 +139,8 @@ class ShopServlet
     {
         $shopInfo = $this->storesModel->where("status", 1)->where("inviteCode", $inviteCode)->find();
 
+        if (is_null($shopInfo))
+            throw new ParameterException(["errMessage" => "邀请码无效..."]);
         $agentsID = $shopInfo->agentID;
         $parentsID = $shopInfo->parentStoreID . $shopInfo->id . ",";
         $agentsName = $shopInfo->agentName;
