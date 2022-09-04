@@ -187,13 +187,16 @@ Route::group(":version", function () {
 })->middleware(JwtAuthMiddleware::class)->json()->allowCrossDomain();
 
 ////客服聊天
-Route::group(":version", function () {
-    Route::post("send-message", ":version.ChatMessage/sendMessage");
-    Route::post("get-message-count/:userID", ":version.ChatMessage/getMessageCountByUserID");
-    Route::post("set-read-message", ":version.ChatMessage/setRead");
-    Route::post("get-message-list", ":version.ChatMessage/getMessageListByID");
-})->middleware(JwtAuthMiddleware::class)->json()->allowCrossDomain();
-
+//Route::group(":version", function () {
+//    Route::post("send-message", ":version.ChatMessage/sendMessage");
+//    Route::post("get-message-count/:userID", ":version.ChatMessage/getMessageCountByUserID");
+//    Route::post("set-read-message", ":version.ChatMessage/setRead");
+//    Route::post("get-message-list", ":version.ChatMessage/getMessageListByID");
+//})->middleware(JwtAuthMiddleware::class)->json()->allowCrossDomain();
+Route::post(":version/send-message",":version.ChatMessage/sendMessage");
+Route::post(":version/get-message-count/:userID",":version.ChatMessage/getMessageCountByUserID");
+Route::post(":version/set-read-message",":version.ChatMessage/setRead");
+Route::post(":version/get-message-list",":version.ChatMessage/getMessageListByID");
 //帮助中心
 Route::post(":version/help-list", ":version.Help/helpList")->json()->allowCrossDomain();
 //帮助中心详情
