@@ -62,7 +62,7 @@ class ChatMessageServlet
 
     public function getMessageCountByUserID(int $userID,int $toUserRoleID)
     {
-        $chatList = $this->chatMessageModel->where('toUserID', $userID)->where('toUserRoleID',$toUserRoleID)->field(['fromUserID', 'fromUserAvatar', 'fromUserName', 'toUserID', 'toUserAvatar', 'toUserName', 'isRead', 'createdAt'])->select();
+        $chatList = $this->chatMessageModel->where('toUserID', $userID)->where('toUserRoleID',$toUserRoleID)->select();
         $indexKey = "fromUserID";
         $userList = $chatList->dictionary($chatList, $indexKey);
 
