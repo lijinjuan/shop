@@ -101,7 +101,21 @@ class ShopRepositories extends AbstractRepositories
         if ($categoryID > 0)
             $categories = $this->servletFactory->categoryServ()->getParentCategoryList($categoryID);
 
+        /**
+         * @var $storeGoodsList \think\Paginator
+         */
         $storeGoodsList = $this->servletFactory->shopServ()->getGoodsListByMyStore($keywords, $categories);
+        // 获取佣金
+        $commission = $this->servletFactory->commissionServ()->getCommissionByType(2);
+
+        $commissionRate = 0;
+        if ($commission->content != null) {
+            $commissionRateArr = json_decode($commission->content, true);
+            $commissionRate = bcdiv($commissionRateArr["goodsCommission"], 100);
+        }
+
+        $storeGoodsList->each(fn($item) => $item["commission"] = $item["goodsDiscountPrice"] * $commissionRate);
+        
         return renderPaginateResponse($storeGoodsList);
     }
 
