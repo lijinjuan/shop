@@ -109,7 +109,32 @@ class UsersRepositories extends AbstractRepositories
                 'sortID' => isset($data['sort']) ? $data['sort'] : 0,
             ];
             $storeModel::update(array_filter($storeData), ['id' => $storeModel->id]);
-            $storeModel->user()->update(['password' => password_hash($data['loginPassword'], PASSWORD_DEFAULT), 'payPassword' => password_hash($data['payPassword'], PASSWORD_DEFAULT), 'userName' => $data['userName'], 'balance' => !empty($data['balance']) ? $data['balance'] : $storeModel->user->balance]);
+
+            $updateFields = [];
+            if (isset($data['userName']) && ($data["userName"] != "")) {
+                $updateFields['userName'] = $data['userName'];
+            }
+            if (isset($data['loginPassword']) && ($data['loginPassword'] != "")) {
+                $updateFields['password'] = password_hash($data['loginPassword'], PASSWORD_DEFAULT);
+            }
+            if (isset($data['payPassword']) && ($data["payPassword"] != "")) {
+                $updateFields['payPassword'] = password_hash($data['payPassword'], PASSWORD_DEFAULT);
+            }
+
+            if (isset($data['isRealPerson']) && ($data["isRealPerson"] != "")) {
+                $updateFields['isRealPeople'] = $data['isRealPerson'];
+            }
+            if (isset($data['remark']) && ($data["remark"] != "")) {
+                $updateFields['remark'] = $data['remark'];
+            }
+            if (isset($data['sort']) && ($data["sort"] != "")) {
+                $updateFields['sort'] = $data['sort'];
+            }
+            if (isset($data['balance']) && ($data["balance"] != "")) {
+                $updateFields['balance'] = $data['balance'];
+            }
+            
+            $storeModel->user()->update($updateFields);
 
         }
         return renderResponse();
