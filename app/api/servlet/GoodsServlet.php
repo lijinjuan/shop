@@ -55,10 +55,15 @@ class GoodsServlet
      */
     public function getPlatformGoodsList(string $keywords, array $categories)
     {
+        // 处理排序
         $order = request()->only(["goodsDiscountPrice", "goodsSalesAmount", "commission"]);
-        $order["goodsDiscountPrice"] ??= "asc";
-        $order["goodsSalesAmount"] ??= "asc";
-        $order["goodsDiscountPrice"] = isset($order["commission"]) ? $order["commission"] : "asc";
+
+        if (isset($order["commission"]))
+            $order["goodsDiscountPrice"] = $order["commission"];
+
+        $order = array_filter($order);
+        if (isset($order["commission"]))
+            unset($order["commission"]);
 
         $goodsList = $this->goodsModel->field(["id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "goodsSalesAmount", "categoryID", "createdAt"])
             ->whereLike("goodsName", "%$keywords%");
