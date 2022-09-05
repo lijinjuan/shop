@@ -78,9 +78,10 @@ class ShopServlet
     {
         $storeModel = app()->get("userProfile")->store;
         $order = request()->only(["goodsDiscountPrice", "goodsSalesAmount", "commission"]);
-        $order["goodsDiscountPrice"] ??= "asc";
-        $order["goodsSalesAmount"] ??= "asc";
-        $order["goodsDiscountPrice"] ??= $order["commission"];
+        $order["goodsDiscountPrice"] = isset($order["commission"]) ? $order["commission"] : "";
+        $order = array_filter($order);
+        if (isset($order["commission"]))
+            unset($order["commission"]);
 
         $goodsList = $storeModel->goods()->where("s_goods.status", 1)
             ->field(["s_goods.id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "goodsSalesAmount", "s_goods.createdAt"])
