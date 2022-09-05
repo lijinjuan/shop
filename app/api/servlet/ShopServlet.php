@@ -117,7 +117,7 @@ class ShopServlet
      */
     public function getStore2ListLimit10()
     {
-        return $this->storesModel->where("status", 1)->field(["id", "storeName", "storeLogo", "storeDesc", "createdAt"])->order("createdAt", "desc")->limit(10)->select();
+        return $this->storesModel->where("status", 1)->field(["id", "storeName", "storeLogo", "storeDesc", "createdAt"])->order(["sortID" => "desc", "createdAt" => "desc"])->limit(10)->select();
     }
 
     /**
