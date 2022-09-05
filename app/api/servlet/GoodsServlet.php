@@ -60,7 +60,7 @@ class GoodsServlet
 
         if (isset($order["commission"]))
             $order["goodsDiscountPrice"] = $order["commission"];
-        
+
         $order = array_filter($order);
         if (isset($order["commission"]))
             unset($order["commission"]);

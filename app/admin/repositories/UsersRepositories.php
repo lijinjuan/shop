@@ -65,30 +65,33 @@ class UsersRepositories extends AbstractRepositories
      */
     public function editUserInfo(int $id, array $data)
     {
+        $data = array_filter($data);
+
         if ($data['type'] == 1) {
             $userModel = $this->servletFactory->userServ()->getUserInfoByID($id);
             if (!$userModel) {
                 throw new ParameterException(['errMessage' => '用户不存在...']);
             }
-            if (!empty($data['userName'])) {
+            if (isset($data['userName']) && ($data["userName"] != "")) {
                 $updateData['userName'] = $data['userName'];
             }
-            if (!empty($data['loginPassword'])) {
+            if (isset($data['loginPassword']) && ($data['loginPassword'] != "")) {
                 $updateData['password'] = password_hash($data['loginPassword'], PASSWORD_DEFAULT);
             }
-            if (!empty($data['payPassword'])) {
+            if (isset($data['payPassword']) && ($data["payPassword"] != "")) {
                 $updateData['payPassword'] = password_hash($data['payPassword'], PASSWORD_DEFAULT);
             }
-            if (!empty($data['isRealPerson'])) {
+
+            if (isset($data['isRealPerson']) && ($data["isRealPerson"] != "")) {
                 $updateData['isRealPeople'] = $data['isRealPerson'];
             }
-            if (!empty($data['remark'])) {
+            if (isset($data['remark']) && ($data["remark"] != "")) {
                 $updateData['remark'] = $data['remark'];
             }
-            if (!empty($data['sort'])) {
+            if (isset($data['sort']) && ($data["sort"] != "")) {
                 $updateData['sort'] = $data['sort'];
             }
-            if (!empty($data['balance'])) {
+            if (isset($data['balance']) && ($data["balance"] != "")) {
                 $updateData['balance'] = $data['balance'];
             }
             $userModel::update($updateData, ['id' => $userModel->id]);
@@ -327,9 +330,9 @@ class UsersRepositories extends AbstractRepositories
      * @return \think\response\Json
      * @throws \think\db\exception\DbException
      */
-    public function rechargeList(string $keywords, string $agentAccount, int $pageSize,string $storeName)
+    public function rechargeList(string $keywords, string $agentAccount, int $pageSize, string $storeName)
     {
-        return renderPaginateResponse($this->servletFactory->rechargeServ()->rechargeList($keywords, $agentAccount, $pageSize,$storeName));
+        return renderPaginateResponse($this->servletFactory->rechargeServ()->rechargeList($keywords, $agentAccount, $pageSize, $storeName));
     }
 
     /**

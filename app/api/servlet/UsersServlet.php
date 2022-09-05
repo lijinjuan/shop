@@ -166,7 +166,6 @@ class UsersServlet
         ]);
     }
 
-    // 发货
     /**
      * getUserAddressByAddressID
      * @param int $userAddressID
