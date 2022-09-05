@@ -111,11 +111,11 @@ class ShopRepositories extends AbstractRepositories
         $commissionRate = 0;
         if ($commission->content != null) {
             $commissionRateArr = json_decode($commission->content, true);
-            $commissionRate = bcdiv($commissionRateArr["goodsCommission"], 100);
+            $commissionRate = $commissionRateArr["goodsCommission"] / 100;
         }
 
-        $storeGoodsList->each(fn($item) => $item["commission"] = $item["goodsDiscountPrice"] * $commissionRate);
-        
+        $storeGoodsList->each(fn($item) => $item["commission"] = bcmul($item["goodsDiscountPrice"], $commissionRate, 2));
+
         return renderPaginateResponse($storeGoodsList);
     }
 

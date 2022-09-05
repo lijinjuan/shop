@@ -36,7 +36,19 @@ class GoodsRepositories extends AbstractRepositories
 
         $platformGoodsList = $this->servletFactory->goodsServ()->getPlatformGoodsList($keywords, $categories);
         $myStoreGoodsID = $this->servletFactory->shopServ()->getGoodsIDsByMyStore();
-        $platformGoodsList->each(fn($item) => $item["status"] = (int)in_array($item["id"], $myStoreGoodsID));
+        // 获取佣金
+        $commission = $this->servletFactory->commissionServ()->getCommissionByType(2);
+
+        $commissionRate = 0;
+        if ($commission->content != null) {
+            $commissionRateArr = json_decode($commission->content, true);
+            $commissionRate = $commissionRateArr["goodsCommission"] / 100;
+        }
+
+        $platformGoodsList->each(function ($item) use ($myStoreGoodsID, $commissionRate) {
+            $item["status"] = (int)in_array($item["id"], $myStoreGoodsID);
+            $item["commission"] = bcmul($item["goodsDiscountPrice"], $commissionRate, 2);
+        });
 
         return renderPaginateResponse($platformGoodsList);
     }
