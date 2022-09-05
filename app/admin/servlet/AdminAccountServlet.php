@@ -51,7 +51,7 @@ class AdminAccountServlet
                 $query->whereLike('agentAccount', '%' . $agent . '%');
             });
         }
-        $model->where('type', '>', 0);
+        $model = $model->where('type', '>', 0);
         if (!empty($search['ID'])) {
             $model->where('id', 'like', '%' . $search['ID'] . '%');
         }
