@@ -57,7 +57,10 @@ class GoodsServlet
     {
         // 处理排序
         $order = request()->only(["goodsDiscountPrice", "goodsSalesAmount", "commission"]);
-        $order["goodsDiscountPrice"] = isset($order["commission"]) ? $order["commission"] : "";
+
+        if (isset($order["commission"]))
+            $order["goodsDiscountPrice"] = $order["commission"];
+        
         $order = array_filter($order);
         if (isset($order["commission"]))
             unset($order["commission"]);
