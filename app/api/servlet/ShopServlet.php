@@ -111,7 +111,7 @@ class ShopServlet
      */
     public function getStore2List()
     {
-        return $this->storesModel->field(["id", "storeName", "storeLogo", "storeDesc", "createdAt"])->order(["sortID" => "asc", "createdAt" => "desc"])->paginate((int)request()->param("pageSize"), 20);
+        return $this->storesModel->where("status", 1)->field(["id", "storeName", "storeLogo", "storeDesc", "createdAt"])->order(["sortID" => "asc", "createdAt" => "desc"])->paginate((int)request()->param("pageSize"), 20);
     }
 
     /**
@@ -130,7 +130,7 @@ class ShopServlet
      */
     public function searchShopListByKeywords(string $keywords)
     {
-        return $this->storesModel->whereLike("storeName", "%$keywords%")->field(["id", "storeName", "storeLogo", "storeDesc", "createdAt"])->order("createdAt", "desc")->paginate((int)request()->param("pageSize"));
+        return $this->storesModel->where("status", 1)->whereLike("storeName", "%$keywords%")->field(["id", "storeName", "storeLogo", "storeDesc", "createdAt"])->order("createdAt", "desc")->paginate((int)request()->param("pageSize"));
     }
 
     /**
