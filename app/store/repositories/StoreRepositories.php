@@ -239,9 +239,9 @@ class StoreRepositories extends AbstractRepositories
         $childStore = app()->get("storeProfile")->childStore ?? 0;
         $beginTime = date("Y-m-d H:i:s", strtotime(date("Y-m-d", time())));
         $endTime = date("Y-m-d H:i:s", strtotime(date("Y-m-d", time())) + 60 * 60 * 24);
-        $todayCommission = $adminServletFactory->storeAccountServ()->getCommissionByID($id, 3, $beginTime, $endTime);
+        $todayCommission = $adminServletFactory->orderServ()->getTodayCommissionByStoreID($id);
         $extensionMoney = $adminServletFactory->storeAccountServ()->getCommissionByID($id, 4);
-        $totalCommission = $adminServletFactory->storeAccountServ()->getTotalCommissionByID($id);
+        $totalCommission = $adminServletFactory->orderServ()->getFinishedByStoreID($id);
         $withdrawal = $adminServletFactory->withdrawalServ()->getStatisticsByID($id);
         $totalOrderMoney = $adminServletFactory->orderServ()->getStatisticsByStoreID($id);
         $noReceivedMoney = $adminServletFactory->orderServ()->getStatisticsByStoreID($id, 3);

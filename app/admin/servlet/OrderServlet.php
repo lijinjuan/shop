@@ -175,5 +175,16 @@ class OrderServlet
         return sprintf("%.2f", round($orderModel->sum('orderCommission'), 2));
     }
 
+    /**
+     * 店铺今日佣金
+     * @param int $id
+     * @return string
+     */
+    public function getTodayCommissionByStoreID(int $id)
+    {
+        $orderModel = $this->ordersModel->where('storeID', $id)->where('orderStatus','>',0)->whereDay('createdAt');
+        return sprintf("%.2f", round($orderModel->sum('orderCommission'), 2));
+    }
+
 
 }
