@@ -56,6 +56,7 @@ class AgentsRepositories extends AbstractRepositories
         $agentProfile['agentParentID'] = $agentModel->agentParentID . app()->get("agentProfile")->id . ',';
         $this->servletFactory->agentsServ()->createAgents($agentProfile);
         return renderResponse();
+
     }
 
     /**

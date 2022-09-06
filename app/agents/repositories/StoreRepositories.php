@@ -99,10 +99,6 @@ class StoreRepositories extends AbstractRepositories
         ];
         $update['reason'] = $checkData['status'] == 2 ? $checkData['reason'] : '';
 
-        //审核成功之后生成邀请码
-        if ($update['status'] == 1) {
-            $update['inviteCode'] = app()->get(InviteServiceInterface::class)->agentInviteCode();;
-        }
         Db::transaction(function () use ($store, $update, $id) {
             $store::update($update, ['id' => $id]);
             $store->user()->update(['isStore' => 1]);
