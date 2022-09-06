@@ -163,4 +163,17 @@ class OrderServlet
         }
         return round($orderModel->count(), 2);
     }
+
+    /**
+     * 已完成订单的店铺总佣金
+     * @param int $id
+     * @return string
+     */
+    public function getFinishedByStoreID(int $id)
+    {
+        $orderModel = $this->ordersModel->where('storeID', $id)->where('orderStatus',5);
+        return sprintf("%.2f", round($orderModel->sum('orderCommission'), 2));
+    }
+
+
 }
