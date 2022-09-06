@@ -111,7 +111,7 @@ class ShopServlet
      */
     public function getStore2List()
     {
-        return $this->storesModel->field(["id", "storeName", "storeLogo", "storeDesc", "createdAt"])->order(["sortID" => "asc", "createdAt" => "desc"])->paginate((int)request()->param("pageSize"), 20);
+        return $this->storesModel->where("status", 1)->field(["id", "storeName", "storeLogo", "storeDesc", "createdAt"])->order(["sortID" => "asc", "createdAt" => "desc"])->paginate((int)request()->param("pageSize"), 20);
     }
 
     /**
