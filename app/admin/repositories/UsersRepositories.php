@@ -264,7 +264,7 @@ class UsersRepositories extends AbstractRepositories
             $childStore = $storeStatistics['childStore'];
             $beginTime = date("Y-m-d H:i:s", strtotime(date("Y-m-d", time())));
             $endTime = date("Y-m-d H:i:s", strtotime(date("Y-m-d", time())) + 60 * 60 * 24);
-            $todayCommission = $this->servletFactory->storeAccountServ()->getCommissionByID($id, 3, $beginTime, $endTime);
+            $todayCommission = $this->servletFactory->orderServ()->getTodayCommissionByStoreID($id);
             $extensionMoney = $this->servletFactory->storeAccountServ()->getCommissionByID($id, 4);
             //$totalCommission = $this->servletFactory->storeAccountServ()->getTotalCommissionByID($id);
             $totalCommission = $this->servletFactory->orderServ()->getFinishedByStoreID($id);

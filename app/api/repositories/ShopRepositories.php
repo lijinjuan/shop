@@ -147,6 +147,8 @@ class ShopRepositories extends AbstractRepositories
     public function getGoodsListByShopID(int $shopID)
     {
         $shopModel = $this->servletFactory->shopServ()->getShopInfoByShopID($shopID);
+        //UV+1
+        $shopModel::update(['totalUV'=>$shopModel->totalUV + 1,'todayUV'=>$shopModel->todayUV + 1],['id'=>$shopID]);
         $shopList = $shopModel->goods()->where("s_goods.status", 1)
             ->field(["s_goods.id", "goodsName", "goodsImg", "goodsCover", "goodsPrice", "status", "goodsDiscountPrice", "goodsSalesAmount", "s_goods.createdAt"])
             ->hidden(["pivot", "updatedAt", "deletedAt", "brandID", "goodsContent", "goodsStock", "isRank", "isNew", "isItem"])->paginate((int)request()->param("pageSize", 20));
