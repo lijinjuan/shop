@@ -243,13 +243,18 @@ class OrderRepositories extends AbstractRepositories
                 }
             }
 
+            $orderCommission = bcmul($order->goodsTotalPrice, $goodsCommission, 2);
             $updateData = [
                 'userPayPrice' => $order->goodsTotalPrice,
                 'orderStatus' => !empty($order->storeID) ? 1 : 2,
-                'orderCommission' => $order->storeID ?? sprintf('%.2f', round($order->goodsTotalPrice * ($goodsCommission / 100), 2)),
+                'orderCommission' => 0,
                 'userPayAt' => date('Y-m-d H:i:s'),
                 'userPayStyle' => '余额支付',
             ];
+
+            if ($orderCommission > 0)
+                $updateData["orderCommission"] = $orderCommission;
+
             $order::update($updateData, ['id' => $order->id]);
             foreach ($order->goodsDetail as $detail) {
                 /**
@@ -406,7 +411,7 @@ class OrderRepositories extends AbstractRepositories
     public function storeOrderList(int $type)
     {
         //0->用户未支付 1->商家待进货（商家待付款）2->待发货 3->待收货 4->已收货 5->已完成 6->退款中 7->已退款
-        if (!in_array($type, [1,2,3,4,5,6,7,8])) {
+        if (!in_array($type, [1, 2, 3, 4, 5, 6, 7, 8])) {
             $type = 1;
         }
         return renderResponse($this->servletFactory->orderServ()->storeOrderList($type - 1));
