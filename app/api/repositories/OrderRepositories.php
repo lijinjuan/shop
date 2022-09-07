@@ -243,7 +243,8 @@ class OrderRepositories extends AbstractRepositories
                 }
             }
 
-            $orderCommission = bcmul($order->goodsTotalPrice, $goodsCommission, 2);
+            //$orderCommission = bcmul($order->goodsTotalPrice, $goodsCommission, 2);
+            $orderCommission = round($order->goodsTotalPrice * ($goodsCommission / 100), 2);
             $updateData = [
                 'userPayPrice' => $order->goodsTotalPrice,
                 'orderStatus' => !empty($order->storeID) ? 1 : 2,
@@ -254,7 +255,6 @@ class OrderRepositories extends AbstractRepositories
 
             if ($orderCommission > 0)
                 $updateData["orderCommission"] = $orderCommission;
-
             $order::update($updateData, ['id' => $order->id]);
             foreach ($order->goodsDetail as $detail) {
                 /**

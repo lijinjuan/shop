@@ -37,7 +37,7 @@ class WithdrawalServlet
     public function withdralList(int $pageSize = 20, array $conditions = [])
     {
         //商户账号 提现方式 真假人
-        $select = ['id', 'storeID', 'withdrawalMoney', 'withdrawalType', 'createdAt', 'status', 'agentAmount', 'refuseReason'];
+        $select = ['id', 'storeID', 'userID','withdrawalMoney', 'withdrawalType', 'createdAt', 'status', 'agentAmount', 'refuseReason'];
         $model = $this->withdrawalModel->where('id', '>', 0);
         if (!empty($conditions['type']) && in_array($conditions['type'], [1, 2, 3])) {
             $model->where('withdrawalType', $conditions['type']);
@@ -51,6 +51,8 @@ class WithdrawalServlet
         }
         return $model->field($select)->with(['store' => function ($query) {
             $query->field(['id', 'storeName', 'isRealPeople']);
+        },'user'=>function($query){
+            $query->field(['id', 'userName', 'email']);
         }])->append(['withdrawalTypeName'])->paginate($pageSize);
     }
 
