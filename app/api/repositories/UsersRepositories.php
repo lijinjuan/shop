@@ -3,6 +3,7 @@
 namespace app\api\repositories;
 
 use app\common\model\UsersModel;
+use app\lib\exception\ForbiddenException;
 use app\lib\exception\ParameterException;
 use thans\jwt\facade\JWTAuth;
 use think\facade\Cache;
@@ -54,6 +55,10 @@ class UsersRepositories extends AbstractRepositories
     {
         $accessToken = JWTAuth::builder(["userID" => (int)$userModel->getAttr("id")]);
         $creditScore = ($userModel->isStore != 0) ? $userModel->store->creditScore : 0;
+        if ($userModel->isStore != 0 && $userModel->store->status == 3) {
+            throw new ForbiddenException();
+        }
+
         return renderResponse($this->getUserProfileByUserID($userModel, $accessToken, $creditScore));
     }
 
