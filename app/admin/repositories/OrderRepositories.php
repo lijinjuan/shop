@@ -280,9 +280,11 @@ class OrderRepositories extends AbstractRepositories
 
         // 待分佣的订单
         $toBeCommissionOrders = $masterOrder->goodsDetail()->where("status", 4)->select();
-        if ($toBeCommissionOrders->isEmpty())
-            throw new ParameterException(["errMessage" => "不存在推广分佣的订单..."]);
-
+        if ($toBeCommissionOrders->isEmpty()) {
+            $this->updateCompleteOrderStatus($masterOrder);
+            return renderResponse();
+        }
+        
         // 待分佣的金额
         $toBeCommissionAmount = (float)array_sum(array_column($toBeCommissionOrders->toArray(), "goodsTotalPrice"));
         // 分佣金额为 0
