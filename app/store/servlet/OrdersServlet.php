@@ -91,6 +91,7 @@ class OrdersServlet
             $storeModel->user->save();
             // 更新订单状态
             $orderModel->orderStatus = 2;
+            $orderModel->storePayPrice = bcsub($orderModel->goodsTotalPrice, $orderModel->orderCommission, 2);
             $orderModel->storePayAt = date("Y-m-d H:i:s");
             $orderModel->updatedAt = date("Y-m-d H:i:s");
             $orderModel->save();

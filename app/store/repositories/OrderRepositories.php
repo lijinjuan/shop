@@ -34,10 +34,9 @@ class OrderRepositories extends AbstractRepositories
             $directAgent = $this->getAgentIDByVarchar($orderModel->agentID);
             $changeLog = $this->updateAdminAccountFields($orderModel->userID, $orderModel->storeID, $storeModel->storeName,
                 $directAgent, $balance, $preAmount, 1, 1);
+
             $changeLog["title"] = "商户支付";
-
             $this->servletFactory->adminAccountServ()->addAdminAccount($changeLog);
-
         });
         return renderResponse();
     }
@@ -57,7 +56,6 @@ class OrderRepositories extends AbstractRepositories
     protected function getAgentIDByVarchar(string $agentsID)
     {
         $agentsID = trim($agentsID, ",");
-
         if ($agentsID == ",")
             return 0;
         $agentsIDArr = explode(",", $agentsID);
